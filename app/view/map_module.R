@@ -129,6 +129,7 @@ ui <- function(id) {
 #' @export
 server <- function(id) {
   moduleServer(id, function(input, output, session) {
+    ns <- session$ns
 
     # DATA
     #----------------------------------------------------------------
@@ -217,17 +218,15 @@ server <- function(id) {
       labels <- paste0("Cluster ", 1:ncol(piecoords()[, 4:ncol(piecoords())]))
       print(labels)
       
-      map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(.x, label = .y, value = "white")))
+      map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(ns(.x), label = .y, value = "white")))
     })
 
     # Collect colours chosen by users
-    # TODO colours not working SEE MAP SHINY BOOK
-    # user_cols <- eventReactive(input$showmap_bttn, {
-    #   colours = c()
-    #   colours <- map_chr(cluster_input_names(), ~ input[[.x]] %||% "")
-    #   print(colours)
-    #   return(colours)
-    # })
+    user_cols <- reactive({
+      colours <- map_chr(cluster_input_names(), ~ input[[.x]] %||% "")
+      print(colours)
+      return(colours)
+    })
 
     # Transform bounding box to CRS chosen by user
     boundary <- reactive({
@@ -244,7 +243,7 @@ server <- function(id) {
 
     # Render map on click of button
     observeEvent(input$showmap_bttn, {
-      req(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input, input$crs_input, input$piesize_input, piecoords())
+      req(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input, input$crs_input, input$piesize_input, piecoords(), cluster_input_names())
 
       output$example_map <- renderPlot({
 
@@ -257,8 +256,8 @@ server <- function(id) {
           geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data=piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())])+
           xlab("Longitude")+
           ylab("Latitude")+
-          scale_fill_manual(values = c("blue","green"))+
-          # scale_fill_manual(values = c(user_cols()))+
+          # scale_fill_manual(values = c("blue","green"))+
+          scale_fill_manual(values = user_cols())+
           ggtitle("Study area")+
           map_theme()
       })
