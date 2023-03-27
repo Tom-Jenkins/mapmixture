@@ -2,7 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4, tableOutput, renderTable, plotOutput, renderPlot, sidebarLayout, sidebarPanel, mainPanel, selectInput, reactive, observeEvent, eventReactive, observe, br, icon, req, textInput, div, strong, bindEvent, freezeReactiveValue, debounce, textAreaInput, numericInput, uiOutput, renderUI, reactiveValues, wellPanel, tabsetPanel, tabPanel],
+  shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4, tableOutput, renderTable, plotOutput, renderPlot, sidebarLayout, sidebarPanel, mainPanel, selectInput, reactive, observeEvent, eventReactive, observe, br, icon, req, textInput, div, strong, bindEvent, freezeReactiveValue, debounce, textAreaInput, numericInput, uiOutput, renderUI, reactiveValues, wellPanel, tabsetPanel, tabPanel, sliderInput],
   vroom[vroom],
   ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf],
   dplyr[group_by, summarise, n_distinct, arrange],
@@ -11,7 +11,7 @@ box::use(
   stringr[str_to_lower, str_replace],
   sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
   scatterpie[geom_scatterpie],
-  shinyWidgets[pickerInput, searchInput, actionBttn, numericInputIcon, switchInput, materialSwitch],
+  shinyWidgets[pickerInput, searchInput, actionBttn, numericInputIcon, switchInput, materialSwitch, dropdown, dropdownButton, tooltipOptions],
   waiter[autoWaiter, waiter_set_theme, spin_3k, spin_timer, spin_loaders],
   colourpicker[colourInput],
   rlang[`%||%`],
@@ -96,8 +96,8 @@ ui <- function(id) {
           actionBttn(
             inputId = ns("showmap_bttn"),
             label = "Show Map", 
-            style = "gradient",
-            color = "primary",
+            style = "simple",
+            color = "success",
             icon = icon("map"),
             size = "sm"
           ),
@@ -107,6 +107,7 @@ ui <- function(id) {
             tabPanel(
               title = "Admixture Map",
               icon = icon("earth-europe"),
+              uiOutput(ns("download_bttn")),
               plotOutput(ns("example_map"), height = "800px", width = "100%"),
             ),
             tabPanel(
@@ -118,7 +119,7 @@ ui <- function(id) {
               title = "FAQs",
               icon = icon("circle-question"),
               #TBC
-            )
+            ),
           ),
         )
       )
@@ -170,24 +171,20 @@ server <- function(id) {
     })  
 
     # Import map boundary chosen by user (default should be the boundary of the points)
-    bbox1 <- eventReactive({
-      input$xmin_input
-      input$xmax_input
-      input$ymin_input
-      input$ymax_input}, {
+    bbox1 <- eventReactive(c(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input), {
         st_bbox(c(xmin = as.double(input$xmin_input),
                   xmax = as.double(input$xmax_input),
                   ymin = as.double(input$ymin_input),
                   ymax = as.double(input$ymax_input)),
                   crs = st_crs(4326))
-      })
+    })
 
     # Delays a reactive expression by X milliseconds
     bbox <- bbox1 %>% debounce(millis = 1000)
 
     # Import Coordinate Reference System chosen by user (default: LAEA Europe)
     CRS <- eventReactive(input$crs_input, {
-      # Convert 4326 to 3857
+      # Convert EPSG 4326 to EPSG 3857
       str_replace(input$crs_input, "4326", "3857") %>%
         # Convert string to integer
         as.integer
@@ -214,7 +211,7 @@ server <- function(id) {
 
     # Render the correct number of colour options to the UI
     output$colours_input <- renderUI({
-      req(cluster_input_names())
+      req(cluster_input_names(), piecoords())
       labels <- paste0("Cluster ", 1:ncol(piecoords()[, 4:ncol(piecoords())]))
       print(labels)
       
@@ -245,9 +242,8 @@ server <- function(id) {
     observeEvent(input$showmap_bttn, {
       req(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input, input$crs_input, input$piesize_input, piecoords(), cluster_input_names())
 
+      # Render map
       output$example_map <- renderPlot({
-
-        # Plot
         ggplot()+
           geom_sf(data = world(), colour = "black", fill = input$land_input, size = 0.1)+
           coord_sf(xlim = c(boundary()[["xmin"]], boundary()[["xmax"]]),
@@ -261,7 +257,21 @@ server <- function(id) {
           ggtitle("Study area")+
           map_theme()
       })
+
+      # Render download button
+      output$download_bttn <- renderUI({
+        div(style = "position: fixed;",
+          dropdown(
+            style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
+            actionBttn("gege", label = "My button"),
+          )
+        )
+      })  
     })
+
+
+    # Download render plot in image format chosen by user
+    # CODE TO GO IN SEPARATE MODULE!
 
   })
 }
