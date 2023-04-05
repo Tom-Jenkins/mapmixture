@@ -2,19 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4, tableOutput, renderTable, plotOutput, renderPlot, sidebarLayout, sidebarPanel, mainPanel, selectInput, reactive, observeEvent, eventReactive, observe, br, icon, req, textInput, div, strong, bindEvent, freezeReactiveValue, debounce, textAreaInput, numericInput, uiOutput, renderUI, reactiveValues, wellPanel, tabsetPanel, tabPanel, sliderInput, fileInput, span],
-  vroom[vroom],
-  ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf],
-  dplyr[group_by, summarise, n_distinct, arrange],
-  magrittr[`%>%`],
-  purrr[map, map2, map_chr],
-  stringr[str_to_lower, str_replace],
-  sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
-  scatterpie[geom_scatterpie],
-  shinyWidgets[pickerInput, searchInput, actionBttn, numericInputIcon, switchInput, materialSwitch, dropdown, dropdownButton, tooltipOptions],
-  waiter[autoWaiter, waiter_set_theme, spin_3k, spin_timer, spin_loaders],
-  colourpicker[colourInput],
-  rlang[`%||%`],
+  shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4],
 )
 
 # Import modules

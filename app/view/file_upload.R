@@ -4,7 +4,7 @@
 box::use(  
   shiny[moduleServer, NS, tagList, h2, h3, tableOutput, renderTable,
         fluidRow, column, wellPanel, fileInput, br, div, p,
-        reactive, req, validate, actionButton],
+        reactive, req, validate, actionButton, span, strong, splitLayout, icon],
 )
 
 # Import custom R functions into module
@@ -12,45 +12,31 @@ box::use(
   app/logic/import_data[import_data],
 )
 
+# Function to create info modal
+# Launch modal when user clicks information icon
+
+
 
 #' @export
 ui <- function(id) {
   ns <- NS(id)
   
   tagList(
-    fluidRow(
-      column(
-        width = 3,
-        wellPanel(
-          h3("Upload File(s)"),
-          br(),
-          fileInput(ns("admixture_file"), label = "Admixture file", accept = c(".csv", ".tsv")),
-          fileInput(ns("coords_file"), label = "Coordinates file", accept = c(".csv", ".tsv")),
-          actionButton(ns("load_example_data"), label = "Use Example Data"),
-          actionButton(ns("clear_uploads"), label = "Clear Uploaded Data", onclick = "App.clearUploads()"),
-        )
-      ),
-      column(
-        width = 5,
-        align="center",
-        wellPanel(
-          class = "file-upload-tables",
-          h3("Admixture Data"),
-          br(),
-          tableOutput(ns("admixture_table")),
-        )
-      ),
-      column(
-        width = 4,
-        align="center",
-        wellPanel(
-          class = "file-upload-tables",
-          h3("Coordinates Data"),
-          br(),
-          tableOutput(ns("coords_table")),
-        )
-      )
-    )
+    span(strong("Upload Admixture File"), icon("circle-info", class = "m-1")),
+    splitLayout(
+      style = "padding-top: 10px;", 
+      cellWidths = c("70%", "30%"),
+      fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv")),
+      actionButton(ns("sample_data_admixture_bttn"), "Sample Data", style = "font-size: 13px; height: 37px;"),
+    ),
+    span(strong("Upload Coordinates File"), icon("circle-info", class = "m-1")),
+    splitLayout(
+      style = "padding-top: 10px;", 
+      cellWidths = c("70%", "30%"),
+      fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv")),
+      actionButton(ns("sample_data_coords_bttn"), "Sample Data", style = "font-size: 13px; height: 37px;"),
+    ),
+    br(),
   )
 }
 
@@ -64,12 +50,6 @@ server <- function(id) {
       req(input$admixture_file)
       import_data(input$admixture_file)
     })
-    
-    # Render admixture table
-    output$admixture_table <- renderTable({
-      req(admixture_data())
-      admixture_data()      
-    })
 
     # Import coordinates data
     coords_data <- reactive({
@@ -77,11 +57,7 @@ server <- function(id) {
       import_data(input$coords_file)
     })
 
-    # Render coordinates table
-    output$coords_table <- renderTable({
-      req(coords_data())
-      coords_data()
-    })
-
+    # Return data as a named list
+    return(list(admixture_data = admixture_data, coords_data = coords_data))
   })
 }
