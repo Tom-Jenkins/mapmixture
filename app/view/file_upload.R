@@ -2,9 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, h2, h3, tableOutput, renderTable,
-        fluidRow, column, wellPanel, fileInput, br, div, p,
-        reactive, req, validate, actionButton, span, strong, splitLayout, icon],
+  shiny[moduleServer, NS, tagList, tags, fileInput, span, splitLayout, actionButton, strong, icon, reactive, req],
 )
 
 # Import custom R functions into module
@@ -22,6 +20,9 @@ ui <- function(id) {
   ns <- NS(id)
   
   tagList(
+    # Do not display the progress bar on file input ----
+    tags$style(".shiny-file-input-progress {display: none}"),
+
     span(strong("Upload Admixture File"), icon("circle-info", class = "m-1")),
     splitLayout(
       style = "padding-top: 10px;", 
@@ -36,7 +37,6 @@ ui <- function(id) {
       fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv")),
       actionButton(ns("sample_data_coords_bttn"), "Sample Data", style = "font-size: 13px; height: 37px;"),
     ),
-    br(),
   )
 }
 

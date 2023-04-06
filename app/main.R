@@ -10,13 +10,10 @@ box::use(
 # Import modules
 box::use(
   app/view/file_upload,
-  app/view/barchart_module,
-  app/view/map_module,
+  app/view/plot_bttn_module,
   app/view/map_params_module,
+  app/view/map_plot_module,
 )
-
-# Load static data
-world_data <- st_read("./app/static/data/world.gpkg")
 
 
 # UI COMPONENTS
@@ -56,6 +53,9 @@ ui <- function(id) {
         # File upload UI module ----
         file_upload$ui(ns("file_upload")),
 
+        # Plot button UI module ----
+        plot_bttn_module$ui(ns("plot_bttn_module")),
+
         # Tab panel for map and bar chart input options ----
         div(class = "nav-justified",
           tabsetPanel(
@@ -78,18 +78,16 @@ ui <- function(id) {
           tabPanel(
             title = "Admixture Map",
             icon = icon("earth-europe"),
-            fluidRow(
-              column(6, tableOutput(ns("admixture_table"))),
-              column(6, tableOutput(ns("coords_table"))),
-            ),            
-            # uiOutput(ns("download_bttn")),
-            # plotOutput(ns("example_map"), height = "800px", width = "100%"),
+            # fluidRow(
+            #   column(6, tableOutput(ns("admixture_table"))),
+            #   column(6, tableOutput(ns("coords_table"))),
+            # ),
+            map_plot_module$ui(ns("map_plot_module")),
           ),
-          tabPanel(
-            title = "Bar Chart",
-            icon = icon("chart-simple"),
-            #TBC
-          ),
+          # tabPanel(
+          #   title = "Bar Chart",
+          #   icon = icon("chart-simple"),
+          # ),
           tabPanel(
             title = "FAQs",
             icon = icon("circle-question"),
@@ -98,7 +96,6 @@ ui <- function(id) {
         )
       )
     )
-    # map_module$ui(ns("map_module")),
   )
 }
 
@@ -111,25 +108,53 @@ server <- function(id) {
     # Import data from file upload module
     admixture_data <- file_upload$server("file_upload")[["admixture_data"]]
     coords_data <- file_upload$server("file_upload")[["coords_data"]]
-    
-    # Render admixture table
-    output$admixture_table <- renderTable({
-      req(admixture_data())
-      admixture_data()
-    })
 
-    # Render coords table
-    output$coords_table <- renderTable({
-      req(coords_data())
-      coords_data()
-    })
+    # Load static data
+    world_data <- st_read("./app/static/data/world.gpkg")
 
-    # file_upload$server("file_upload")
+    # # Render admixture table
+    # output$admixture_table <- renderTable({
+    #   req(admixture_data())
+    #   admixture_data()
+    # })
 
-    # Bar chart module
-    # barchart_module$server("barchart_module")
+    # # Render coords table
+    # output$coords_table <- renderTable({
+    #   req(coords_data())
+    #   coords_data()
+    # })
+
+    # Plot button
+    plot_bttn <- plot_bttn_module$server("plot_bttn_module", admixture_df = admixture_data)[["plot_bttn"]]
 
     # Map parameters module
-    map_params_module$server("map_params_module", dataframe = admixture_data)
+    map_params_module$server("map_params_module", admixture_df = admixture_data)
+
+    # Import map parameters
+    selected_CRS <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["params_CRS"]]
+    selected_bbox <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["params_bbox"]]
+    selected_expand <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_expand"]]
+    selected_cols <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_cols"]]
+    selected_clusters <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["params_clusters"]]
+    selected_pie_size <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_pie_size"]]
+    selected_land_col <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_land_col"]]
+    selected_map_theme <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_map_theme"]]
+
+    # Map plot module
+    map_plot_module$server(
+      "map_plot_module",
+      admixture_df = admixture_data,
+      coords_df = coords_data,
+      world_data = world_data,
+      user_CRS = selected_CRS,
+      user_bbox = selected_bbox,
+      user_expand = selected_expand,
+      bttn = plot_bttn,
+      cluster_cols = selected_cols,
+      cluster_names = selected_clusters,
+      user_land_col = selected_land_col,
+      pie_size = selected_pie_size,
+      map_theme = selected_map_theme
+    )
   })
 }

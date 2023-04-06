@@ -12,6 +12,7 @@ box::use(
   stringr[str_to_lower, str_replace],
   sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
   rlang[`%||%`],
+  ggplot2[theme, element_text, element_line, element_rect, element_blank],
 )
 
 
@@ -84,27 +85,17 @@ ui <- function(id) {
     div(style = "display: inline-block;", numericInput(ns("text_size"), label = "Axis text size", width = "100px", value = 6)),
     div(style = "display: inline-block;", numericInput(ns("title_size"), label = "Axis title size", width = "100px", value = 7)),
 
-    # Show Map Button
-    br(),
-    actionBttn(
-      inputId = ns("showmap_bttn"),
-      label = "Plot Map", 
-      style = "simple",
-      color = "success",
-      # icon = icon("map"),
-      size = "md"
-    ),
   )
 }
 
 
 #' @export
-server <- function(id, dataframe) {
+server <- function(id, admixture_df) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Import Coordinate Reference System chosen by user (default: LAEA Europe)
-    CRS <- eventReactive(input$crs_input, {
+    params_CRS <- eventReactive(input$crs_input, {
       # Convert EPSG 4326 to EPSG 3857
       str_replace(input$crs_input, "4326", "3857") %>%
         # Convert string to integer
@@ -112,7 +103,7 @@ server <- function(id, dataframe) {
     })
 
     # Import map boundary chosen by user (default should be the boundary of the points)
-    bbox1 <- eventReactive(c(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input), {
+    params_bbox <- eventReactive(c(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input), {
         st_bbox(c(xmin = as.double(input$xmin_input),
                   xmax = as.double(input$xmax_input),
                   ymin = as.double(input$ymin_input),
@@ -120,17 +111,21 @@ server <- function(id, dataframe) {
                   crs = st_crs(4326))
     })
 
+    # Import expand axes chosen by user
+    param_expand <- reactive(input$expand_switch)
+
     # Store the input IDs of the cluster colours outputUI (e.g. cluster_input1, cluster_input2, cluster_inputN)
     cluster_input_names <- reactive({
-      clusters <- paste0("cluster_input", 1:ncol(select(dataframe(), contains("cluster"))) )
+      req(admixture_df())
+      clusters <- paste0("cluster_input", 1:ncol(select(admixture_df(), contains("cluster"))) )
       print(clusters)
       return(clusters)
     })
 
     # Render the correct number of colour options to the UI
     output$colours_input <- renderUI({
-      req(cluster_input_names(), dataframe())
-      labels <- paste0("Cluster ", 1:ncol(select(dataframe(), contains("cluster"))) )
+      req(cluster_input_names(), admixture_df())
+      labels <- paste0("Cluster ", 1:ncol(select(admixture_df(), contains("cluster"))) )
       print(labels)
       
       map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(ns(.x), label = .y, value = "white")))
@@ -138,6 +133,7 @@ server <- function(id, dataframe) {
 
     # Collect colours chosen by users
     user_cols <- reactive({
+      req(cluster_input_names())
       colours <- map_chr(cluster_input_names(), ~ input[[.x]] %||% "")
       print(colours)
       return(colours)
@@ -146,7 +142,10 @@ server <- function(id, dataframe) {
     # Import pie chart size chosen by user
     pie_size <- eventReactive(input$piesize_input, {
       as.double(input$piesize_input)
-    })  
+    })
+
+    # Import land colour chosen by user
+    user_land_col <- reactive(input$land_input)
 
     # Import theme options chosen by user
     map_theme <- eventReactive({
@@ -162,8 +161,25 @@ server <- function(id, dataframe) {
           plot.title = element_text(size = 10, face = "bold"),
           legend.title = element_blank()
         )
-    })   
+    })
 
+    # Plot Data button
+    # plot_bttn <- reactive(input$showmap_bttn)
+
+    # Return parameters as a named list
+    return(
+      list(
+        params_CRS = params_CRS,
+        params_bbox = params_bbox,
+        param_expand = param_expand,
+        params_clusters = cluster_input_names,
+        param_cols = user_cols,
+        param_pie_size = pie_size,
+        param_land_col = user_land_col,
+        param_map_theme = map_theme
+      )
+    )
+    
   })
 }
 

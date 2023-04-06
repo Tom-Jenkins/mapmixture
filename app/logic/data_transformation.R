@@ -9,7 +9,7 @@ box::use(
     tidyr[pivot_wider, tibble],
     purrr[map],
     stringr[str_to_lower],
-    sf[st_as_sf, st_set_crs, st_transform, st_coordinates],
+    sf[st_as_sf, st_set_crs, st_transform, st_coordinates, st_as_sfc, st_bbox],
 )
 
 
@@ -58,4 +58,12 @@ merge_coords_data <- function(coord_df, pie_df, CRS) {
 }   
 
 
-    
+#' @export
+transform_bbox <- function(bbox, CRS) {
+
+  bbox %>%
+    st_as_sfc() %>%
+    st_transform(crs = CRS) %>%
+    st_bbox()
+}
+
