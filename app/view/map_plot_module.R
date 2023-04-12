@@ -39,7 +39,7 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, bttn, cluster_cols, cluster_names, pie_size, user_land_col, map_theme) {
+server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, pie_size, user_title, user_land_col, map_theme) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -85,24 +85,24 @@ server <- function(id, admixture_df, coords_df, world_data, user_CRS, user_bbox,
                   ylim = c(boundary()[["ymin"]], boundary()[["ymax"]]),
                   expand = user_expand())+
           geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data=piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())])+
+          ggtitle(user_title())+
           xlab("Longitude")+
           ylab("Latitude")+
           scale_fill_manual(values = cluster_cols())+
-          ggtitle("Study area")+
           map_theme()
       })
 
       # Render download button ----
       output$download_bttn <- renderUI({
-        div(style = "position: fixed;",
+        div(style = "position: relative; margin-bottom: -20px; float: right;",
           dropdown(
             style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
-            actionBttn("gege", label = "My button"),
+            actionBttn("download_map_bttn", label = "Download map"),
           )
         )
       })  
     })
-
+    
     # Download render plot in image format chosen by user
     # CODE TO GO IN SEPARATE MODULE!
 

@@ -1,5 +1,18 @@
 // app/js/index.js
 
+// -------------------- //
+// 
+// INFORMATION MODALS
+//
+// -------------------- //
+
+// Function to launch modal on click of admixture help button
+export function admixtureHelp() {
+    alert("Place help message here");
+};
+
+
+
 // Clear uploaded data on click of "Clear Uploaded Data" button
 export function clearUploads() {
 

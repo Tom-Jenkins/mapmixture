@@ -28,7 +28,6 @@ ui <- function(id) {
   ns <- NS(id)
 
   tagList(
-    br(),
 
     # Coordinate Reference System (CRS) input ----
     pickerInput(
@@ -65,7 +64,7 @@ ui <- function(id) {
     div(strong("Cluster Colours")),
     uiOutput(ns("colours_input")),
 
-    # Pie Chart Size
+    # Pie chart size ----
     numericInputIcon(
       inputId = ns("piesize_input"),
       label = strong("Pie Chart Size"),
@@ -78,12 +77,15 @@ ui <- function(id) {
       width = "200px"
     ),
 
-    # Theme Options
+    # Map title ----
+    div(style = "display: inline-block;", textInput(ns("title_input"), label = strong("Title"), value = "")),
+
+    # Theme Options ----
     div(strong("Theme Options")),
     div(style = "display: inline-block;", colourInput(ns("sea_input"), label = "Sea colour", value = "#deebf7")),
     div(style = "display: inline-block;", colourInput(ns("land_input"), label = "Land colour", value = "#d9d9d9")),
-    div(style = "display: inline-block;", numericInput(ns("text_size"), label = "Axis text size", width = "100px", value = 6)),
-    div(style = "display: inline-block;", numericInput(ns("title_size"), label = "Axis title size", width = "100px", value = 7)),
+    div(style = "display: inline-block;", numericInput(ns("text_size"), label = "Axis text size", width = "100px", value = 10)),
+    div(style = "display: inline-block;", numericInput(ns("title_size"), label = "Axis title size", width = "100px", value = 12)),
 
   )
 }
@@ -118,7 +120,7 @@ server <- function(id, admixture_df) {
     cluster_input_names <- reactive({
       req(admixture_df())
       clusters <- paste0("cluster_input", 1:ncol(select(admixture_df(), contains("cluster"))) )
-      print(clusters)
+      # print(clusters)
       return(clusters)
     })
 
@@ -135,7 +137,7 @@ server <- function(id, admixture_df) {
     user_cols <- reactive({
       req(cluster_input_names())
       colours <- map_chr(cluster_input_names(), ~ input[[.x]] %||% "")
-      print(colours)
+      # print(colours)
       return(colours)
     })
 
@@ -143,6 +145,9 @@ server <- function(id, admixture_df) {
     pie_size <- eventReactive(input$piesize_input, {
       as.double(input$piesize_input)
     })
+
+    # Import map title chosen by user
+    param_title <- reactive(input$title_input)
 
     # Import land colour chosen by user
     user_land_col <- reactive(input$land_input)
@@ -175,6 +180,7 @@ server <- function(id, admixture_df) {
         params_clusters = cluster_input_names,
         param_cols = user_cols,
         param_pie_size = pie_size,
+        param_title = param_title,
         param_land_col = user_land_col,
         param_map_theme = map_theme
       )
