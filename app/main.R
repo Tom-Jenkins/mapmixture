@@ -57,7 +57,7 @@ ui <- function(id) {
         # Plot button UI module ----
         plot_bttn_module$ui(ns("plot_bttn_module")),
 
-        # Tab panel for map and bar chart input options ----
+        # Tab panel for map and bar chart input parameters ----
         div(class = "nav-justified",
           tabsetPanel(
             type = "pills",
@@ -135,6 +135,7 @@ server <- function(id) {
     selected_title <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_title"]]
     selected_land_col <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_land_col"]]
     selected_map_theme <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_map_theme"]]
+    selected_advanced <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_advanced"]]
 
     # Map plot module ----
     map_plot_module$server(
@@ -151,7 +152,8 @@ server <- function(id) {
       cluster_names = selected_clusters,
       user_land_col = selected_land_col,
       pie_size = selected_pie_size,
-      map_theme = selected_map_theme
+      map_theme = selected_map_theme,
+      user_advanced = selected_advanced
     )
 
     # # Render admixture table

@@ -24,7 +24,7 @@
 
 .info-modal-bttn {
     padding: 0;
-    position: fixed;
+    position: relative;
     padding-left: 5px;
 }
 
@@ -37,9 +37,14 @@
     width: 100px;
 }
 
-// #coords-info-bttn {
-//     cursor: pointer;
-// }
+.sample-data-bttn {
+    font-size: 0.67em;
+    height: 37px;
+    width: 85px;
+    white-space: normal;
+    display: inline-flex;
+    align-items: center;
+}
 
 // .timer-loader:not(:required) {
 //     background: yellow;

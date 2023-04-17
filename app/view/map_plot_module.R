@@ -2,13 +2,14 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce],
+  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate],
   sf[st_as_sfc, st_transform, st_bbox],
   magrittr[`%>%`],
-  ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf],
+  ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf, theme_set, theme_update],
   scatterpie[geom_scatterpie],
   shinyWidgets[actionBttn, dropdown],
   waiter[autoWaiter, waiter_set_theme, spin_3k, spin_timer, spin_loaders, useWaiter],
+  rlang[eval_tidy, parse_expr],
 )
 
 # Import custom R functions into module
@@ -27,7 +28,7 @@ ui <- function(id) {
   tagList(
 
     # Loading spinner ----
-    autoWaiter(),
+    autoWaiter(id = ns("admixture_map")),
 
     # Render a download button ----
     uiOutput(ns("download_bttn")),
@@ -39,7 +40,7 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, pie_size, user_title, user_land_col, map_theme) {
+server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, pie_size, user_title, user_land_col, map_theme, user_advanced) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -76,8 +77,15 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
     # Render map on click of button ----
     observeEvent(bttn(), {
-      req(piecoords(), boundary(), world())
+      req(piecoords(), world(), boundary())
 
+      # Set ggplot theme ----
+      theme_set(map_theme())
+
+      # Update ggplot theme ----
+      eval_tidy(parse_expr(user_advanced()))
+
+      # Render plot ----
       output$admixture_map <- renderPlot({
         ggplot()+
           geom_sf(data = world(), colour = "black", fill = user_land_col(), size = 0.1)+
@@ -88,8 +96,8 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
           ggtitle(user_title())+
           xlab("Longitude")+
           ylab("Latitude")+
-          scale_fill_manual(values = cluster_cols())+
-          map_theme()
+          scale_fill_manual(values = cluster_cols())
+          # map_theme()
       })
 
       # Render download button ----

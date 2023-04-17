@@ -49,7 +49,7 @@ server <- function(id, info_bttn_admixture, info_bttn_coords) {
             </tr>
             <tr>
                 <td>SiteB</td>
-                <td>Sample1</td>
+                <td>Sample3</td>
                 <td>0.05</td>
                 <td>0.05</td>
                 <td>0.90</td>
@@ -57,7 +57,7 @@ server <- function(id, info_bttn_admixture, info_bttn_coords) {
             </tr>
             <tr>
                 <td>SiteB</td>
-                <td>Sample2</td>
+                <td>Sample4</td>
                 <td>0.00</td>
                 <td>0.05</td>
                 <td>0.95</td>
@@ -73,9 +73,7 @@ server <- function(id, info_bttn_admixture, info_bttn_coords) {
             </tr>
         </tbody>
     </table>
-    <br>
-    <span class='d-inline p-2 bg-warning text-white'>The site IDs in the <span class='fw-bold'>Site</span> column must match those in the <span class='fw-bold'>Site</span> column from the Coordinates File.</span>
-    <br>
+    <span class='d-block p-2 bg-warning text-white'>The site IDs in the <span class='fw-bold'>Site</span> column must match those in the <span class='fw-bold'>Site</span> column from the <span class='fw-bold'>Coordinates</span> File.</span>
     "
 
     # Coordinates table example
@@ -116,16 +114,16 @@ server <- function(id, info_bttn_admixture, info_bttn_coords) {
             </tr>
         </tbody>
     </table>
-    <br>
-    <span class='d-inline p-2 bg-warning text-white'>The site IDs in the <span class='fw-bold'>Site</span> column must match those in the <span class='fw-bold'>Site</span> column from the Admixture File.</span>
-    <br>
+    <span class='d-block p-2 bg-warning text-white'>
+      The site IDs in the <span class='fw-bold'>Site</span> column must match those in the <span class='fw-bold'>Site</span> column from the <span class='fw-bold'>Admixture</span> File.
+    </span>
     "
 
     # Function to build modal
     build_modal <- function(custom_title, html_content) {
       modalDialog(
         title = strong(custom_title, style = "font-size: larger;"),
-        br(),
+        # br(),
         HTML(html_content),
         br(),
         div(

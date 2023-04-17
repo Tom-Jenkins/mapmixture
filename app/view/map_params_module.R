@@ -9,7 +9,7 @@ box::use(
   tidyr[contains],
   magrittr[`%>%`],
   purrr[map, map2, map_chr],
-  stringr[str_to_lower, str_replace],
+  stringr[str_to_lower, str_replace, str_replace_all],
   sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank],
@@ -87,6 +87,14 @@ ui <- function(id) {
     div(style = "display: inline-block;", numericInput(ns("text_size"), label = "Axis text size", width = "100px", value = 10)),
     div(style = "display: inline-block;", numericInput(ns("title_size"), label = "Axis title size", width = "100px", value = 12)),
 
+    # Advanced Theme Customisation ----
+    textAreaInput(
+      inputId = ns("advanced_customisation_box"),
+      label = strong("Advanced Theme Customisation"),
+      value = "",
+      height = "100px",
+      placeholder = "axis.text.x = element_blank()\naxis.title.x = element_blank()\naxis.ticks.x = element_blank()"
+    )
   )
 }
 
@@ -168,8 +176,13 @@ server <- function(id, admixture_df) {
         )
     })
 
-    # Plot Data button
-    # plot_bttn <- reactive(input$showmap_bttn)
+    # Import advanced customisation theme options chosen by user
+    advanced_custom <- eventReactive(input$advanced_customisation_box, {
+        user_text <- paste0("theme_update(", input$advanced_customisation_box, ")")
+        mod_text <- str_replace_all(user_text, "\n", ",")
+        print(mod_text)
+        return(mod_text)
+    })
 
     # Return parameters as a named list
     return(
@@ -182,7 +195,8 @@ server <- function(id, admixture_df) {
         param_pie_size = pie_size,
         param_title = param_title,
         param_land_col = user_land_col,
-        param_map_theme = map_theme
+        param_map_theme = map_theme,
+        param_advanced = advanced_custom
       )
     )
     

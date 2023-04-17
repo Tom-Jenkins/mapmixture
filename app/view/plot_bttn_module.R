@@ -34,7 +34,7 @@ server <- function(id, admixture_df) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    plot_bttn <- reactive(input$showmap_bttn)
+    plot_bttn <- reactive({ input$showmap_bttn })
 
     return(list(plot_bttn = plot_bttn))
   })

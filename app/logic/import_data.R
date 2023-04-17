@@ -8,7 +8,7 @@ box::use(
 )
 
 #' @export
-import_data <- function(data) {
+import_user_data <- function(data) {
     file <- data
     ext <- file_ext(file$datapath)
     data <- vroom(file$datapath)
@@ -20,5 +20,15 @@ import_data <- function(data) {
     return(data)
 }
 
+#' @export
+import_sample_data <- function(data) {
 
+    data <- vroom(data)
+
+    # Convert headers to lowercase
+    colnames(data) <- str_to_lower(colnames(data))
+
+    # Return data
+    return(data)
+}
 
