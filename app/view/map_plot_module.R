@@ -2,7 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate],
+  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow],
   sf[st_as_sfc, st_transform, st_bbox],
   magrittr[`%>%`],
   ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf, theme_set, theme_update],
@@ -10,11 +10,14 @@ box::use(
   shinyWidgets[actionBttn, dropdown],
   waiter[autoWaiter, waiter_set_theme, spin_3k, spin_timer, spin_loaders, useWaiter],
   rlang[eval_tidy, parse_expr],
+  shinyjs[useShinyjs, onevent, runjs],
+  stringr[str_replace_all],
 )
 
 # Import custom R functions into module
 box::use(
   app/logic/data_transformation[transform_data, prepare_pie_data, merge_coords_data, transform_bbox,],
+  # app/logic/html_content[html_admixture_sample_table, html_coords_sample_table],
 )
 
 # Set waiter spinner theme (https://shiny.john-coene.com/waiter/)
@@ -26,6 +29,13 @@ ui <- function(id) {
   ns <- NS(id)
   
   tagList(
+    useShinyjs(),
+
+    # Show example of Admixture and Coordinates file formats on page load   
+    # fluidRow(
+    #   id = "example-file-formats-loading-page",
+    #   img(src = "./static/data/example_plot.png", height = 500, width = 200),
+    # ),
 
     # Loading spinner ----
     autoWaiter(id = ns("admixture_map")),
@@ -34,7 +44,7 @@ ui <- function(id) {
     uiOutput(ns("download_bttn")),
 
     # Render admixture map ----
-    plotOutput(ns("admixture_map"), height = "800px", width = "100%")
+    plotOutput(ns("admixture_map"), width = "100%")
   )
 }
 
@@ -73,10 +83,14 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
     world <- reactive({
       st_transform(world_data, crs = user_CRS())
     })
-
+    
+    # Clear any plots from plotOutput container ----
+    observeEvent(c(bttn(), piecoords(), boundary(), cluster_cols(), pie_size(), user_title(), user_expand(), user_land_col()), priority = 2, {
+      onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
+    })
 
     # Render map on click of button ----
-    observeEvent(bttn(), {
+    observeEvent(bttn(), priority = 1, {
       req(piecoords(), world(), boundary())
 
       # Set ggplot theme ----
@@ -96,8 +110,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
           ggtitle(user_title())+
           xlab("Longitude")+
           ylab("Latitude")+
-          scale_fill_manual(values = cluster_cols())
-          # map_theme()
+          scale_fill_manual(values = cluster_cols(), labels = str_replace_all(colnames(piecoords())[4:ncol(piecoords())], "cluster", "Cluster"))
       })
 
       # Render download button ----

@@ -78,14 +78,16 @@ ui <- function(id) {
     ),
 
     # Map title ----
-    div(style = "display: inline-block;", textInput(ns("title_input"), label = strong("Title"), value = "")),
+    div(style = "display: inline-block;", textInput(ns("title_input"), label = strong("Plot Title"), value = "", width = "295px")),
+    div(style = "display: inline-block;", numericInput(ns("plot_title_size"), label = strong("Plot Title Size"), width = "100px", value = 15)),
 
     # Theme Options ----
-    div(strong("Theme Options")),
-    div(style = "display: inline-block;", colourInput(ns("sea_input"), label = "Sea colour", value = "#deebf7")),
-    div(style = "display: inline-block;", colourInput(ns("land_input"), label = "Land colour", value = "#d9d9d9")),
-    div(style = "display: inline-block;", numericInput(ns("text_size"), label = "Axis text size", width = "100px", value = 10)),
-    div(style = "display: inline-block;", numericInput(ns("title_size"), label = "Axis title size", width = "100px", value = 12)),
+    # div(strong("Theme Options")),
+    br(),
+    div(style = "display: inline-block;", colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
+    div(style = "display: inline-block;", colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),
+    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", value = 10)),
+    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12)),
 
     # Advanced Theme Customisation ----
     textAreaInput(
@@ -136,7 +138,7 @@ server <- function(id, admixture_df) {
     output$colours_input <- renderUI({
       req(cluster_input_names(), admixture_df())
       labels <- paste0("Cluster ", 1:ncol(select(admixture_df(), contains("cluster"))) )
-      print(labels)
+      # print(labels)
       
       map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(ns(.x), label = .y, value = "white")))
     })
@@ -164,24 +166,26 @@ server <- function(id, admixture_df) {
     map_theme <- eventReactive({
       input$sea_input
       input$text_size
-      input$title_size}, {
+      input$title_size
+      input$plot_title_size}, {
         theme(
           axis.text = element_text(colour = "black", size = input$text_size),
           axis.title = element_text(colour = "black", size = input$title_size),
           panel.grid = element_line(colour = "white", size = 0.1),
           panel.background = element_rect(fill = input$sea_input),
           panel.border = element_rect(fill = NA, colour = "black", size = 0.3),
-          plot.title = element_text(size = 10, face = "bold"),
+          plot.title = element_text(size = input$plot_title_size, face = "bold"),
           legend.title = element_blank()
         )
     })
 
     # Import advanced customisation theme options chosen by user
+    # Format of returned string: "theme_update(axis.text = element_blank(),axis.title = element_blank(),..."
     advanced_custom <- eventReactive(input$advanced_customisation_box, {
         user_text <- paste0("theme_update(", input$advanced_customisation_box, ")")
-        mod_text <- str_replace_all(user_text, "\n", ",")
-        print(mod_text)
-        return(mod_text)
+        str_text <- str_replace_all(user_text, "\n", ",")
+        # print(str_text)
+        return(str_text)
     })
 
     # Return parameters as a named list

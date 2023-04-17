@@ -12,7 +12,6 @@ ui <- function(id) {
   ns <- NS(id)
 
   tagList(
-    br(),
 
     # Plot button
     actionBttn(
@@ -22,9 +21,7 @@ ui <- function(id) {
       color = "success",
       icon = icon("arrows-rotate"),
       size = "md"
-    ),
-    br(),
-    br(),
+    )
   )
 }
 

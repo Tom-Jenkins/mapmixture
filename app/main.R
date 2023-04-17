@@ -2,7 +2,7 @@
 
 # Import R packages / functions into module
 box::use(
-  shiny[moduleServer, NS, tags, fluidPage, fluidRow, span, h1, h2, h3, h4, strong, icon, p, a, sidebarLayout, sidebarPanel, mainPanel, fileInput, tabsetPanel, tabPanel, div, actionButton, splitLayout, br, renderTable, tableOutput, req, callModule, reactive, column, plotOutput, uiOutput],
+  shiny[moduleServer, NS, tags, fluidPage, fluidRow, span, h1, h2, h3, h4, strong, icon, p, a, sidebarLayout, sidebarPanel, mainPanel, fileInput, tabsetPanel, tabPanel, div, actionButton, splitLayout, br, renderTable, tableOutput, req, callModule, reactive, column, plotOutput, uiOutput, HTML],
   bslib[bs_theme],
   sf[st_read],
 )
@@ -29,6 +29,7 @@ ui <- function(id) {
 
     # Navbar with title and links ----
     fluidRow(
+      class = "custom-navbar",
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       span(
         span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture v0.1")),
@@ -45,24 +46,32 @@ ui <- function(id) {
           span(style = "float: right; margin-right: 20px;", icon("github", style = "margin-right: 5px;"), "GitHub")),
       ),
     ),
+
     # Sidebar layout with inputs (left) and outputs (right) ----
     sidebarLayout(
 
       # Sidebar panel for inputs ----
       sidebarPanel(
+        class = "sidebar-container",
 
-        # File upload UI module ----
-        file_upload$ui(ns("file_upload")),
+        div(
+          class = "sidebar-nonparam-container",
 
-        # Plot button UI module ----
-        plot_bttn_module$ui(ns("plot_bttn_module")),
+          # File upload UI module ----
+          file_upload$ui(ns("file_upload")),
 
+          # Plot button UI module ----
+          plot_bttn_module$ui(ns("plot_bttn_module")),
+        ),
+        
         # Tab panel for map and bar chart input parameters ----
         div(class = "nav-justified",
           tabsetPanel(
             type = "pills",
+            id = "options-pills=container",
             tabPanel(
-              style = "height: 530px; overflow-y: scroll; padding-left: 5px; padding-right: 20px; padding-top: 10px; margin-top: 10px;",
+              class = "parameter-options-container",
+              # style = "height: 480px; overflow-y: scroll; padding-left: 5px; padding-right: 20px; padding-top: 10px; margin-top: 10px;",
               title = "Map Options",
               map_params_module$ui(ns("map_params_module")),
             ),
@@ -80,10 +89,6 @@ ui <- function(id) {
           tabPanel(
             title = "Admixture Map",
             icon = icon("earth-europe"),
-            # fluidRow(
-            #   column(6, tableOutput(ns("admixture_table"))),
-            #   column(6, tableOutput(ns("coords_table"))),
-            # ),
             map_plot_module$ui(ns("map_plot_module")),
           ),
           # tabPanel(
@@ -91,13 +96,55 @@ ui <- function(id) {
           #   icon = icon("chart-simple"),
           # ),
           tabPanel(
-            title = "FAQs",
+            title = "File Format",
+            icon = icon("file"),
+            #TBC
+          ),
+          tabPanel(
+            title = "About",
             icon = icon("circle-question"),
             #TBC
           ),
         )
       )
-    )
+    ),
+
+    # Dynamically adjust height of sidebarPanel, options tabPanel, and the mainPanel depending on screen size ----
+    tags$script(HTML(
+      # Calculate maximum height of the container where the map will render based on the users screen height
+      # Then set the height of sidebarPanel and MainPanel containers
+      # Do these calculations and change the height of the container each time the window is resized
+      # For example, when the user drags the browser from a laptop screen to a desktop screen (or vice versa)
+      "
+      const navbarHeight = document.querySelector('.custom-navbar').offsetHeight;
+      const navbarHeightMargin = parseInt(window.getComputedStyle(document.querySelector('.custom-navbar')).getPropertyValue('margin-bottom'));
+      const navtabsHeight = document.querySelector('.nav-tabs').offsetHeight;
+      const sidebarNonParamContainerHeight = document.querySelector('.sidebar-nonparam-container').offsetHeight;
+      const sidebarPillsHeight = document.getElementById('options-pills=container').offsetHeight;
+
+      const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
+      const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 40;
+      const mainContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 20;
+
+      document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;
+      document.querySelector('.parameter-options-container').style.height = `${sidebarOptionsContainerHeight}px`;
+      document.getElementById('app-map_plot_module-admixture_map').style.height = `${mainContainerHeight}px`;
+
+
+      window.addEventListener('resize', () => {
+        document.getElementById('app-map_plot_module-admixture_map').textContent = '';
+
+        const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
+        const sidebarNonParamContainerHeight = document.querySelector('.sidebar-nonparam-container').offsetHeight;
+        const sidebarPillsHeight = document.getElementById('options-pills=container').offsetHeight;
+        const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 40;
+
+        document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;
+        document.querySelector('.parameter-options-container').style.height = `${sidebarOptionsContainerHeight}px`;
+        document.getElementById('app-map_plot_module-admixture_map').style.height = `${window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 20}px`;
+      });
+      "
+    )),
   )
 }
 

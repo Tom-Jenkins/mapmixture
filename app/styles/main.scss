@@ -16,6 +16,11 @@
     box-shadow: none; 
 }
 
+#app-plot_bttn_module-showmap_bttn {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
 #app-map_module-download_bttn {
     float: right;
     padding-right: 40px;
@@ -26,6 +31,7 @@
     padding: 0;
     position: relative;
     padding-left: 5px;
+    padding-bottom: 5px;
 }
 
 .info-modal-bttn:active {
@@ -44,6 +50,23 @@
     white-space: normal;
     display: inline-flex;
     align-items: center;
+}
+
+.parameter-options-container {
+    overflow-y: scroll;
+    padding-left: 5px;
+    padding-right: 20px;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.bootstrap-switch-normal {
+    margin-bottom: 4px;
+}
+
+#example-file-formats-loading-page {
+    width: 500px;
+    opacity: 0.3;
 }
 
 // .timer-loader:not(:required) {
