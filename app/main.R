@@ -157,32 +157,35 @@ server <- function(id) {
     # Load static data ----
     world_data <- st_read("./app/static/data/world.gpkg")
 
+    # File upload module ----
+    file_upload_mod_outputs <- file_upload$server("file_upload")
+
     # Import data from file upload module ----
-    admixture_data <- file_upload$server("file_upload")[["admixture_data"]]
-    coords_data <- file_upload$server("file_upload")[["coords_data"]]
+    admixture_data <- file_upload_mod_outputs[["admixture_data"]]
+    coords_data <- file_upload_mod_outputs[["coords_data"]]
 
     # Capture button click events ----
-    admixture_info_bttn <- file_upload$server("file_upload")[["admixture_info_bttn"]]
-    coords_info_bttn <- file_upload$server("file_upload")[["coords_info_bttn"]]
+    admixture_info_bttn <- file_upload_mod_outputs[["admixture_info_bttn"]]
+    coords_info_bttn <- file_upload_mod_outputs[["coords_info_bttn"]]
     plot_bttn <- plot_bttn_module$server("plot_bttn_module", admixture_df = admixture_data)[["plot_bttn"]]
 
     # Information modals module ----
     info_modals_module$server("info_modals_module", admixture_info_bttn, coords_info_bttn)
 
     # Map parameters module ----
-    map_params_module$server("map_params_module", admixture_df = admixture_data)
+    map_params_mod_outputs <- map_params_module$server("map_params_module", admixture_df = admixture_data)
 
     # Import map parameters ----
-    selected_CRS <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["params_CRS"]]
-    selected_bbox <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["params_bbox"]]
-    selected_expand <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_expand"]]
-    selected_cols <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_cols"]]
-    selected_clusters <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["params_clusters"]]
-    selected_pie_size <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_pie_size"]]
-    selected_title <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_title"]]
-    selected_land_col <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_land_col"]]
-    selected_map_theme <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_map_theme"]]
-    selected_advanced <- map_params_module$server("map_params_module", admixture_df = admixture_data)[["param_advanced"]]
+    selected_CRS <- map_params_mod_outputs[["params_CRS"]]
+    selected_bbox <- map_params_mod_outputs[["params_bbox"]]
+    selected_expand <- map_params_mod_outputs[["param_expand"]]
+    selected_cols <- map_params_mod_outputs[["param_cols"]]
+    selected_clusters <- map_params_mod_outputs[["params_clusters"]]
+    selected_pie_size <- map_params_mod_outputs[["param_pie_size"]]
+    selected_title <- map_params_mod_outputs[["param_title"]]
+    selected_land_col <- map_params_mod_outputs[["param_land_col"]]
+    selected_map_theme <- map_params_mod_outputs[["param_map_theme"]]
+    selected_advanced <- map_params_mod_outputs[["param_advanced"]]
 
     # Map plot module ----
     map_plot_module$server(
