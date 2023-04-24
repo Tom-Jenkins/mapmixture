@@ -10,7 +10,7 @@ box::use(
   shinyWidgets[actionBttn, dropdown, radioGroupButtons],
   waiter[useWaiter, autoWaiter, waiter_set_theme, spin_loaders],
   rlang[eval_tidy, parse_expr],
-  shinyjs[useShinyjs, onevent, runjs],
+  shinyjs[useShinyjs, onevent, runjs, reset],
   stringr[str_replace_all],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
   ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale]

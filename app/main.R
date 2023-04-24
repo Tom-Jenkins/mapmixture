@@ -123,7 +123,7 @@ ui <- function(id) {
       const sidebarPillsHeight = document.getElementById('options-pills=container').offsetHeight;
 
       const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
-      const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 40;
+      const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 25;
       const mainContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 20;
 
       document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;
@@ -137,7 +137,7 @@ ui <- function(id) {
         const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
         const sidebarNonParamContainerHeight = document.querySelector('.sidebar-nonparam-container').offsetHeight;
         const sidebarPillsHeight = document.getElementById('options-pills=container').offsetHeight;
-        const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 40;
+        const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 25;
 
         document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;
         document.querySelector('.parameter-options-container').style.height = `${sidebarOptionsContainerHeight}px`;
@@ -167,7 +167,7 @@ server <- function(id) {
     # Capture button click events ----
     admixture_info_bttn <- file_upload_mod_outputs[["admixture_info_bttn"]]
     coords_info_bttn <- file_upload_mod_outputs[["coords_info_bttn"]]
-    plot_bttn <- plot_bttn_module$server("plot_bttn_module", admixture_df = admixture_data)[["plot_bttn"]]
+    plot_bttn <- plot_bttn_module$server("plot_bttn_module")[["plot_bttn"]]
 
     # Information modals module ----
     info_modals_module$server("info_modals_module", admixture_info_bttn, coords_info_bttn)

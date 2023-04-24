@@ -1,11 +1,5 @@
 // app/js/index.js
 
-// -------------------- //
-// 
-// INFORMATION MODALS
-//
-// -------------------- //
-
 // Function to render file name when load sample data button is clicked
 export function renderSampleData(dataType) {
     if (dataType === "admixture") {

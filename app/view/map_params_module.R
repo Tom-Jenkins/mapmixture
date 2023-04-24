@@ -12,7 +12,7 @@ box::use(
   stringr[str_to_lower, str_replace, str_replace_all],
   sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
   rlang[`%||%`],
-  ggplot2[theme, element_text, element_line, element_rect, element_blank],
+  ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
 )
 
 
@@ -63,6 +63,14 @@ ui <- function(id) {
     # Choose cluster colours input ----
     div(strong("Cluster Colours")),
     uiOutput(ns("colours_input")),
+
+    # North arrow input ----
+    div(style = "display: inline-block;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
+    switchInput(ns("arrow_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = FALSE),
+
+    # Scale bar input ----
+    div(style = "display: inline-block;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
+    switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = FALSE),
 
     # Pie chart size ----
     numericInputIcon(
@@ -174,7 +182,7 @@ server <- function(id, admixture_df) {
           panel.grid = element_line(colour = "white", size = 0.1),
           panel.background = element_rect(fill = input$sea_input),
           panel.border = element_rect(fill = NA, colour = "black", size = 0.3),
-          plot.title = element_text(size = input$plot_title_size, face = "bold"),
+          plot.title = element_text(size = input$plot_title_size, face = "bold", margin = margin(0,0,10,0)),
           legend.title = element_blank()
         )
     })

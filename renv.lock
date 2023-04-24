@@ -128,6 +128,14 @@
         "Rcpp"
       ]
     },
+    "abind": {
+      "Package": "abind",
+      "Version": "1.4-5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4f57884290cc75ab22f4af9e9d4ca862",
+      "Requirements": []
+    },
     "anytime": {
       "Package": "anytime",
       "Version": "0.3.9",
@@ -137,6 +145,16 @@
       "Requirements": [
         "BH",
         "Rcpp"
+      ]
+    },
+    "askpass": {
+      "Package": "askpass",
+      "Version": "1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e8a22846fff485f0be3770c2da758713",
+      "Requirements": [
+        "sys"
       ]
     },
     "backports": {
@@ -323,6 +341,14 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "e8a1e41acf02548751f45c718d55aa6a",
+      "Requirements": []
+    },
+    "curl": {
+      "Package": "curl",
+      "Version": "5.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e4f97056611e8e6b8b852d13b7400cf1",
       "Requirements": []
     },
     "cyclocomp": {
@@ -525,6 +551,24 @@
         "withr"
       ]
     },
+    "ggspatial": {
+      "Package": "ggspatial",
+      "Version": "1.1.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "1ef4c8db80fb72bcc0d7e3fbdcd04da7",
+      "Requirements": [
+        "abind",
+        "ggplot2",
+        "glue",
+        "rlang",
+        "rosm",
+        "scales",
+        "sf",
+        "tibble",
+        "tidyr"
+      ]
+    },
     "glue": {
       "Package": "glue",
       "Version": "1.6.2",
@@ -610,12 +654,34 @@
         "promises"
       ]
     },
+    "httr": {
+      "Package": "httr",
+      "Version": "1.4.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f6844033201269bec3ca0097bc6c97b3",
+      "Requirements": [
+        "R6",
+        "curl",
+        "jsonlite",
+        "mime",
+        "openssl"
+      ]
+    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.2.7",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "0080607b4a1a7b28979aecef976d8bc2",
+      "Requirements": []
+    },
+    "jpeg": {
+      "Package": "jpeg",
+      "Version": "0.1-10",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "031a0b683d001a7519202f0628fc0358",
       "Requirements": []
     },
     "jquerylib": {
@@ -793,6 +859,16 @@
         "lattice"
       ]
     },
+    "openssl": {
+      "Package": "openssl",
+      "Version": "2.0.6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "0f7cd2962e3044bb940cca4f4b5cecbe",
+      "Requirements": [
+        "askpass"
+      ]
+    },
     "pillar": {
       "Package": "pillar",
       "Version": "1.9.0",
@@ -834,6 +910,24 @@
         "withr"
       ]
     },
+    "plyr": {
+      "Package": "plyr",
+      "Version": "1.8.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d744387aef9047b0b48be2933d78e862",
+      "Requirements": [
+        "Rcpp"
+      ]
+    },
+    "png": {
+      "Package": "png",
+      "Version": "0.1-8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bd54ba8a0a5faded999a7aab6e46b374",
+      "Requirements": []
+    },
     "polyclip": {
       "Package": "polyclip",
       "Version": "1.10-4",
@@ -849,6 +943,19 @@
       "Repository": "CRAN",
       "Hash": "a555924add98c99d2f411e37e7d25e9f",
       "Requirements": []
+    },
+    "prettymapr": {
+      "Package": "prettymapr",
+      "Version": "0.2.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2c6a2aec97aec439daecd68d67653868",
+      "Requirements": [
+        "digest",
+        "httr",
+        "plyr",
+        "rjson"
+      ]
     },
     "prettyunits": {
       "Package": "prettyunits",
@@ -970,6 +1077,16 @@
         "lazyeval"
       ]
     },
+    "rgdal": {
+      "Package": "rgdal",
+      "Version": "1.6-6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "05c7c91191407d54da92816fb849ab29",
+      "Requirements": [
+        "sp"
+      ]
+    },
     "rhino": {
       "Package": "rhino",
       "Version": "1.3.0",
@@ -994,6 +1111,14 @@
         "withr",
         "yaml"
       ]
+    },
+    "rjson": {
+      "Package": "rjson",
+      "Version": "0.2.21",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f9da75e6444e95a1baf8ca24909d63b9",
+      "Requirements": []
     },
     "rlang": {
       "Package": "rlang",
@@ -1020,6 +1145,24 @@
         "tinytex",
         "xfun",
         "yaml"
+      ]
+    },
+    "rosm": {
+      "Package": "rosm",
+      "Version": "0.2.6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "28c1e811f574441769c93e5367726c8e",
+      "Requirements": [
+        "abind",
+        "curl",
+        "jpeg",
+        "plyr",
+        "png",
+        "prettymapr",
+        "rgdal",
+        "rjson",
+        "sp"
       ]
     },
     "rprojroot": {
@@ -1138,6 +1281,19 @@
         "xtable"
       ]
     },
+    "shinyFeedback": {
+      "Package": "shinyFeedback",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "88a6b7ff3d135195ad0011fec04336f2",
+      "Requirements": [
+        "fontawesome",
+        "htmltools",
+        "jsonlite",
+        "shiny"
+      ]
+    },
     "shinyWidgets": {
       "Package": "shinyWidgets",
       "Version": "0.7.6",
@@ -1173,6 +1329,16 @@
       "Repository": "CRAN",
       "Hash": "5f5a7629f956619d519205ec475fe647",
       "Requirements": []
+    },
+    "sp": {
+      "Package": "sp",
+      "Version": "1.6-0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6674e075a078d9c3bde8ba800367347c",
+      "Requirements": [
+        "lattice"
+      ]
     },
     "stringi": {
       "Package": "stringi",
@@ -1214,6 +1380,14 @@
         "vctrs",
         "withr"
       ]
+    },
+    "sys": {
+      "Package": "sys",
+      "Version": "3.4.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "34c16f1ef796057bfa06d3f4ff818a5d",
+      "Requirements": []
     },
     "systemfonts": {
       "Package": "systemfonts",

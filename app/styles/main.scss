@@ -1,8 +1,23 @@
 // app/styles/main.scss
 
+:root {
+    --flatly-success: #18bc9c;
+}
+
+.hidden {
+    display: none;
+}
+
 .file-upload-tables {
     height: 350px;
     overflow-y: scroll;
+}
+
+#app-file_upload-admixture_file-icon {
+    margin-top: 5px;
+}
+#app-file_upload-coords_file-icon {
+    margin-top: 5px;
 }
 
 .btn-file {
@@ -20,11 +35,20 @@
     margin-top: 5px;
     margin-bottom: 20px;
 }
+#app-plot_bttn_module-showmap_bttn:active {
+    background-color: #14a085;
+    border-color: rgba(0,0,0,0.03);
+}
 
 #app-map_module-download_bttn {
     float: right;
     padding-right: 40px;
     padding-top: 5px;
+}
+
+#app-map_plot_module-download_bttn:active {
+    background-color: #14a085;
+    border-color: white;
 }
 
 .info-modal-bttn {
@@ -57,7 +81,7 @@
     padding-left: 5px;
     padding-right: 20px;
     padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .bootstrap-switch-normal {
@@ -67,6 +91,10 @@
 #example-file-formats-loading-page {
     width: 500px;
     opacity: 0.3;
+}
+
+#app-map_plot_module-filetype_radio_bttn-label {
+    padding-top: 10px;
 }
 
 // .timer-loader:not(:required) {

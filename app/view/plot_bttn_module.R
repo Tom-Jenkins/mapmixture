@@ -2,8 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, br, icon, reactive],
-  shinyWidgets[actionBttn],
+  shiny[moduleServer, NS, tagList, tags, HTML, icon, reactive],
 )
 
 
@@ -14,20 +13,18 @@ ui <- function(id) {
   tagList(
 
     # Plot button
-    actionBttn(
-      inputId = ns("showmap_bttn"),
-      label = "Plot Data", 
-      style = "simple",
-      color = "success",
-      icon = icon("arrows-rotate"),
-      size = "md"
+    tags$button(
+      id = ns("showmap_bttn"),
+      class = "btn btn-success action-button shiny-bound-input fs-5",
+      icon("arrows-rotate"),
+      HTML("Plot Data")
     )
   )
 }
 
 
 #' @export
-server <- function(id, admixture_df) {
+server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 

@@ -1,9 +1,11 @@
-# app/view/file_upload_table.R
+# app/view/file_upload.R
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, tags, fileInput, span, splitLayout, actionButton, strong, icon, reactive, req, observeEvent, eventReactive, observe, HTML, div],
+  shiny[moduleServer, NS, tagList, tags, fileInput, span, splitLayout, actionButton, strong, icon, reactive, req, observeEvent, eventReactive, reactiveVal, reactiveValues, observe, HTML, div, isolate],
   shinyjs[useShinyjs, onclick, onevent, runjs],
+  shinyFeedback[useShinyFeedback, showFeedbackWarning, showFeedbackSuccess, hideFeedback],
+  vroom[vroom]
 )
 
 # Import custom R functions into module
@@ -18,6 +20,7 @@ ui <- function(id) {
   
   tagList(
     useShinyjs(),
+    useShinyFeedback(),
 
     # Do not display the progress bar on file input ----
     tags$style(".shiny-file-input-progress {display: none}"),
@@ -32,7 +35,7 @@ ui <- function(id) {
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
       fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv")),
-      tags$button(id = ns("load_sample_data_admixture_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
+      # tags$button(id = ns("load_sample_data_admixture_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
     ),
 
     # Coordinates file upload ----
@@ -45,7 +48,7 @@ ui <- function(id) {
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
       fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv")),
-      tags$button(id = ns("load_sample_data_coords_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
+      # tags$button(id = ns("load_sample_data_coords_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
     ),
   )
 }
@@ -55,21 +58,11 @@ ui <- function(id) {
 server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-    
+
     # Import user admixture data ----
     admixture_data <- reactive({
       req(input$admixture_file)
       import_user_data(input$admixture_file)
-    })
-
-    # Import sample admixture data ----
-    admixture_data <- eventReactive(input$load_sample_data_admixture_bttn, {
-        import_sample_data("./app/static/data/admixture_example.csv")
-    })
-
-    # Change fileInput text uaing custom JS function ----
-    observeEvent(input$load_sample_data_admixture_bttn, {
-      onevent("load_sample_data_admixture_bttn", runjs("App.renderSampleData('admixture')"))
     })
 
     # Import user coordinates data ----
@@ -78,15 +71,19 @@ server <- function(id) {
       import_user_data(input$coords_file)
     })
 
-    # Import sample coordinates data ----
-    coords_data <- eventReactive(input$load_sample_data_coords_bttn, {
-        import_sample_data("./app/static/data/coordinates_example.csv")
-    })
+    # # Import sample admixture data ----
+    # admixture_sample <- import_sample_data("./app/static/data/admixture_example.csv")
+    # observeEvent(input$load_sample_data_admixture_bttn, {
+    #   runjs("App.renderSampleData('admixture')")
+    #   # print(admixture_sample)
+    # })
 
-    # Change fileInput text uaing custom JS function ----
-    observeEvent(input$load_sample_data_coords_bttn, {
-      onevent("load_sample_data_coords_bttn", runjs("App.renderSampleData('coordinates')"))
-    })
+    # # Import sample coordinates data ----
+    # coords_sample <- import_sample_data("./app/static/data/coordinates_example.csv")
+    # observeEvent(input$load_sample_data_coords_bttn, {
+    #   runjs("App.renderSampleData('coordinates')")
+    #   # print(coords_sample)
+    # })
 
     # Admixture info button event
     admixture_info_bttn <- reactive(input$admixture_info_bttn)
@@ -95,7 +92,12 @@ server <- function(id) {
     coords_info_bttn <- reactive(input$coords_info_bttn)
 
     # Return data as a named list ----
-    return(list(admixture_data = admixture_data, coords_data = coords_data, admixture_info_bttn = admixture_info_bttn, coords_info_bttn = coords_info_bttn))    
+    return(list(
+      admixture_data = admixture_data,
+      coords_data = coords_data,
+      admixture_info_bttn = admixture_info_bttn,
+      coords_info_bttn = coords_info_bttn
+    ))    
     
   })
 }
