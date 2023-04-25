@@ -2,6 +2,7 @@
 
 :root {
     --flatly-success: #18bc9c;
+    --flatly-warning: #f39c12;
 }
 
 .hidden {
@@ -37,7 +38,7 @@
 }
 #app-plot_bttn_module-showmap_bttn:active {
     background-color: #14a085;
-    border-color: rgba(0,0,0,0.03);
+    border-color: #fff;
 }
 
 #app-map_module-download_bttn {
@@ -76,6 +77,12 @@
     align-items: center;
 }
 
+// .sidebar-nonparam-container {
+//     height: 28px;
+//     overflow-y: scroll;
+//     overflow-x: hidden;
+// }
+
 .parameter-options-container {
     overflow-y: scroll;
     padding-left: 5px;
@@ -95,6 +102,14 @@
 
 #app-map_plot_module-filetype_radio_bttn-label {
     padding-top: 10px;
+}
+
+.error-message {
+    white-space: normal;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 // .timer-loader:not(:required) {
