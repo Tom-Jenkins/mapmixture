@@ -95,6 +95,11 @@
     margin-bottom: 4px;
 }
 
+.bootstrap-switch.bootstrap-switch-focused {
+    border-color: #ccc;
+    box-shadow: none;
+}
+
 #example-file-formats-loading-page {
     width: 500px;
     opacity: 0.3;
