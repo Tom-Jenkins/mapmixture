@@ -97,22 +97,32 @@ server <- function(id) {
           runjs("App.renderFeedbackWarning('admixture', 'Empty cell or NA in column 2. Ensure all cells have an individual label.')")
         # NA in columns 3:n
         } else {
-          runjs("App.renderFeedbackWarning('admixture', 'Empty cell or NA in cluster column(s). Ensure all cells have a number and put zero for no admixture.')")
-          # runjs(
-          #   paste0(
-          #     "App.renderFeedbackWarning('admixture', 'Empty cell or NA in cluster column(s):", na_admix, ". Ensure all cells have a number and put zero for no admixture.')"
-          #   )
-          # )
+          # runjs("App.renderFeedbackWarning('admixture', 'Empty cell or NA in cluster column(s). Ensure all cells have a number and put zero for no admixture.')")
+          runjs(
+            paste0(
+              "App.renderFeedbackWarning('admixture', 'Empty cell or NA in column ", toString(na_admix), ". Ensure all cells in cluster column have an integer or decimal from 0–1.')"
+            )
+          )
         }
 
       # 2. Check cluster columns 3:n are all of type numeric (double) ----
       } else if (FALSE %in% colN_type) {
-        runjs("App.renderFeedbackWarning('admixture', 'Incorrect data type in cluster column(s). Ensure all cells have an integer or decimal from 0–1.')")
+        # runjs("App.renderFeedbackWarning('admixture', 'Incorrect data type in cluster column(s). Ensure all cells have an integer or decimal from 0–1.')")
+        runjs(
+          paste0(
+            "App.renderFeedbackWarning('admixture', 'Incorrect data type in column ", toString(which(!colN_type)+2), ". Ensure all cells in cluster column have an integer or decimal from 0–1.')"
+          )
+        )
 
       # 3. Check all cluster rows add up to exactly 1 ----
       } else if (all(rowSums(cluster_cols) == 1) == FALSE) {
-        runjs("App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions.')")
-
+        # runjs("App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions.')")
+        runjs(
+          paste0(
+            "App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions in row ", toString(which(rowSums(cluster_cols) != 1)), ".')"
+          )
+        )
+        
       # If data valid then print success message to UI, convert colnames to lower case and return data
       } else {
         runjs("App.renderFeedbackSuccess('admixture')")
