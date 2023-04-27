@@ -71,7 +71,6 @@ ui <- function(id) {
             id = "options-pills=container",
             tabPanel(
               class = "parameter-options-container",
-              # style = "height: 480px; overflow-y: scroll; padding-left: 5px; padding-right: 20px; padding-top: 10px; margin-top: 10px;",
               title = "Map Options",
               map_params_module$ui(ns("map_params_module")),
             ),

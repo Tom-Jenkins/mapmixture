@@ -8,7 +8,7 @@ export function renderFeedbackSuccess (file) {
     const admixtureInput = document.querySelector("#app-file_upload-admixture_file-label + div.input-group > input");
     const coordsInput = document.querySelector("#app-file_upload-coords_file-label + div.input-group > input");
     const admixtureIcon = document.getElementById("admixture-success");
-    const coordsIcon = document.getElementById("coords-success")
+    const coordsIcon = document.getElementById("coords-success");
 
     // Do this for admixture file success
     if (file === "admixture") {
@@ -18,12 +18,12 @@ export function renderFeedbackSuccess (file) {
         admixtureIcon.classList.remove("hidden");
     };
 
-    // Do this for admixture file success
+    // Do this for coords file success
     if (file === "coords") {
         coordsInput.style.borderColor = "var(--flatly-success)";
         coordsInput.style.borderTopRightRadius = "5px";
         coordsInput.style.borderBottomRightRadius = "5px";
-        coordsIcon.classList.remove("hidden")
+        coordsIcon.classList.remove("hidden");
     };
 };
 
@@ -39,10 +39,6 @@ export function renderFeedbackWarning (file, text) {
     const admixtureContainer = document.querySelector("#app-file_upload-admixture_file-label + div.input-group");
     const coordsContainer = document.querySelector("#app-file_upload-coords_file-label + div.input-group");
 
-    // Reset both success and warning icons to hidden class
-    admixtureIcon.classList.add("hidden");
-    coordsIcon.classList.add("hidden")
-
     // Do this for admixture file warning
     if (file === "admixture") {
         admixtureInput.style.borderColor = "var(--flatly-warning)";
@@ -54,7 +50,7 @@ export function renderFeedbackWarning (file, text) {
         );
     };
 
-    // Do this for admixture file warning
+    // Do this for coords file warning
     if (file === "coords") {
         coordsInput.style.borderColor = "var(--flatly-warning)";
         coordsInput.style.borderTopRightRadius = "5px";
@@ -74,14 +70,14 @@ export function clearPlotOutput () {
 
 
 // Function to render file name when load sample data button is clicked (TESTING ONLY)
-export function renderSampleData (dataType) {
-    if (dataType === "admixture") {
-        document.querySelector("div.sidebar-nonparam-container > div:nth-child(3) > div:nth-child(1) > div > div.input-group > input").value = "admix_sample.csv";
-    }
-    if (dataType === "coords") {
-        document.querySelector("div.sidebar-nonparam-container > div:nth-child(5) > div:nth-child(1) > div > div.input-group > input").value = "coords_sample.csv";
-    }
-};
+// export function renderSampleData (dataType) {
+//     if (dataType === "admixture") {
+//         document.querySelector("div.sidebar-nonparam-container > div:nth-child(3) > div:nth-child(1) > div > div.input-group > input").value = "admix_sample.csv";
+//     }
+//     if (dataType === "coords") {
+//         document.querySelector("div.sidebar-nonparam-container > div:nth-child(5) > div:nth-child(1) > div > div.input-group > input").value = "coords_sample.csv";
+//     }
+// };
 
 
 

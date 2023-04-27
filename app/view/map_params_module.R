@@ -13,6 +13,7 @@ box::use(
   sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
+  shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
 )
 
 
@@ -90,7 +91,6 @@ ui <- function(id) {
     div(style = "display: inline-block;", numericInput(ns("plot_title_size"), label = strong("Plot Title Size"), width = "100px", value = 15)),
 
     # Theme Options ----
-    # div(strong("Theme Options")),
     br(),
     div(style = "display: inline-block;", colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
     div(style = "display: inline-block;", colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),

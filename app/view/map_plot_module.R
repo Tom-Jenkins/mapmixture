@@ -2,7 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow, downloadButton, downloadHandler, strong, br, h4, textInput, span, updateTextInput],
+  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow, downloadButton, downloadHandler, strong, br, h4, textInput, span, updateTextInput, bindEvent],
   sf[st_as_sfc, st_transform, st_bbox],
   magrittr[`%>%`],
   ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf, theme_set, theme_update, margin, ggsave, unit],
@@ -10,7 +10,7 @@ box::use(
   shinyWidgets[actionBttn, dropdown, radioGroupButtons],
   waiter[useWaiter, autoWaiter, waiter_set_theme, spin_loaders],
   rlang[eval_tidy, parse_expr],
-  shinyjs[useShinyjs, onevent, runjs, reset],
+  shinyjs[useShinyjs, onevent, runjs],
   stringr[str_replace_all],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
   ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale]
@@ -19,7 +19,6 @@ box::use(
 # Import custom R functions into module
 box::use(
   app/logic/data_transformation[transform_data, prepare_pie_data, merge_coords_data, transform_bbox,],
-  app/logic/user_feedback[download_parameter_shinyfeedback],
 )
 
 # Set waiter spinner theme (https://shiny.john-coene.com/waiter/)
@@ -69,26 +68,22 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
     piecoords <- reactive({
       req(coords_df())
       merge_coords_data(coords_df(), piedata(), user_CRS())
-    })
+    }) 
 
-    # Transform bounding box to CRS chosen by user ----
+    # Calculate default boundary points and transform to CRS chosen by user ----
     boundary <- reactive({
+      # TODO: calculate default bounding box
       transform_bbox(user_bbox(), user_CRS())
     })
 
     # Delays a reactive expression by X milliseconds ----
-    boundary <- boundary %>% debounce(millis = 1000)
+    # boundary <- boundary %>% debounce(millis = 1000)
 
     # Transform world to CRS chosen by user ----
     world <- reactive({
       st_transform(world_data, crs = user_CRS())
-    })
+    }) 
     
-    # Clear any plots from plotOutput container ----
-    observeEvent(c(bttn(), piecoords(), boundary(), cluster_cols(), pie_size(), user_title(), user_expand(), user_land_col()), priority = 2, {
-      onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
-    })
-
 
     # Store plot in reactive ----
     output_map <- reactive({
@@ -130,12 +125,15 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         )
       
       return(plt)        
-    })
+    }) %>% bindEvent(bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)     
 
 
     # Render map on click of button ----
-    observeEvent(bttn(), priority = 1, {
+    observeEvent(bttn(), {
       req(output_map())
+
+      # Clear any plots from plotOutput container ----
+      onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
 
       # Set ggplot theme ----
       theme_set(map_theme())
@@ -175,8 +173,10 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
             )
           )
         )
-      })  
+      })
+
     })
+     
 
 
     # Toggle parameter feedback and disabled state on textInput and button elements ----

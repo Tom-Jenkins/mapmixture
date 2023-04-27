@@ -3,17 +3,11 @@
 # Import R packages / functions into module
 box::use(  
   shiny[moduleServer, NS, tagList, tags, fileInput, span, splitLayout, actionButton, strong, icon, reactive, req, observeEvent, eventReactive, reactiveVal, reactiveValues, observe, HTML, div, isolate],
-  shinyjs[useShinyjs, onclick, onevent, runjs],
-  shinyFeedback[useShinyFeedback, showFeedbackWarning, showFeedbackSuccess, hideFeedback, feedbackDanger],
+  shinyjs[useShinyjs, runjs],
   vroom[vroom],
   tools[file_ext],
   stringr[str_to_lower],
   purrr[map_lgl],
-)
-
-# Import custom R functions into module
-box::use(
-
 )
 
 
@@ -23,7 +17,6 @@ ui <- function(id) {
   
   tagList(
     useShinyjs(),
-    useShinyFeedback(),
 
     # Do not display the progress bar on file input ----
     tags$style(".shiny-file-input-progress {display: none}"),
@@ -37,7 +30,7 @@ ui <- function(id) {
       style = "padding-top: 10px;", 
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
-      fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv")),
+      fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv", ".txt")),
       div(
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "admixture-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "admixture-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
@@ -53,10 +46,10 @@ ui <- function(id) {
     splitLayout(
       style = "padding-top: 10px;", 
       cellWidths = c("70%", "30%"),
-      cellArgs = list(style = "overflow: hidden;", class = "disabled"),
-      fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv")),
+      cellArgs = list(style = "overflow: hidden;"),
+      fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv", ".txt")),
       div(
-        icon("circle-check", class="fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
+        icon("circle-check", class = "fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "coords-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
       ),
       # tags$button(id = ns("load_sample_data_coords_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
@@ -105,38 +98,50 @@ server <- function(id) {
         # NA in columns 3:n
         } else {
           runjs("App.renderFeedbackWarning('admixture', 'Empty cell or NA in cluster column(s). Ensure all cells have a number and put zero for no admixture.')")
+          # runjs(
+          #   paste0(
+          #     "App.renderFeedbackWarning('admixture', 'Empty cell or NA in cluster column(s):", na_admix, ". Ensure all cells have a number and put zero for no admixture.')"
+          #   )
+          # )
         }
 
       # 2. Check cluster columns 3:n are all of type numeric (double) ----
       } else if (FALSE %in% colN_type) {
-          runjs("App.renderFeedbackWarning('admixture', 'Incorrect data type in cluster column(s). Ensure all cells have an integer or decimal from 0–1.')")
+        runjs("App.renderFeedbackWarning('admixture', 'Incorrect data type in cluster column(s). Ensure all cells have an integer or decimal from 0–1.')")
 
       # 3. Check all cluster rows add up to exactly 1 ----
       } else if (all(rowSums(cluster_cols) == 1) == FALSE) {
-          runjs("App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions.')")
+        runjs("App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions.')")
 
-      # If data valid then print success message to UI, remove disabled class from coordinate upload, convert colnames to lower case and return data
+      # If data valid then print success message to UI, convert colnames to lower case and return data
       } else {
-          runjs("App.renderFeedbackSuccess('admixture')")
-          colnames(dataset_admix) <- str_to_lower(colnames(dataset_admix))
-          return(dataset_admix)
+        runjs("App.renderFeedbackSuccess('admixture')")
+        colnames(dataset_admix) <- str_to_lower(colnames(dataset_admix))
+        return(dataset_admix)
       }
     })
     
+    # Import test ----
+    coords_data <- reactive({
+      req(input$coords_file)
+      vroom(input$coords_file$datapath)
+    })
 
     # Import user coordinates data ----
     coords_data <- reactive({
       req(input$coords_file)
 
-      # Activate hidden class for all admixture icons
-      runjs("document.getElementById('coords-success').classList.add('hidden')")
-      runjs("document.getElementById('coords-warning').classList.add('hidden')")
+      # # Activate hidden class for all coords icons
+      # runjs("document.getElementById('coords-success').classList.add('hidden')")
+      # runjs("document.getElementById('coords-warning').classList.add('hidden')")
 
-      # Remove all previous error messages from UI
-      runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
+      # # Remove all previous error messages from UI
+      # runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
+
+      # If statement for presece of admixture_data() ???? is.null()? TODO
       
       # Import user data
-      ext <- file_ext(input$admixtcoords_fileure_file$datapath)
+      ext <- file_ext(input$coords_file$datapath)
       dataset_coords <- vroom(input$coords_file$datapath)
 
       # Convert first column to character type
@@ -146,6 +151,8 @@ server <- function(id) {
       na_coords <- which(colSums(is.na(dataset_coords)) > 0)
       coords_siteIDs <- sort(dataset_coords[[1]]) # coordinates file unique site IDs
       admix_siteIDs <- sort(unique(admixture_data()[[1]])) # admixture file unique site IDs
+
+      # 0. Check data set if only three columns TODO
 
       # 1. Check for NAs by column ----
       if (length(na_coords != 0)) {
@@ -163,8 +170,8 @@ server <- function(id) {
       # 2. Check for Lat and Lon types ----
       } else if (is.double(dataset_coords[[2]]) == FALSE) {
         runjs("App.renderFeedbackWarning('coords', 'Incorrect data type in column 2. Ensure all cells have a latitude decimal.')")
-        } else if (is.double(dataset_coords[[3]]) == FALSE) {
-          runjs("App.renderFeedbackWarning('coords', 'Incorrect data type in column 3. Ensure all cells have a longitude decimal.')")
+      } else if (is.double(dataset_coords[[3]]) == FALSE) {
+        runjs("App.renderFeedbackWarning('coords', 'Incorrect data type in column 3. Ensure all cells have a longitude decimal.')")
 
       # 3. Check coordinate site IDs exactly match admixture site IDs
       } else if (all(coords_siteIDs == admix_siteIDs) == FALSE) {
@@ -172,21 +179,21 @@ server <- function(id) {
 
       # If data valid then print success message to UI, convert colnames to lower case and return data
       } else {
-          runjs("App.renderFeedbackSuccess('coords')")
-          colnames(dataset_coords) <- str_to_lower(colnames(dataset_coords))
-          return(dataset_coords)
+        runjs("App.renderFeedbackSuccess('coords')")
+        colnames(dataset_coords) <- str_to_lower(colnames(dataset_coords))
+        return(dataset_coords)
       }
     })
 
     # # Import sample admixture data ----
-    # admixture_sample <- import_sample_data("./app/static/data/admixture_example.csv")
+    # admixture_sample <- vroom("./app/static/data/admixture_example.csv")
     # observeEvent(input$load_sample_data_admixture_bttn, {
     #   runjs("App.renderSampleData('admixture')")
     #   # print(admixture_sample)
     # })
 
     # # Import sample coordinates data ----
-    # coords_sample <- import_sample_data("./app/static/data/coordinates_example.csv")
+    # coords_sample <- vroom("./app/static/data/coordinates_example.csv")
     # observeEvent(input$load_sample_data_coords_bttn, {
     #   runjs("App.renderSampleData('coords')")
     #   # print(coords_sample)
