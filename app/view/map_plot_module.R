@@ -86,15 +86,16 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
 
     # Clear any plots from plotOutput container ----
-    # This must be outside the renderPlot observer to fix coords_file feedback bug
-    observeEvent(c(bttn()), priority = 2, {
-      onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
+    # Must be outside the renderPlot observer and have piecoords() inside observer to fix coords_file feedback bug
+    observeEvent(c(bttn(), piecoords()), priority = 2, {
+      # onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
+      runjs("App.clearPlotOutput()")
     })
     
 
     # Store plot in reactive ----
     output_map <- reactive({
-      req(piecoords())
+      # req(piecoords())
 
       # Default plot
       plt <- ggplot()+
