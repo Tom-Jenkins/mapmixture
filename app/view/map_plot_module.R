@@ -83,6 +83,13 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
     world <- reactive({
       st_transform(world_data, crs = user_CRS())
     }) 
+
+
+    # Clear any plots from plotOutput container ----
+    # This must be outside the renderPlot observer to fix coords_file feedback bug
+    observeEvent(c(bttn(), piecoords()), priority = 2, {
+      onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
+    })
     
 
     # Store plot in reactive ----
@@ -129,11 +136,8 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
 
     # Render map on click of button ----
-    observeEvent(bttn(), {
+    observeEvent(bttn(), priority = 1, {
       req(output_map())
-
-      # Clear any plots from plotOutput container ----
-      onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
 
       # Set ggplot theme ----
       theme_set(map_theme())

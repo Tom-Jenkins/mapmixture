@@ -121,22 +121,17 @@ server <- function(id) {
       }
     })
     
-    # Import test ----
-    coords_data <- reactive({
-      req(input$coords_file)
-      vroom(input$coords_file$datapath)
-    })
 
     # Import user coordinates data ----
     coords_data <- reactive({
       req(input$coords_file)
 
-      # # Activate hidden class for all coords icons
-      # runjs("document.getElementById('coords-success').classList.add('hidden')")
-      # runjs("document.getElementById('coords-warning').classList.add('hidden')")
+      # Activate hidden class for all coords icons
+      runjs("document.getElementById('coords-success').classList.add('hidden')")
+      runjs("document.getElementById('coords-warning').classList.add('hidden')")
 
-      # # Remove all previous error messages from UI
-      # runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
+      # Remove all previous error messages from UI
+      runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
 
       # If statement for presece of admixture_data() ???? is.null()? TODO
       
