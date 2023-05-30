@@ -1,4 +1,4 @@
-# app/logic/html_content.R
+# app/logic/sample_table_html_content.R
 
 # Import R packages / functions into module
 box::use(
@@ -6,7 +6,7 @@ box::use(
 )
 
 #' @export
-html_admixture_sample_table <- function() {
+admixture_sample_table <- function() {
 
   HTML(
       "
@@ -70,7 +70,7 @@ html_admixture_sample_table <- function() {
 }
 
 #' @export
-html_coords_sample_table <- function() {
+coords_sample_table <- function() {
   HTML(
     "
     <table class='table table-striped'>

@@ -7,7 +7,7 @@ box::use(
 
 # Import custom R functions into module
 box::use(
-  app/logic/html_content[html_admixture_sample_table, html_coords_sample_table],
+  app/logic/sample_table_html_content[admixture_sample_table, coords_sample_table],
 )
 
 
@@ -23,10 +23,10 @@ server <- function(id, info_bttn_admixture, info_bttn_coords) {
     ns <- session$ns
 
     # Admixture table example
-    table_admixture <- html_admixture_sample_table()
+    table_admixture <- admixture_sample_table()
 
     # Coordinates table example
-    coords_admixture <- html_coords_sample_table()
+    table_coords <- coords_sample_table()
 
     # Function to build modal
     build_modal <- function(custom_title, html_content) {
@@ -52,7 +52,7 @@ server <- function(id, info_bttn_admixture, info_bttn_coords) {
 
     # Show modal on click of coordinates info button
     observeEvent(info_bttn_coords(), {
-        showModal(build_modal("Coordinates File Format", coords_admixture))
+        showModal(build_modal("Coordinates File Format", table_coords))
     })
     
   })

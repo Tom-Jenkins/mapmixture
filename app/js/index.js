@@ -28,7 +28,7 @@ export function renderFeedbackSuccess (file) {
 };
 
 
-// Function to activate feedback success when file input is valid
+// Function to activate feedback error when file input is invalid
 export function renderFeedbackWarning (file, text) {
 
     // Select elements from DOM

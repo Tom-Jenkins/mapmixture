@@ -98,13 +98,15 @@ ui <- function(id) {
     div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12)),
 
     # Advanced Theme Customisation ----
-    textAreaInput(
-      inputId = ns("advanced_customisation_box"),
-      label = strong("Advanced Theme Customisation"),
-      value = "",
-      height = "100px",
-      placeholder = "axis.text.x = element_blank()\naxis.title.x = element_blank()\naxis.ticks.x = element_blank()"
-    )
+    div(style = "padding-bottom: 10px;",
+      textAreaInput(
+        inputId = ns("advanced_customisation_box"),
+        label = strong("Advanced Theme Customisation"),
+        value = "",
+        height = "100px",
+        placeholder = "axis.text.x = element_blank()\naxis.title.x = element_blank()\naxis.ticks.x = element_blank()"
+      )
+    )    
   )
 }
 

@@ -14,6 +14,7 @@ box::use(
   app/view/plot_bttn_module,
   app/view/map_params_module,
   app/view/map_plot_module,
+  app/logic/file_format_html_content[file_format_content],
 )
 
 
@@ -97,7 +98,7 @@ ui <- function(id) {
           tabPanel(
             title = "File Format",
             icon = icon("file"),
-            #TBC
+            file_format_content()
           ),
           tabPanel(
             title = "About",
