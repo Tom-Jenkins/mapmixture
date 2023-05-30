@@ -15,6 +15,7 @@ box::use(
   app/view/map_params_module,
   app/view/map_plot_module,
   app/logic/file_format_html_content[file_format_content],
+  app/logic/about_html_content[about_content],
 )
 
 
@@ -91,19 +92,22 @@ ui <- function(id) {
             icon = icon("earth-europe"),
             map_plot_module$ui(ns("map_plot_module")),
           ),
-          # tabPanel(
-          #   title = "Bar Chart",
-          #   icon = icon("chart-simple"),
-          # ),
           tabPanel(
             title = "File Format",
             icon = icon("file"),
-            file_format_content()
+            file_format_content(),
+            br(),
+          ),
+          tabPanel(
+            title = "Gallery",
+            icon = icon("image"),
+            # file_format_content(),
+            br(),
           ),
           tabPanel(
             title = "About",
             icon = icon("circle-question"),
-            #TBC
+            about_content(),
           ),
         )
       )
