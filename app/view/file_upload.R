@@ -30,7 +30,7 @@ ui <- function(id) {
       style = "padding-top: 10px;", 
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
-      fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv", ".txt")),
+      fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv", ".txt"), placeholder = ".csv | .tsv | .txt"),
       div(
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "admixture-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "admixture-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
@@ -47,7 +47,7 @@ ui <- function(id) {
       style = "padding-top: 10px;", 
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
-      fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv", ".txt")),
+      fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv", ".txt"), placeholder = ".csv | .tsv | .txt"),
       div(
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "coords-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")

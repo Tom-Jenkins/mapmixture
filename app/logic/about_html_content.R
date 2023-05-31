@@ -10,12 +10,12 @@ about_content <- function() {
 
   HTML(
     '
-    <h4>About this application</h4>
+    <h4 class="text-primary">About this application</h4>
     <p>
-      This app allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
+      This app allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site, and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
     </p>
 
-    <h4>Quick start</h4>
+    <h4 class="text-primary">Quick start</h4>
     <p>
       <ul>
         <li>Upload admixture file (see File Format for more info)</li>
@@ -25,15 +25,13 @@ about_content <- function() {
       </ul> 
     </p>
 
-    <h4>Author</h4>
+    <h4 class="text-primary">Developer</h4>
     <p>
       Tom Jenkins</br>
       tom.l.jenkins@outlook.com</br>
       https://github.com/Tom-Jenkins</br>
       https://twitter.com/tom__jenkins
     </p>
-
-
     '
     )
 }

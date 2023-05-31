@@ -88,7 +88,6 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
     # Clear any plots from plotOutput container ----
     # Must be outside the renderPlot observer and have piecoords() inside observer to fix coords_file feedback bug
     observeEvent(c(bttn(), piecoords()), priority = 2, {
-      # onevent("app-plot_bttn_module-showmap_bttn", runjs("App.clearPlotOutput()"))
       runjs("App.clearPlotOutput()")
     })
     
@@ -103,7 +102,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         coord_sf(xlim = c(boundary()[["xmin"]], boundary()[["xmax"]]),
                 ylim = c(boundary()[["ymin"]], boundary()[["ymax"]]),
                 expand = user_expand())+
-        geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data=piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())])+
+        geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data=piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())], size = 0.3)+
         ggtitle(user_title())+
         xlab("Longitude")+
         ylab("Latitude")+
