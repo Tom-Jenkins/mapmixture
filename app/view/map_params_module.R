@@ -10,7 +10,7 @@ box::use(
   magrittr[`%>%`],
   purrr[map, map2, map_chr],
   stringr[str_to_lower, str_replace, str_replace_all],
-  sf[st_bbox, st_crs, st_as_sfc, st_transform, st_read],
+  sf[st_bbox, st_crs, st_as_sf, st_as_sfc, st_transform, st_read, st_set_crs],
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
@@ -45,10 +45,10 @@ ui <- function(id) {
 
     # Boundary limits input ----
     div(strong("Boundary Limits")),
-    div(style = "display: inline-block;", textInput(ns("xmin_input"), label = "xmin", width = "80px", placeholder = "e.g. -15", value = -15)),
-    div(style = "display: inline-block;", textInput(ns("xmax_input"), label = "xmax", width = "80px", placeholder = "e.g. 15", value = 15)),
-    div(style = "display: inline-block;", textInput(ns("ymin_input"), label = "ymin", width = "80px", placeholder = "e.g. 40", value = 40)),
-    div(style = "display: inline-block;", textInput(ns("ymax_input"), label = "ymax", width = "80px", placeholder = "e.g. 64", value = 64)),
+    div(style = "display: inline-block;", textInput(ns("xmin_input"), label = "xmin", width = "80px", placeholder = "-15")),
+    div(style = "display: inline-block;", textInput(ns("xmax_input"), label = "xmax", width = "80px", placeholder = "15")),
+    div(style = "display: inline-block;", textInput(ns("ymin_input"), label = "ymin", width = "80px", placeholder = "40")),
+    div(style = "display: inline-block;", textInput(ns("ymax_input"), label = "ymax", width = "80px", placeholder = "64")),
 
     # Expand axes on map switch ----
     switchInput(
@@ -112,7 +112,7 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, admixture_df) {
+server <- function(id, admixture_df, coords_df) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -124,13 +124,25 @@ server <- function(id, admixture_df) {
         as.integer
     })
 
-    # Import map boundary chosen by user (default should be the boundary of the points)
-    params_bbox <- eventReactive(c(input$xmin_input, input$xmax_input, input$ymin_input, input$ymax_input), {
-        st_bbox(c(xmin = as.double(input$xmin_input),
-                  xmax = as.double(input$xmax_input),
-                  ymin = as.double(input$ymin_input),
-                  ymax = as.double(input$ymax_input)),
-                  crs = st_crs(4326))
+    # Import map boundary chosen by user (default is the boundary of the points in the coordinates file)
+    params_bbox <- reactive({
+      req(coords_df())
+      if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "") {
+        return(
+          st_bbox(c(xmin = as.double(input$xmin_input),
+                    xmax = as.double(input$xmax_input),
+                    ymin = as.double(input$ymin_input),
+                    ymax = as.double(input$ymax_input)),
+                    crs = st_crs(4326))
+        )
+      } else {
+        return(
+          coords_df() %>% 
+            st_as_sf(coords = c("lon","lat")) %>%
+            st_set_crs(4326) %>%
+            st_bbox
+        )  
+      }
     })
 
     # Import expand axes chosen by user

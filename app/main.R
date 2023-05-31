@@ -177,7 +177,7 @@ server <- function(id) {
     info_modals_module$server("info_modals_module", admixture_info_bttn, coords_info_bttn)
 
     # Map parameters module ----
-    map_params_mod_outputs <- map_params_module$server("map_params_module", admixture_df = admixture_data)
+    map_params_mod_outputs <- map_params_module$server("map_params_module", admixture_df = admixture_data, coords_df = coords_data)
 
     # Import map parameters ----
     selected_CRS <- map_params_mod_outputs[["params_CRS"]]
