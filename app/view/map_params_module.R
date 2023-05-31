@@ -64,14 +64,16 @@ ui <- function(id) {
     # Choose cluster colours input ----
     div(strong("Cluster Colours")),
     uiOutput(ns("colours_input")),
+    br(),
 
     # North arrow input ----
     div(style = "display: inline-block;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
-    switchInput(ns("arrow_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = FALSE),
+    switchInput(ns("arrow_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = TRUE),
+    br(),
 
     # Scale bar input ----
-    div(style = "display: inline-block;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
-    switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = FALSE),
+    div(style = "display: inline-block; margin-top: -30px;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
+    switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = TRUE),
 
     # Pie chart size ----
     numericInputIcon(
@@ -173,6 +175,24 @@ server <- function(id, admixture_df, coords_df) {
       return(colours)
     })
 
+    # Import arrow position and toggle by user
+    arrow_position <- reactive({
+      if(input$arrow_position == "bottom-left") return("bl")
+      if(input$arrow_position == "bottom-right") return("br")
+      if(input$arrow_position == "top-left") return("tl")
+      if(input$arrow_position == "top-right") return("tr")
+    })
+    arrow_toggle <- reactive(input$arrow_toggle)
+
+    # Import scalebar position and toggle by user
+    scalebar_position <- reactive({
+      if(input$scalebar_position == "bottom-left") return("bl")
+      if(input$scalebar_position == "bottom-right") return("br")
+      if(input$scalebar_position == "top-left") return("tl")
+      if(input$scalebar_position == "top-right") return("tr")
+    })
+    scalebar_toggle <- reactive(input$scalebar_toggle)
+
     # Import pie chart size chosen by user
     pie_size <- eventReactive(input$piesize_input, {
       as.double(input$piesize_input)
@@ -218,6 +238,10 @@ server <- function(id, admixture_df, coords_df) {
         param_expand = param_expand,
         params_clusters = cluster_input_names,
         param_cols = user_cols,
+        param_arrow_position = arrow_position,
+        param_arrow_toggle = arrow_toggle,
+        param_scalebar_position = scalebar_position,
+        param_scalebar_toggle = scalebar_toggle,
         param_pie_size = pie_size,
         param_title = param_title,
         param_land_col = user_land_col,

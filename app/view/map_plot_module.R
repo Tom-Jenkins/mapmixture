@@ -53,7 +53,7 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, pie_size, user_title, user_land_col, map_theme, user_advanced) {
+server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, scalebar_position, scalebar_toggle, arrow_toggle, pie_size, user_title, user_land_col, map_theme, user_advanced) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -72,12 +72,8 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
     # Calculate default boundary points and transform to CRS chosen by user ----
     boundary <- reactive({
-      # TODO: calculate default bounding box
       transform_bbox(user_bbox(), user_CRS())
     })
-
-    # Delays a reactive expression by X milliseconds ----
-    # boundary <- boundary %>% debounce(millis = 1000)
 
     # Transform world to CRS chosen by user ----
     world <- reactive({
@@ -109,27 +105,31 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         scale_fill_manual(values = cluster_cols(), labels = str_replace_all(colnames(piecoords())[4:ncol(piecoords())], "cluster", "Cluster"))
 
       # Add north arrow
-      plt <- plt+
-        annotation_north_arrow(
-          data = world(),
-          which_north = "true",
-          location = "bl",
-          height = unit(0.4, "cm"),
-          width = unit(0.4, "cm"),
-          pad_y = unit(0.5, "cm"),
-          style = north_arrow_orienteering(text_size = 4)
-        )
+      if (arrow_toggle() == TRUE) {
+        plt <- plt+
+          annotation_north_arrow(
+            data = world(),
+            which_north = "true",
+            location = arrow_position(),
+            height = unit(0.4, "cm"),
+            width = unit(0.4, "cm"),
+            pad_y = unit(0.5, "cm"),
+            style = north_arrow_orienteering(text_size = 4)
+          )
+      }      
       
       # Add scale bar
-      plt <- plt+
-        annotation_scale(
-          data = world(),
-          location = "bl",
-          width_hint = 0.10,
-          bar_cols = c("black","white"),
-          height = unit(0.15, "cm"),
-          text_cex = 0.5
-        )
+      if (scalebar_toggle() == TRUE) {
+        plt <- plt+
+          annotation_scale(
+            data = world(),
+            location = scalebar_position(),
+            width_hint = 0.10,
+            bar_cols = c("black","white"),
+            height = unit(0.15, "cm"),
+            text_cex = 0.5
+          )
+      }
       
       return(plt)        
     }) %>% bindEvent(bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)     

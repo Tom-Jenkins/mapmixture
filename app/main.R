@@ -185,6 +185,10 @@ server <- function(id) {
     selected_expand <- map_params_mod_outputs[["param_expand"]]
     selected_cols <- map_params_mod_outputs[["param_cols"]]
     selected_clusters <- map_params_mod_outputs[["params_clusters"]]
+    selected_arrow_position <- map_params_mod_outputs[["param_arrow_position"]]
+    selected_arrow_toggle <- map_params_mod_outputs[["param_arrow_toggle"]]
+    selected_scalebar_position <- map_params_mod_outputs[["param_scalebar_position"]]
+    selected_scalebar_toggle <- map_params_mod_outputs[["param_scalebar_toggle"]]
     selected_pie_size <- map_params_mod_outputs[["param_pie_size"]]
     selected_title <- map_params_mod_outputs[["param_title"]]
     selected_land_col <- map_params_mod_outputs[["param_land_col"]]
@@ -204,6 +208,10 @@ server <- function(id) {
       user_title = selected_title,
       cluster_cols = selected_cols,
       cluster_names = selected_clusters,
+      arrow_position = selected_arrow_position,
+      arrow_toggle = selected_arrow_toggle,
+      scalebar_position = selected_scalebar_position,
+      scalebar_toggle = selected_scalebar_toggle,
       user_land_col = selected_land_col,
       pie_size = selected_pie_size,
       map_theme = selected_map_theme,
