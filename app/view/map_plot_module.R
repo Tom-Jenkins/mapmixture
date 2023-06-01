@@ -2,7 +2,7 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow, downloadButton, downloadHandler, strong, br, h4, textInput, span, updateTextInput, bindEvent],
+  shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow, downloadButton, downloadHandler, strong, br, h4, textInput, span, updateTextInput, bindEvent, showNotification],
   sf[st_as_sfc, st_transform, st_bbox],
   magrittr[`%>%`],
   ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf, theme_set, theme_update, margin, ggsave, unit],
@@ -143,12 +143,21 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
       theme_set(map_theme())
 
       # Update ggplot theme ----
-      eval_tidy(parse_expr(user_advanced()))
+      tryCatch({
+        eval_tidy(parse_expr(user_advanced()))
+      }, error = function(err) {
+        showNotification(
+          # ui = paste0("Invalid Advanced Theme Customisation. ", err),
+          ui = HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
+          duration = NULL,
+          type = "err")
+      })
 
       # Render plot ----
       output$admixture_map <- renderPlot({
         output_map()
       })
+      
 
       # Render download button and internal components ----
       output$dropdown_download_bttn <- renderUI({

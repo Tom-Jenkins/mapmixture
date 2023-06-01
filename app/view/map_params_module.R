@@ -13,7 +13,7 @@ box::use(
   sf[st_bbox, st_crs, st_as_sf, st_as_sfc, st_transform, st_read, st_set_crs],
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
-  shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
+  shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback, feedbackWarning],
 )
 
 
@@ -67,7 +67,7 @@ ui <- function(id) {
     br(),
 
     # North arrow input ----
-    div(style = "display: inline-block;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
+    div(style = "display: inline-block; margin-top: -20px;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
     switchInput(ns("arrow_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = TRUE),
     br(),
 
@@ -76,16 +76,18 @@ ui <- function(id) {
     switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = TRUE),
 
     # Pie chart size ----
-    numericInputIcon(
-      inputId = ns("piesize_input"),
-      label = strong("Pie Chart Size"),
-      value = 2,
-      min = 0,
-      max = 20,
-      step = 0.5,
-      icon = icon("chart-pie"),
-      help_text = "Please pick a number between 0 and 20",
-      width = "200px"
+    div(style = "margin-top: -25px;",
+      numericInputIcon(
+        inputId = ns("piesize_input"),
+        label = strong("Pie Chart Size"),
+        value = 2,
+        min = 0,
+        max = 20,
+        step = 0.5,
+        icon = icon("chart-pie"),
+        help_text = "Please pick a number between 0 and 20",
+        width = "200px"
+      )
     ),
 
     # Map title ----
@@ -96,8 +98,8 @@ ui <- function(id) {
     br(),
     div(style = "display: inline-block;", colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
     div(style = "display: inline-block;", colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),
-    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", value = 10)),
-    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12)),
+    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", value = 10, step = 0.5)),
+    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12, step = 0.5)),
 
     # Advanced Theme Customisation ----
     div(style = "padding-bottom: 10px;",
@@ -129,6 +131,7 @@ server <- function(id, admixture_df, coords_df) {
     # Import map boundary chosen by user (default is the boundary of the points in the coordinates file)
     params_bbox <- reactive({
       req(coords_df())
+      # User selected bounding box
       if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "") {
         return(
           st_bbox(c(xmin = as.double(input$xmin_input),
@@ -137,6 +140,7 @@ server <- function(id, admixture_df, coords_df) {
                     ymax = as.double(input$ymax_input)),
                     crs = st_crs(4326))
         )
+      # Default bouding box
       } else {
         return(
           coords_df() %>% 
