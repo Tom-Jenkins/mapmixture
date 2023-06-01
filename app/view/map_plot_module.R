@@ -90,7 +90,6 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
     # Store plot in reactive ----
     output_map <- reactive({
-      # req(piecoords())
 
       # Default plot
       plt <- ggplot()+
@@ -146,11 +145,13 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
       tryCatch({
         eval_tidy(parse_expr(user_advanced()))
       }, error = function(err) {
+        # Show error message if user enters any invalid ggplot theme parameters
         showNotification(
           # ui = paste0("Invalid Advanced Theme Customisation. ", err),
           ui = HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
-          duration = NULL,
-          type = "err")
+          duration = 10,
+          type = "err"
+        )
       })
 
       # Render plot ----

@@ -70,7 +70,7 @@ ui <- function(id) {
         div(class = "nav-justified",
           tabsetPanel(
             type = "pills",
-            id = "options-pills=container",
+            id = "options-pills-container",
             tabPanel(
               class = "parameter-options-container",
               title = "Map Options",
@@ -124,7 +124,7 @@ ui <- function(id) {
       const navbarHeightMargin = parseInt(window.getComputedStyle(document.querySelector('.custom-navbar')).getPropertyValue('margin-bottom'));
       const navtabsHeight = document.querySelector('.nav-tabs').offsetHeight;
       const sidebarNonParamContainerHeight = document.querySelector('.sidebar-nonparam-container').offsetHeight;
-      const sidebarPillsHeight = document.getElementById('options-pills=container').offsetHeight;
+      const sidebarPillsHeight = document.getElementById('options-pills-container').offsetHeight;
 
       const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
       const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 25;
@@ -140,7 +140,7 @@ ui <- function(id) {
 
         const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
         const sidebarNonParamContainerHeight = document.querySelector('.sidebar-nonparam-container').offsetHeight;
-        const sidebarPillsHeight = document.getElementById('options-pills=container').offsetHeight;
+        const sidebarPillsHeight = document.getElementById('options-pills-container').offsetHeight;
         const sidebarOptionsContainerHeight = sidebarContainerHeight - sidebarNonParamContainerHeight - sidebarPillsHeight - 25;
 
         document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;

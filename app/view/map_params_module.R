@@ -2,8 +2,8 @@
 
 # Import R packages / functions into module
 box::use(  
-  shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4, tableOutput, renderTable, plotOutput, renderPlot, sidebarLayout, sidebarPanel, mainPanel, selectInput, reactive, observeEvent, eventReactive, observe, br, icon, req, textInput, div, strong, bindEvent, freezeReactiveValue, debounce, textAreaInput, numericInput, uiOutput, renderUI, reactiveValues, wellPanel, tabsetPanel, tabPanel, sliderInput, fileInput, span],
-  shinyWidgets[pickerInput, searchInput, actionBttn, numericInputIcon, switchInput, materialSwitch, dropdown, dropdownButton, tooltipOptions],
+  shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4, tableOutput, renderTable, plotOutput, renderPlot, sidebarLayout, sidebarPanel, mainPanel, selectInput, reactive, observeEvent, eventReactive, observe, br, icon, req, textInput, div, strong, bindEvent, freezeReactiveValue, debounce, textAreaInput, numericInput, uiOutput, renderUI, reactiveValues, wellPanel, tabsetPanel, tabPanel, sliderInput, fileInput, span, isolate],
+  shinyWidgets[pickerInput, searchInput, actionBttn, numericInputIcon, switchInput, materialSwitch, dropdown, dropdownButton, tooltipOptions, autonumericInput],
   colourpicker[colourInput],
   dplyr[group_by, summarise, n_distinct, arrange, select],
   tidyr[contains],
@@ -68,12 +68,14 @@ ui <- function(id) {
 
     # North arrow input ----
     div(style = "display: inline-block; margin-top: -20px;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
-    switchInput(ns("arrow_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = TRUE),
+    # div(style = "display: inline-block;", numericInput(ns("arrow_size"), label = strong("Size"), value = 1, width = "80px")),
+    switchInput(ns("arrow_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE),
     br(),
 
     # Scale bar input ----
     div(style = "display: inline-block; margin-top: -30px;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
-    switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "Yes", offLabel = "No", value = TRUE, inline = TRUE),
+    # div(style = "display: inline-block;", numericInput(ns("scalebar_size"), label = strong("Size"), value = 1, width = "80px")),
+    switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE),
 
     # Pie chart size ----
     div(style = "margin-top: -25px;",
@@ -131,8 +133,10 @@ server <- function(id, admixture_df, coords_df) {
     # Import map boundary chosen by user (default is the boundary of the points in the coordinates file)
     params_bbox <- reactive({
       req(coords_df())
-      # User selected bounding box
-      if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "") {
+      
+      # User selected bounding box (Check inputs are valid)
+      if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "" && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmin_input))) {
+        
         return(
           st_bbox(c(xmin = as.double(input$xmin_input),
                     xmax = as.double(input$xmax_input),
@@ -140,7 +144,8 @@ server <- function(id, admixture_df, coords_df) {
                     ymax = as.double(input$ymax_input)),
                     crs = st_crs(4326))
         )
-      # Default bouding box
+        
+      # Default bounding box
       } else {
         return(
           coords_df() %>% 

@@ -81,11 +81,9 @@
     overflow-y: scroll;
 }
 
-// .sidebar-nonparam-container {
-//     height: 28px;
-//     overflow-y: scroll;
-//     overflow-x: hidden;
-// }
+#options-pills-container {
+    pointer-events: none;
+}
 
 .parameter-options-container {
     // overflow-y: scroll;
