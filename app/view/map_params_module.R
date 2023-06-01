@@ -85,23 +85,23 @@ ui <- function(id) {
         value = 2,
         min = 0,
         max = 20,
-        step = 0.5,
+        step = 0.1,
         icon = icon("chart-pie"),
         help_text = "Please pick a number between 0 and 20",
-        width = "200px"
+        width = "150px"
       )
     ),
 
     # Map title ----
     div(style = "display: inline-block;", textInput(ns("title_input"), label = strong("Plot Title"), value = "", width = "295px")),
-    div(style = "display: inline-block;", numericInput(ns("plot_title_size"), label = strong("Plot Title Size"), width = "100px", value = 15)),
+    div(style = "display: inline-block;", numericInput(ns("plot_title_size"), label = strong("Plot Title Size"), width = "100px", value = 15, step = 0.1)),
 
     # Theme Options ----
     br(),
     div(style = "display: inline-block;", colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
     div(style = "display: inline-block;", colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),
-    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", value = 10, step = 0.5)),
-    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12, step = 0.5)),
+    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", value = 10, step = 0.1)),
+    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12, step = 0.1)),
 
     # Advanced Theme Customisation ----
     div(style = "padding-bottom: 10px;",

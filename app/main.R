@@ -101,7 +101,7 @@ ui <- function(id) {
           tabPanel(
             title = "Gallery",
             icon = icon("image"),
-            # file_format_content(),
+            p("IN DEVELOPMENT"),
             br(),
           ),
           tabPanel(
