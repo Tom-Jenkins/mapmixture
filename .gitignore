@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # VS code
 .vscode/
+
+# rsconnect
+rsconnect/*
