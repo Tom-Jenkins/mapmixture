@@ -14,14 +14,16 @@ box::use(
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback, feedbackWarning],
+  vroom[vroom],
 )
 
 
 # CRS options
-# epsg <- crs_data$code
-# projection <- crs_data$note
-epsg <- c(3035,3857,4326,27700)
-projection <- c("ETRS89-extended / LAEA Europe","WGS 84 / Pseudo-Mercator","WGS 84","OSGB36 / British National Grid")
+crs_data <- vroom("./app/static/data/EPSG_CRS.csv")
+epsg <- crs_data$epsg_code
+projection <- crs_data$name
+# epsg <- c(3035,3857,4326,27700)
+# projection <- c("ETRS89-extended / LAEA Europe","WGS 84 / Pseudo-Mercator","WGS 84","OSGB36 / British National Grid")
 
 
 #' @export
@@ -39,7 +41,7 @@ ui <- function(id) {
       choicesOpt = list(
         subtext = paste0("EPSG: ", projection)
       ),
-      options = list("live-search" = TRUE, maxOptions = 20),
+      options = list("live-search" = TRUE, size = 10),
       choices = epsg
     ),
 

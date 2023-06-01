@@ -10,9 +10,9 @@ about_content <- function() {
 
   HTML(
     '
-    <h4 class="text-primary">About this application</h4>
+    <h4 class="text-primary">About Mapmixture</h4>
     <p>
-      This app allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site, and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
+      Mapmixture allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site, and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
     </p>
 
     <h4 class="text-primary">Quick start</h4>
