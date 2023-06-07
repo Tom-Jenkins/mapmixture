@@ -45,7 +45,7 @@ ui <- function(id) {
         ),        
         a(
           style = "color: white;",
-          href = "https://github.com/Tom-Jenkins",
+          href = "https://github.com/Tom-Jenkins/Mapmixture",
           target = "_blank",
           span(style = "float: right; margin-right: 20px;", icon("github", style = "margin-right: 5px;"), "GitHub")),
       ),
