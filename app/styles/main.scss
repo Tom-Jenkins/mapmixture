@@ -3,6 +3,9 @@
 :root {
     --flatly-success: #18bc9c;
     --flatly-warning: #f39c12;
+    --flatly-primary: #2c3e50;
+    --flatly-secondary: #95a5a6;
+    --flatly-light: #ecf0f1;
 }
 
 .hidden {
@@ -148,3 +151,15 @@
     border-radius: 10px;
     background: #c9cccd; 
 }
+
+// Gallery carousel options
+// .carousel-item {
+//     background-color: red;
+//     height: 100vh;
+// }
+// .carousel-item img {
+//     max-width: 100%;
+//     max-height: 50%;
+//     display: block;
+//     margin: 0 auto;
+// }

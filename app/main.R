@@ -15,6 +15,7 @@ box::use(
   app/view/map_params_module,
   app/view/map_plot_module,
   app/logic/file_format_html_content[file_format_content],
+  app/logic/gallery_html_content[gallery_content],
   app/logic/about_html_content[about_content],
 )
 
@@ -76,12 +77,8 @@ ui <- function(id) {
               class = "parameter-options-container",
               title = "Map Options",
               map_params_module$ui(ns("map_params_module")),
-            ),
-            # tabPanel(
-            #   class = "nav-fill",
-            #   title = "Bar Chart Options",
-            # ),
-          ),
+            )
+          )
         ),
       ),
 
@@ -102,7 +99,7 @@ ui <- function(id) {
           tabPanel(
             title = "Gallery",
             icon = icon("image"),
-            p("IN DEVELOPMENT"),
+            gallery_content(),
             br(),
           ),
           tabPanel(
