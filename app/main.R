@@ -187,8 +187,10 @@ server <- function(id) {
     selected_cols <- map_params_mod_outputs[["param_cols"]]
     selected_clusters <- map_params_mod_outputs[["params_clusters"]]
     selected_arrow_position <- map_params_mod_outputs[["param_arrow_position"]]
+    selected_arrow_size <- map_params_mod_outputs[["param_arrow_size"]]
     selected_arrow_toggle <- map_params_mod_outputs[["param_arrow_toggle"]]
     selected_scalebar_position <- map_params_mod_outputs[["param_scalebar_position"]]
+    selected_scalebar_size <- map_params_mod_outputs[["param_scalebar_size"]]
     selected_scalebar_toggle <- map_params_mod_outputs[["param_scalebar_toggle"]]
     selected_pie_size <- map_params_mod_outputs[["param_pie_size"]]
     selected_title <- map_params_mod_outputs[["param_title"]]
@@ -210,8 +212,10 @@ server <- function(id) {
       cluster_cols = selected_cols,
       cluster_names = selected_clusters,
       arrow_position = selected_arrow_position,
+      arrow_size = selected_arrow_size,
       arrow_toggle = selected_arrow_toggle,
       scalebar_position = selected_scalebar_position,
+      scalebar_size = selected_scalebar_size,
       scalebar_toggle = selected_scalebar_toggle,
       user_land_col = selected_land_col,
       pie_size = selected_pie_size,

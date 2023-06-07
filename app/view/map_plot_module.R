@@ -34,12 +34,6 @@ ui <- function(id) {
     useWaiter(),
     useShinyFeedback(),
 
-    # Show example of Admixture and Coordinates file formats on page load   
-    # fluidRow(
-    #   id = "example-file-formats-loading-page",
-    #   img(src = "./static/data/example_plot.png", height = 500, width = 200),
-    # ),
-
     # Loading spinner ----
     autoWaiter(id = ns("admixture_map")),
 
@@ -53,7 +47,7 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, scalebar_position, scalebar_toggle, arrow_toggle, pie_size, user_title, user_land_col, map_theme, user_advanced) {
+server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, arrow_size, arrow_toggle, scalebar_position, scalebar_size, scalebar_toggle, pie_size, user_title, user_land_col, map_theme, user_advanced) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -105,28 +99,35 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
       # Add north arrow
       if (arrow_toggle() == TRUE) {
+        height_size <- arrow_size() * 0.4
+        width_size <- arrow_size() * 0.4
+        text_size <- arrow_size() * 4
+        pad_size <- arrow_size() * 0.5
         plt <- plt+
           annotation_north_arrow(
             data = world(),
             which_north = "true",
             location = arrow_position(),
-            height = unit(0.4, "cm"),
-            width = unit(0.4, "cm"),
-            pad_y = unit(0.5, "cm"),
-            style = north_arrow_orienteering(text_size = 4)
+            height = unit(height_size, "cm"),
+            width = unit(width_size, "cm"),
+            pad_y = unit(pad_size, "cm"),
+            style = north_arrow_orienteering(text_size = text_size)
           )
-      }      
+      }  
       
       # Add scale bar
       if (scalebar_toggle() == TRUE) {
+        height_size <- scalebar_size() * 0.15
+        width_size <- scalebar_size() * 0.10
+        text_size <- scalebar_size() * 0.5
         plt <- plt+
           annotation_scale(
             data = world(),
             location = scalebar_position(),
-            width_hint = 0.10,
+            width_hint = width_size,
             bar_cols = c("black","white"),
-            height = unit(0.15, "cm"),
-            text_cex = 0.5
+            height = unit(height_size, "cm"),
+            text_cex = text_size
           )
       }
       

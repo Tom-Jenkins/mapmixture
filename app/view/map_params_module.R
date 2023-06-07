@@ -69,15 +69,19 @@ ui <- function(id) {
     br(),
 
     # North arrow input ----
-    div(style = "display: inline-block; margin-top: -20px;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
-    # div(style = "display: inline-block;", numericInput(ns("arrow_size"), label = strong("Size"), value = 1, width = "80px")),
-    switchInput(ns("arrow_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE),
+    div(style = "display: flex; margin-bottom: -20px;",
+      div(style = "display: inline-block; margin-top: -20px;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "top-left", width = "150px")),
+      div(class = "px-1", style = "display: inline-block; margin-top: -20px;", numericInput(ns("arrow_size"), label = strong("Size"), value = 1, step = 0.1, width = "80px")),
+      div(style = "margin-top: 12px;", switchInput(ns("arrow_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
+    ),
     br(),
 
     # Scale bar input ----
-    div(style = "display: inline-block; margin-top: -30px;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "bottom-left", width = "150px")),
-    # div(style = "display: inline-block;", numericInput(ns("scalebar_size"), label = strong("Size"), value = 1, width = "80px")),
-    switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE),
+    div(style = "display: flex;",
+      div(style = "display: inline-block; margin-top: -30px;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "top-left", width = "150px")),
+      div(class = "px-1", style = "display: inline-block; margin-top: -30px;", numericInput(ns("scalebar_size"), label = strong("Size"), value = 1, step = 0.1, width = "80px")),
+      div(style = "margin-top: 2px;", switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
+    ),
 
     # Pie chart size ----
     div(style = "margin-top: -25px;",
@@ -193,6 +197,7 @@ server <- function(id, admixture_df, coords_df) {
       if(input$arrow_position == "top-left") return("tl")
       if(input$arrow_position == "top-right") return("tr")
     })
+    arrow_size <- reactive(input$arrow_size)
     arrow_toggle <- reactive(input$arrow_toggle)
 
     # Import scalebar position and toggle by user
@@ -202,6 +207,7 @@ server <- function(id, admixture_df, coords_df) {
       if(input$scalebar_position == "top-left") return("tl")
       if(input$scalebar_position == "top-right") return("tr")
     })
+    scalebar_size <- reactive(input$scalebar_size)
     scalebar_toggle <- reactive(input$scalebar_toggle)
 
     # Import pie chart size chosen by user
@@ -250,8 +256,10 @@ server <- function(id, admixture_df, coords_df) {
         params_clusters = cluster_input_names,
         param_cols = user_cols,
         param_arrow_position = arrow_position,
+        param_arrow_size = arrow_size,
         param_arrow_toggle = arrow_toggle,
         param_scalebar_position = scalebar_position,
+        param_scalebar_size = scalebar_size,
         param_scalebar_toggle = scalebar_toggle,
         param_pie_size = pie_size,
         param_title = param_title,
