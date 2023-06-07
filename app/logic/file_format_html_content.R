@@ -1,4 +1,4 @@
-# app/logic/sample_table_html_content.R
+# app/logic/file_format_html_content.R
 
 # Import R packages / functions into module
 box::use(

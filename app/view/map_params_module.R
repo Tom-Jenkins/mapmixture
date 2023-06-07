@@ -141,7 +141,7 @@ server <- function(id, admixture_df, coords_df) {
       req(coords_df())
       
       # User selected bounding box (Check inputs are valid)
-      if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "" && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmin_input))) {
+      if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "" && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmax_input)) && !is.na(as.double(input$ymin_input)) && !is.na(as.double(input$ymax_input))) {
         
         return(
           st_bbox(c(xmin = as.double(input$xmin_input),
