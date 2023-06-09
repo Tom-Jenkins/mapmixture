@@ -17,7 +17,7 @@ ui <- function(id) {
       id = ns("showmap_bttn"),
       class = "btn btn-success action-button shiny-bound-input fs-5",
       icon("arrows-rotate"),
-      HTML("Plot Data")
+      HTML("Plot Map")
     )
   )
 }

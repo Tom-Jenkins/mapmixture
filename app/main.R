@@ -131,6 +131,9 @@ ui <- function(id) {
       document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;
       document.querySelector('.parameter-options-container').style.height = `${sidebarOptionsContainerHeight}px`;
       document.getElementById('app-map_plot_module-admixture_map').style.height = `${mainContainerHeight}px`;
+      document.querySelectorAll('.carousel-item').forEach(function(element) {
+        element.style.height = `${mainContainerHeight - 5}px`;
+      });
 
 
       window.addEventListener('resize', () => {
@@ -144,6 +147,9 @@ ui <- function(id) {
         document.querySelector('.sidebar-container').style.height = `${sidebarContainerHeight}px`;
         document.querySelector('.parameter-options-container').style.height = `${sidebarOptionsContainerHeight}px`;
         document.getElementById('app-map_plot_module-admixture_map').style.height = `${window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 20}px`;
+        document.querySelectorAll('.carousel-item').forEach(function(element) {
+          element.style.height = `${window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 25}px`;
+        });
       });
       "
     )),

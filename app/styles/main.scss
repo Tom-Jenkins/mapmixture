@@ -153,13 +153,9 @@
 }
 
 // Gallery carousel options
-// .carousel-item {
-//     background-color: red;
-//     height: 100vh;
-// }
-// .carousel-item img {
-//     max-width: 100%;
-//     max-height: 50%;
-//     display: block;
-//     margin: 0 auto;
-// }
+.carousel-item {
+    background-color: white;
+}
+.carousel-item img {
+    padding-top: 10px;
+}

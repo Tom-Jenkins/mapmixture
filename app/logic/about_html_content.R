@@ -20,15 +20,16 @@ about_content <- function() {
       <ul>
         <li>Upload admixture file (see File Format for more info)</li>
         <li>Upload coordinates file (see File Format for more info)</li>
-        <li>Click Plot Data button</li>
-        <li>Adjust Map Options and re-click Plot Data button</li>
+        <li>Click Plot Map button</li>
+        <li>Adjust Map Options and re-click Plot Map button</li>
+        <li>To download the map, click the download icon (top-right corner), choose download options (png, jpeg or pdf), then click the Download button</li>
       </ul> 
     </p>
 
     <h4 class="text-primary">Defaults</h4>
     <p>
       <strong>CRS:</strong> WGS 84 / Pseudo-Mercator coordinate reference system (EPSG: 3857).</br>
-      <strong>Map boundary:</strong> Bounding box of all the latitude and longitude points in the coordinates file. If invalid xmin, xmax, ymin or ymax boundary limits are entered by the user, the former default bounding box is used.</br>
+      <strong>Map boundary:</strong> Bounding box of all the latitude and longitude points in the coordinates file. If invalid xmin, xmax, ymin or ymax boundary limits are entered, the former default bounding box is used.</br>
       <strong>Scales:</strong> A north arrow and scalebar is added to the bottom-left of the map.
     </p>
 

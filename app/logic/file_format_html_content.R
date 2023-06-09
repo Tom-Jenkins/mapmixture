@@ -68,7 +68,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/coordinates.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>  
@@ -150,7 +150,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/admixture_data.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>
@@ -231,7 +231,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/admixture_data_single.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>
@@ -305,7 +305,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/admixture_single_cluster.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>
