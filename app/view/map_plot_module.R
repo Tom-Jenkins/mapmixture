@@ -47,7 +47,7 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, arrow_size, arrow_toggle, scalebar_position, scalebar_size, scalebar_toggle, pie_size, user_title, user_land_col, map_theme, user_advanced) {
+server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, arrow_size, arrow_toggle, scalebar_position, scalebar_size, scalebar_toggle, pie_size, pie_opacity, user_title, user_land_col, map_theme, user_advanced) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -91,7 +91,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         coord_sf(xlim = c(boundary()[["xmin"]], boundary()[["xmax"]]),
                 ylim = c(boundary()[["ymin"]], boundary()[["ymax"]]),
                 expand = user_expand())+
-        geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data=piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())], size = 0.3)+
+        geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data = piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())], size = 0.3, alpha = pie_opacity())+
         ggtitle(user_title())+
         xlab("Longitude")+
         ylab("Latitude")+

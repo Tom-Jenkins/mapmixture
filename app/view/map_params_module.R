@@ -84,18 +84,21 @@ ui <- function(id) {
     ),
 
     # Pie chart size ----
-    div(style = "margin-top: -25px;",
-      numericInputIcon(
-        inputId = ns("piesize_input"),
-        label = strong("Pie Chart Size"),
-        value = 2,
-        min = 0,
-        max = 20,
-        step = 0.1,
-        icon = icon("chart-pie"),
-        help_text = "Please pick a number between 0 and 20",
-        width = "150px"
-      )
+    div(style = "margin-top: -25px; display: flex;",
+      div(
+        numericInputIcon(
+          inputId = ns("piesize_input"),
+          label = strong("Pie Chart Size"),
+          value = 2,
+          min = 0,
+          max = 20,
+          step = 0.1,
+          icon = icon("chart-pie"),
+          help_text = "Please pick a number between 0 and 20",
+          width = "150px"
+          )
+        ),      
+      div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieopacity_input"), label = strong("Opacity"), width = "80px", value = 1, step = 0.05)),
     ),
 
     # Map title ----
@@ -214,6 +217,7 @@ server <- function(id, admixture_df, coords_df) {
     pie_size <- eventReactive(input$piesize_input, {
       as.double(input$piesize_input)
     })
+    pie_opacity <- reactive(input$pieopacity_input)
 
     # Import map title chosen by user
     param_title <- reactive(input$title_input)
@@ -262,6 +266,7 @@ server <- function(id, admixture_df, coords_df) {
         param_scalebar_size = scalebar_size,
         param_scalebar_toggle = scalebar_toggle,
         param_pie_size = pie_size,
+        param_pie_opacity = pie_opacity,
         param_title = param_title,
         param_land_col = user_land_col,
         param_map_theme = map_theme,

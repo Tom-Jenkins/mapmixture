@@ -115,13 +115,13 @@ server <- function(id) {
         )
 
       # 3. Check all cluster rows add up to exactly 1 ----
-      } else if (all(rowSums(cluster_cols) == 1) == FALSE) {
-        # runjs("App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions.')")
-        runjs(
-          paste0(
-            "App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions in row ", toString(which(rowSums(cluster_cols) != 1)), ".')"
-          )
-        )
+      # } else if (all(rowSums(cluster_cols) == 1) == FALSE) {
+      #   # runjs("App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions.')")
+      #   runjs(
+      #     paste0(
+      #       "App.renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions in row ", toString(which(rowSums(cluster_cols) != 1)), ".')"
+      #     )
+      #   )
         
       # If data valid then print success message to UI, convert colnames to lower case and return data
       } else {

@@ -196,6 +196,7 @@ server <- function(id) {
     selected_scalebar_size <- map_params_mod_outputs[["param_scalebar_size"]]
     selected_scalebar_toggle <- map_params_mod_outputs[["param_scalebar_toggle"]]
     selected_pie_size <- map_params_mod_outputs[["param_pie_size"]]
+    selected_pie_opacity <- map_params_mod_outputs[["param_pie_opacity"]]
     selected_title <- map_params_mod_outputs[["param_title"]]
     selected_land_col <- map_params_mod_outputs[["param_land_col"]]
     selected_map_theme <- map_params_mod_outputs[["param_map_theme"]]
@@ -222,6 +223,7 @@ server <- function(id) {
       scalebar_toggle = selected_scalebar_toggle,
       user_land_col = selected_land_col,
       pie_size = selected_pie_size,
+      pie_opacity = selected_pie_opacity,
       map_theme = selected_map_theme,
       user_advanced = selected_advanced
     )
