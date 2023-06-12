@@ -76,8 +76,8 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
 
     # Clear any plots from plotOutput container ----
-    # Must be outside the renderPlot observer and have piecoords() inside observer to fix coords_file feedback bug
-    observeEvent(c(bttn(), piecoords()), priority = 2, {
+    # Must be outside the renderPlot observer and have coords_df() (or piecoords()) inside observer to fix coords_file feedback bug
+    observeEvent(c(bttn(), coords_df()), priority = 2, {
       runjs("App.clearPlotOutput()")
     })
     

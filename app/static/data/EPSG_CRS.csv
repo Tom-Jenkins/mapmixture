@@ -1,43 +1,22 @@
 epsg_code,name
 2056,CH1903+ / LV95
-2100,GGRS87 / Greek Grid
-2154,RGF93 v1 / Lambert-93
 3003,Monte Mario / Italy zone 1
 3035,ETRS89-extended / LAEA Europe
-3067,"ETRS89 / TM35FIN(E,N)"
 3112,GDA94 / Geoscience Australia Lambert
-3144,FD54 / Faroe Lambert
-3561,Old Hawaiian / Hawaii zone 1
 3857,WGS 84 / Pseudo-Mercator
-3979,NAD83(CSRS) / Canada Atlas Lambert
-4285,Qatar 1974
 4286,Qatar 1948
 4296,Sudan
 4326,WGS 84
 4490,China Geodetic Coordinate System 2000
-4600,Anguilla 1957
-4601,Antigua 1943
-4602,Dominica 1945
-4603,Grenada 1953
-4604,Montserrat 1958
-4605,St. Kitts 1955
-4606,St. Lucia 1955
 4607,St. Vincent 1945
 4618,SAD69
 4636,Petrels 1972
 4717,Cape Canaveral
-4810,Tananarive (Paris)
-5514,S-JTSK / Krovak East North
-5641,SIRGAS 2000 / Brazil Mercator
 5940,WGS 84 / EPSG Russia Polar Stereographic
 6666,JGD2011
-6684,JGD2011 / Japan Plane Rectangular CS XVI
 9147,SIRGAS-Chile 2013
 21781,CH1903 / LV03
 23032,ED50 / UTM zone 32N
-24378,Kalianpur 1975 / India zone I
-27200,NZGD49 / New Zealand Map Grid
 27700,OSGB36 / British National Grid
 28992,Amersfoort / RD New
-31370,BD72 / Belgian Lambert 72
 900913,Google Maps Global Mercator
