@@ -30,7 +30,7 @@ about_content <- function() {
     <p>
       <strong>CRS:</strong> WGS 84 / Pseudo-Mercator coordinate reference system (EPSG: 3857).</br>
       <strong>Map boundary:</strong> Bounding box of all the latitude and longitude points in the coordinates file. If invalid xmin, xmax, ymin or ymax boundary limits are entered, the former default bounding box is used.</br>
-      <strong>Scales:</strong> A north arrow and scalebar is added to the bottom-left of the map.
+      <strong>Scales:</strong> A north arrow and scalebar is added to the map.
     </p>
 
     <h4 class="text-primary">Developer</h4>
