@@ -36,7 +36,7 @@ ui <- function(id) {
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       span(
         # span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture v0.1")),
-        span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture"), span(class = "badge bg-light mx-1", "0.1")),
+        span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture"), span(class = "badge bg-light mx-1", "1.0.0")),
         a(
           style = "color: white;",
           href = "https://twitter.com/tom__jenkins",
