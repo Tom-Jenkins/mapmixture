@@ -35,7 +35,6 @@ ui <- function(id) {
       class = "custom-navbar",
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       span(
-        # span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture v0.1")),
         span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture"), span(class = "badge bg-light mx-1", "1.0.0")),
         a(
           style = "color: white;",
@@ -228,16 +227,5 @@ server <- function(id) {
       user_advanced = selected_advanced
     )
 
-    # # Render admixture table
-    # output$admixture_table <- renderTable({
-    #   req(admixture_data())
-    #   admixture_data()
-    # })
-
-    # # Render coords table
-    # output$coords_table <- renderTable({
-    #   req(coords_data())
-    #   coords_data()
-    # })
   })
 }
