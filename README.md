@@ -2,8 +2,8 @@
 Mapmixture allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site, and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
 
 <p class="float-left">
-  <img src="app/static/img/Mapmixture1.jpeg" width="300px">
-  <img src="app/static/img/Mapmixture2.jpeg" width="300px">
+  <img src="app/static/img/Mapmixture1.jpeg" width="400px">
+  <img src="app/static/img/Mapmixture2.jpeg" width="400px">
 </p>
 
 ## Link to online shiny web server
