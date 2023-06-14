@@ -161,7 +161,6 @@ server <- function(id) {
       coords_siteIDs <- sort(dataset_coords[[1]]) # coordinates file unique site IDs
       admix_siteIDs <- sort(unique(admixture_data()[[1]])) # admixture file unique site IDs
 
-      # 0. Check data set if only three columns TODO
 
       # 1. Check for NAs by column ----
       if (length(na_coords != 0)) {
