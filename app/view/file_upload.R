@@ -78,6 +78,10 @@ server <- function(id) {
       ext <- file_ext(input$admixture_file$datapath)
       dataset_admix <- vroom(input$admixture_file$datapath)
 
+      # Rename first and second column names
+      colnames(dataset_admix)[1] <- "Site"
+      colnames(dataset_admix)[2] <- "Ind"
+
       # Convert first two column to character type
       dataset_admix[[1]] <- as.character(dataset_admix[[1]])
       dataset_admix[[2]] <- as.character(dataset_admix[[2]])
