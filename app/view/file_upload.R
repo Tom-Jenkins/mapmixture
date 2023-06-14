@@ -152,6 +152,11 @@ server <- function(id) {
       ext <- file_ext(input$coords_file$datapath)
       dataset_coords <- vroom(input$coords_file$datapath)
 
+      # Rename first, second and third column names
+      colnames(dataset_coords)[1] <- "Site"
+      colnames(dataset_coords)[2] <- "Lat"
+      colnames(dataset_coords)[3] <- "Lon"
+
       # Convert first column to character type
       dataset_coords[[1]] <- as.character(dataset_coords[[1]])
 
