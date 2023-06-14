@@ -35,7 +35,6 @@ ui <- function(id) {
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "admixture-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "admixture-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
       ),      
-      # tags$button(id = ns("load_sample_data_admixture_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
     ),
 
     # Coordinates file upload ----
@@ -52,7 +51,6 @@ ui <- function(id) {
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "coords-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
       ),
-      # tags$button(id = ns("load_sample_data_coords_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
     ),
   )
 }
@@ -145,8 +143,6 @@ server <- function(id) {
 
       # Remove all previous error messages from UI
       runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
-
-      # If statement for presece of admixture_data() ???? is.null()? TODO
       
       # Import user data
       ext <- file_ext(input$coords_file$datapath)
@@ -198,19 +194,6 @@ server <- function(id) {
       }
     })
 
-    # # Import sample admixture data ----
-    # admixture_sample <- vroom("./app/static/data/admixture_example.csv")
-    # observeEvent(input$load_sample_data_admixture_bttn, {
-    #   runjs("App.renderSampleData('admixture')")
-    #   # print(admixture_sample)
-    # })
-
-    # # Import sample coordinates data ----
-    # coords_sample <- vroom("./app/static/data/coordinates_example.csv")
-    # observeEvent(input$load_sample_data_coords_bttn, {
-    #   runjs("App.renderSampleData('coords')")
-    #   # print(coords_sample)
-    # })
 
     # Admixture info button event
     admixture_info_bttn <- reactive(input$admixture_info_bttn)
