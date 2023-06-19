@@ -35,7 +35,6 @@ ui <- function(id) {
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "admixture-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "admixture-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
       ),      
-      # tags$button(id = ns("load_sample_data_admixture_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
     ),
 
     # Coordinates file upload ----
@@ -52,7 +51,6 @@ ui <- function(id) {
         icon("circle-check", class = "fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px;"),
         icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "coords-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px;")
       ),
-      # tags$button(id = ns("load_sample_data_coords_bttn"), class = "btn btn-default action-button shiny-bound-input sample-data-bttn", HTML("Load Sample Data")),
     ),
   )
 }
@@ -77,6 +75,10 @@ server <- function(id) {
       # Import user data
       ext <- file_ext(input$admixture_file$datapath)
       dataset_admix <- vroom(input$admixture_file$datapath)
+
+      # Rename first and second column names
+      colnames(dataset_admix)[1] <- "Site"
+      colnames(dataset_admix)[2] <- "Ind"
 
       # Convert first two column to character type
       dataset_admix[[1]] <- as.character(dataset_admix[[1]])
@@ -141,12 +143,15 @@ server <- function(id) {
 
       # Remove all previous error messages from UI
       runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
-
-      # If statement for presece of admixture_data() ???? is.null()? TODO
       
       # Import user data
       ext <- file_ext(input$coords_file$datapath)
       dataset_coords <- vroom(input$coords_file$datapath)
+
+      # Rename first, second and third column names
+      colnames(dataset_coords)[1] <- "Site"
+      colnames(dataset_coords)[2] <- "Lat"
+      colnames(dataset_coords)[3] <- "Lon"
 
       # Convert first column to character type
       dataset_coords[[1]] <- as.character(dataset_coords[[1]])
@@ -156,7 +161,6 @@ server <- function(id) {
       coords_siteIDs <- sort(dataset_coords[[1]]) # coordinates file unique site IDs
       admix_siteIDs <- sort(unique(admixture_data()[[1]])) # admixture file unique site IDs
 
-      # 0. Check data set if only three columns TODO
 
       # 1. Check for NAs by column ----
       if (length(na_coords != 0)) {
@@ -189,19 +193,6 @@ server <- function(id) {
       }
     })
 
-    # # Import sample admixture data ----
-    # admixture_sample <- vroom("./app/static/data/admixture_example.csv")
-    # observeEvent(input$load_sample_data_admixture_bttn, {
-    #   runjs("App.renderSampleData('admixture')")
-    #   # print(admixture_sample)
-    # })
-
-    # # Import sample coordinates data ----
-    # coords_sample <- vroom("./app/static/data/coordinates_example.csv")
-    # observeEvent(input$load_sample_data_coords_bttn, {
-    #   runjs("App.renderSampleData('coords')")
-    #   # print(coords_sample)
-    # })
 
     # Admixture info button event
     admixture_info_bttn <- reactive(input$admixture_info_bttn)
