@@ -71,7 +71,7 @@ ui <- function(id) {
     # North arrow input ----
     div(style = "display: flex; margin-bottom: -20px;",
       div(style = "display: inline-block; margin-top: -20px;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "top-left", width = "150px")),
-      div(class = "px-1", style = "display: inline-block; margin-top: -20px;", numericInput(ns("arrow_size"), label = strong("Size"), value = 1, step = 0.1, width = "80px")),
+      div(class = "px-1", style = "display: inline-block; margin-top: -20px;", numericInput(ns("arrow_size"), label = strong("Size"), min = 0, value = 1, step = 0.1, width = "80px")),
       div(style = "margin-top: 12px;", switchInput(ns("arrow_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
     ),
     br(),
@@ -79,7 +79,7 @@ ui <- function(id) {
     # Scale bar input ----
     div(style = "display: flex;",
       div(style = "display: inline-block; margin-top: -30px;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "top-left", width = "150px")),
-      div(class = "px-1", style = "display: inline-block; margin-top: -30px;", numericInput(ns("scalebar_size"), label = strong("Size"), value = 1, step = 0.1, width = "80px")),
+      div(class = "px-1", style = "display: inline-block; margin-top: -30px;", numericInput(ns("scalebar_size"), label = strong("Size"), min = 0, value = 1, step = 0.1, width = "80px")),
       div(style = "margin-top: 2px;", switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
     ),
 
@@ -98,19 +98,19 @@ ui <- function(id) {
           width = "150px"
           )
         ),      
-      div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieopacity_input"), label = strong("Opacity"), width = "80px", value = 1, step = 0.05)),
+      div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieopacity_input"), label = strong("Opacity"), width = "80px", min = 0, max = 1, value = 1, step = 0.05)),
     ),
 
     # Map title ----
     div(style = "display: inline-block;", textInput(ns("title_input"), label = strong("Plot Title"), value = "", width = "295px")),
-    div(style = "display: inline-block;", numericInput(ns("plot_title_size"), label = strong("Plot Title Size"), width = "100px", value = 15, step = 0.1)),
+    div(style = "display: inline-block;", numericInput(ns("plot_title_size"), label = strong("Plot Title Size"), width = "100px", min = 0, value = 15, step = 0.1)),
 
     # Theme Options ----
     br(),
     div(style = "display: inline-block;", colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
     div(style = "display: inline-block;", colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),
-    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", value = 10, step = 0.1)),
-    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", value = 12, step = 0.1)),
+    div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", min = 0, value = 10, step = 0.1)),
+    div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", min = 0, value = 12, step = 0.1)),
 
     # Advanced Theme Customisation ----
     div(style = "padding-bottom: 10px;",
