@@ -22,7 +22,7 @@ file_format_content <- function() {
                 <div class="accordion-body">
 
                     <p>
-                        All three columns are mandatory. The first column contains the IDs for each site and can be a string, alphanumeric or number (numbers are converted to strings by default). The second and third columns are latitude and longitude, respectively. The units are decimal degrees and can be integers or decimals. 
+                        All three columns are mandatory. The first column contains the IDs for each site and can be a string, alphanumeric or number (numbers are converted to strings by default). The second and third columns are latitude and longitude, respectively. The units are decimal degrees and can be integers or decimals. Headers are required but can be any name.
                     </p>
 
                     <p>
@@ -84,7 +84,7 @@ file_format_content <- function() {
                 <div class="accordion-body">
 
                     <p>
-                        The first three columns are mandatory and remaining columns are expected to be additional cluster (K) data. Each row represents data for a single individual. The first and second columns are IDs for sites and individuals, respectively. These IDs can be a string, alphanumeric or number (numbers are converted to strings by default). The cluster columns can be integers or decimals.
+                        The first three columns are mandatory and remaining columns are expected to be additional cluster (K) data. Each row represents data for a single individual. The first and second columns are IDs for sites and individuals, respectively. These IDs can be a string, alphanumeric or number (numbers are converted to strings by default). The cluster columns can be integers or decimals. Headers are required but can be any name.
                     </p>
 
                     <p>
