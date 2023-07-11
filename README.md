@@ -12,9 +12,15 @@ Mapmixture allows users to visualise admixture as pie charts on a map. Users upl
 ## Setup locally
 
 ### Windows
-[IN PROGRESS]
 
-### Ubuntu
+- Download and install [RStudio](https://posit.co/download/rstudio-desktop/) and [R v4.2.0](https://cran.r-project.org/bin/windows/base/old/4.2.0/)
+- Download a [zip file](https://github.com/Tom-Jenkins/Mapmixture/archive/refs/heads/main.zip) of Mapmixture main repo and extract files
+- In RStudio, open the RhinoApp.Rproj project file
+- If required, install `renv` package from CRAN (`install.packages("renv")`)
+- In the R console type `renv::restore()`
+- Launch Mapmixture shiny app using `shiny::runApp()`
+
+### Linux
 Clone repo to current directory
 ```
 git clone https://github.com/Tom-Jenkins/Mapmixture.git
