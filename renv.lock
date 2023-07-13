@@ -201,10 +201,10 @@
     },
     "box": {
       "Package": "box",
-      "Version": "1.1.2",
+      "Version": "1.1.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "ce26ca183b64788ca4c2ae30ec5876d6",
+      "Hash": "ce8187a260e8e3abc2294284badc3b76",
       "Requirements": []
     },
     "brio": {
@@ -1154,10 +1154,10 @@
     },
     "rhino": {
       "Package": "rhino",
-      "Version": "1.3.0",
+      "Version": "1.4.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "dcb54376b23e247f1f75789ea9bd8562",
+      "Hash": "4033065e4cfd8171910d0fe2ab51bde1",
       "Requirements": [
         "box",
         "cli",
