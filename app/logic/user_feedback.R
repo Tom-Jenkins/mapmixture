@@ -1,8 +1,8 @@
-# app/logic/html_content.R
+# app/logic/user_feedback.R
 
 # Import R packages / functions into module
 box::use(
-    shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback]
+    shinyFeedback[showFeedbackWarning, hideFeedback]
 )
 
 #' @export

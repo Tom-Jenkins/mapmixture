@@ -4,7 +4,6 @@
 box::use(  
   shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow, downloadButton, downloadHandler, strong, br, h4, textInput, span, updateTextInput, bindEvent, showNotification],
   sf[st_as_sfc, st_transform, st_bbox],
-  magrittr[`%>%`],
   ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf, theme_set, theme_update, margin, ggsave, unit],
   scatterpie[geom_scatterpie],
   shinyWidgets[actionBttn, dropdown, radioGroupButtons],
@@ -132,7 +131,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
       }
       
       return(plt)        
-    }) %>% bindEvent(bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)     
+    }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)     
 
 
     # Render map on click of button ----

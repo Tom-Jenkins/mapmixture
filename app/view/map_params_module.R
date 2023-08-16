@@ -7,7 +7,6 @@ box::use(
   colourpicker[colourInput],
   dplyr[group_by, summarise, n_distinct, arrange, select],
   tidyr[contains],
-  magrittr[`%>%`],
   purrr[map, map2, map_chr],
   stringr[str_to_lower, str_replace, str_replace_all],
   sf[st_bbox, st_crs, st_as_sf, st_as_sfc, st_transform, st_read, st_set_crs],
@@ -134,9 +133,9 @@ server <- function(id, admixture_df, coords_df) {
     # Import Coordinate Reference System chosen by user (default: LAEA Europe)
     params_CRS <- eventReactive(input$crs_input, {
       # Convert EPSG 4326 to EPSG 3857
-      str_replace(input$crs_input, "4326", "3857") %>%
+      str_replace(input$crs_input, "4326", "3857") |>
         # Convert string to integer
-        as.integer
+        as.integer(x = _)
     })
 
     # Import map boundary chosen by user (default is the boundary of the points in the coordinates file)
@@ -157,10 +156,10 @@ server <- function(id, admixture_df, coords_df) {
       # Default bounding box
       } else {
         return(
-          coords_df() %>% 
-            st_as_sf(coords = c("lon","lat")) %>%
-            st_set_crs(4326) %>%
-            st_bbox
+          coords_df() |> 
+            st_as_sf(x = _, coords = c("lon","lat")) |>
+            st_set_crs(x = _, 4326) |>
+            st_bbox(obj = _)
         )  
       }
     })
