@@ -46,3 +46,8 @@ vignettes/*.pdf
 rsconnect/*
 # {shinytest2}: Ignore new debug snapshots for `$expect_values()`
 *_.new.png
+
+# NodeJS modules
+node_modules/*
+package.json
+package-lock.json
