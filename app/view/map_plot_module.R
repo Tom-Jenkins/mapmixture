@@ -10,7 +10,7 @@ box::use(
   waiter[useWaiter, autoWaiter, waiter_set_theme, spin_loaders],
   rlang[eval_tidy, parse_expr],
   shinyjs[useShinyjs, onevent, runjs],
-  stringr[str_replace_all],
+  stringr[str_replace_all, str_to_title],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
   ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale]
 )
@@ -94,7 +94,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         ggtitle(user_title())+
         xlab("Longitude")+
         ylab("Latitude")+
-        scale_fill_manual(values = cluster_cols(), labels = str_replace_all(colnames(piecoords())[4:ncol(piecoords())], "cluster", "Cluster"))
+        scale_fill_manual(values = cluster_cols(), labels = str_to_title(colnames(piecoords())[4:ncol(piecoords())]))
 
       # Add north arrow
       if (arrow_toggle() == TRUE) {

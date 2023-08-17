@@ -167,23 +167,23 @@ server <- function(id, admixture_df, coords_df) {
     # Import expand axes chosen by user
     param_expand <- reactive(input$expand_switch)
 
-    # Store the input IDs of the cluster colours outputUI (e.g. cluster_input1, cluster_input2, cluster_inputN)
+    # Store the shiny input IDs of the cluster colours outputUI (e.g. cluster_input1, cluster_input2, cluster_inputN)
     cluster_input_names <- reactive({
       req(admixture_df())
-      clusters <- paste0("cluster_input", 1:ncol(select(admixture_df(), contains("cluster"))) )
-      # print(clusters)
-      return(clusters)
+      cluster_inputIDs <- paste0("cluster_input", 1:(ncol(admixture_df())-2)) 
+      # print(cluster_inputIDs)
+      return(cluster_inputIDs)
     })
 
-    # Render the correct number of colour options to the UI
+    # Render the correct number of cluster colour options to the UI
     output$colours_input <- renderUI({
       req(cluster_input_names(), admixture_df())
-      labels <- paste0("Cluster ", 1:ncol(select(admixture_df(), contains("cluster"))) )
+      labels <- paste0("Cluster ", 1:(ncol(admixture_df())-2)) # vector of labels on UI (Cluster 1, Cluster 2, etc.)
       # print(labels)
       
       map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(ns(.x), label = .y, value = "white")))
     })
-
+    
     # Collect colours chosen by users
     user_cols <- reactive({
       req(cluster_input_names())
