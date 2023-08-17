@@ -4,14 +4,13 @@
 box::use(  
   shiny[moduleServer, NS, tagList, uiOutput, plotOutput, reactive, eventReactive, tableOutput, renderTable, req, observeEvent, renderUI, renderPlot, div, icon, debounce, freezeReactiveValue, isolate, fillPage, tags, HTML, img, column, fluidRow, downloadButton, downloadHandler, strong, br, h4, textInput, span, updateTextInput, bindEvent, showNotification],
   sf[st_as_sfc, st_transform, st_bbox],
-  magrittr[`%>%`],
   ggplot2[ggplot, aes, geom_bar, scale_y_continuous, facet_wrap, scale_fill_manual, xlab, ylab, ggtitle, theme, element_blank, element_text, ggplotGrob, annotation_custom, coord_polar, theme_void, element_rect, element_line, geom_sf, coord_sf, theme_set, theme_update, margin, ggsave, unit],
   scatterpie[geom_scatterpie],
   shinyWidgets[actionBttn, dropdown, radioGroupButtons],
   waiter[useWaiter, autoWaiter, waiter_set_theme, spin_loaders],
   rlang[eval_tidy, parse_expr],
   shinyjs[useShinyjs, onevent, runjs],
-  stringr[str_replace_all],
+  stringr[str_replace_all, str_to_title],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
   ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale]
 )
@@ -95,7 +94,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         ggtitle(user_title())+
         xlab("Longitude")+
         ylab("Latitude")+
-        scale_fill_manual(values = cluster_cols(), labels = str_replace_all(colnames(piecoords())[4:ncol(piecoords())], "cluster", "Cluster"))
+        scale_fill_manual(values = cluster_cols(), labels = str_to_title(colnames(piecoords())[4:ncol(piecoords())]))
 
       # Add north arrow
       if (arrow_toggle() == TRUE) {
@@ -132,7 +131,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
       }
       
       return(plt)        
-    }) %>% bindEvent(bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)     
+    }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)     
 
 
     # Render map on click of button ----

@@ -7,14 +7,14 @@ box::use(
   colourpicker[colourInput],
   dplyr[group_by, summarise, n_distinct, arrange, select],
   tidyr[contains],
-  magrittr[`%>%`],
-  purrr[map, map2, map_chr],
+  purrr[map, pmap, map_chr],
   stringr[str_to_lower, str_replace, str_replace_all],
   sf[st_bbox, st_crs, st_as_sf, st_as_sfc, st_transform, st_read, st_set_crs],
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback, feedbackWarning],
   vroom[vroom],
+  grDevices[colorRampPalette,]
 )
 
 
@@ -134,9 +134,9 @@ server <- function(id, admixture_df, coords_df) {
     # Import Coordinate Reference System chosen by user (default: LAEA Europe)
     params_CRS <- eventReactive(input$crs_input, {
       # Convert EPSG 4326 to EPSG 3857
-      str_replace(input$crs_input, "4326", "3857") %>%
+      str_replace(input$crs_input, "4326", "3857") |>
         # Convert string to integer
-        as.integer
+        as.integer(x = _)
     })
 
     # Import map boundary chosen by user (default is the boundary of the points in the coordinates file)
@@ -157,10 +157,10 @@ server <- function(id, admixture_df, coords_df) {
       # Default bounding box
       } else {
         return(
-          coords_df() %>% 
-            st_as_sf(coords = c("lon","lat")) %>%
-            st_set_crs(4326) %>%
-            st_bbox
+          coords_df() |> 
+            st_as_sf(x = _, coords = c("lon","lat")) |>
+            st_set_crs(x = _, 4326) |>
+            st_bbox(obj = _)
         )  
       }
     })
@@ -168,23 +168,33 @@ server <- function(id, admixture_df, coords_df) {
     # Import expand axes chosen by user
     param_expand <- reactive(input$expand_switch)
 
-    # Store the input IDs of the cluster colours outputUI (e.g. cluster_input1, cluster_input2, cluster_inputN)
+    # Store the shiny input IDs of the cluster colours outputUI (e.g. cluster_input1, cluster_input2, cluster_inputN)
     cluster_input_names <- reactive({
       req(admixture_df())
-      clusters <- paste0("cluster_input", 1:ncol(select(admixture_df(), contains("cluster"))) )
-      # print(clusters)
-      return(clusters)
+      cluster_inputIDs <- paste0("cluster_input", 1:(ncol(admixture_df())-2)) 
+      # print(cluster_inputIDs)
+      return(cluster_inputIDs)
     })
 
-    # Render the correct number of colour options to the UI
+    # Render the correct number of cluster colour options to the UI
     output$colours_input <- renderUI({
       req(cluster_input_names(), admixture_df())
-      labels <- paste0("Cluster ", 1:ncol(select(admixture_df(), contains("cluster"))) )
+      
+      # Vector of  cluster labels on UI (Cluster 1, Cluster 2, etc.)
+      labels <- paste0("Cluster ", 1:(ncol(admixture_df())-2))
       # print(labels)
       
-      map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(ns(.x), label = .y, value = "white")))
+      # Default colours for pie charts
+      pal <- colorRampPalette(c("green","blue")) # green-blue colour palette
+      cluster_cols <- pal(ncol(admixture_df())-2) # number of cluster colours for palette
+      # print(cluster_cols)
+      
+      # Render colourInput, cluster labels and cluster colours to UI
+      pmap_args <- list(cluster_input_names(), labels, cluster_cols)
+      pmap(pmap_args, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;",
+                            colourInput(ns(..1), label = ..2, value = ..3)))
     })
-
+    
     # Collect colours chosen by users
     user_cols <- reactive({
       req(cluster_input_names())

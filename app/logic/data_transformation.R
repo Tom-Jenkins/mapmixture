@@ -4,7 +4,6 @@
 box::use(
     tidyr[pivot_longer],
     ggplot2[ggplot, aes, geom_bar, coord_polar, scale_fill_manual, theme_void],
-    magrittr[`%>%`],
     dplyr[group_by, summarise, arrange, n_distinct, left_join],
     tidyr[pivot_wider, tibble],
     purrr[map],
@@ -22,14 +21,14 @@ transform_data <- function(data) {
 #' @export
 prepare_pie_data <- function(data) {
     
-    data %>% 
+    data |>
       # Calculate mean admixture proportions for each site
-      group_by(site, cluster) %>%
-      summarise(admixture = mean(admixture)) %>%
+      group_by(.data = _, site, cluster) |>
+      summarise(.data = _, admixture = mean(admixture)) |>
       # Convert to the format required for scatterpie 
-      pivot_wider(names_from = cluster, values_from = admixture) %>% 
+      pivot_wider(data = _, names_from = cluster, values_from = admixture) |> 
       # Order rows by site
-      arrange(site)
+      arrange(.data = _, site)
 }
 
 
@@ -39,19 +38,19 @@ merge_coords_data <- function(coord_df, pie_df, CRS) {
     colnames(coord_df) <- str_to_lower(colnames(coord_df))
 
     # Convert to sf object and transform to CRS
-    coord_sf <- coord_df %>% 
-      st_as_sf(coords = c("lon","lat")) %>%
-      arrange(site) %>%
-      st_set_crs(4326) %>% 
-      st_transform(crs = CRS)
+    coord_sf <- coord_df |> 
+      st_as_sf(x = _, coords = c("lon","lat")) |>
+      arrange(.data = _, site) |>
+      st_set_crs(x = _, 4326) |> 
+      st_transform(x = _, crs = CRS)
 
     # Join piedata with sf object by site
     piecoords <- tibble(
       site = coord_sf$site,
       lon = st_coordinates(coord_sf)[,"X"],
       lat = st_coordinates(coord_sf)[,"Y"]
-      ) %>%
-      left_join(pie_df, "site")
+      ) |>
+      left_join(x = _, pie_df, "site")
 
     # Return tibble
     return(piecoords)
@@ -61,9 +60,9 @@ merge_coords_data <- function(coord_df, pie_df, CRS) {
 #' @export
 transform_bbox <- function(bbox, CRS) {
 
-  bbox %>%
-    st_as_sfc() %>%
-    st_transform(crs = CRS) %>%
-    st_bbox()
+  bbox |>
+    st_as_sfc(x = _) |>
+    st_transform(x = _, crs = CRS) |>
+    st_bbox(obj = _)
 }
 
