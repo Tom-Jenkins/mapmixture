@@ -7,13 +7,14 @@ box::use(
   colourpicker[colourInput],
   dplyr[group_by, summarise, n_distinct, arrange, select],
   tidyr[contains],
-  purrr[map, map2, map_chr],
+  purrr[map, pmap, map_chr],
   stringr[str_to_lower, str_replace, str_replace_all],
   sf[st_bbox, st_crs, st_as_sf, st_as_sfc, st_transform, st_read, st_set_crs],
   rlang[`%||%`],
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback, feedbackWarning],
   vroom[vroom],
+  grDevices[colorRampPalette,]
 )
 
 
@@ -178,10 +179,20 @@ server <- function(id, admixture_df, coords_df) {
     # Render the correct number of cluster colour options to the UI
     output$colours_input <- renderUI({
       req(cluster_input_names(), admixture_df())
-      labels <- paste0("Cluster ", 1:(ncol(admixture_df())-2)) # vector of labels on UI (Cluster 1, Cluster 2, etc.)
+      
+      # Vector of  cluster labels on UI (Cluster 1, Cluster 2, etc.)
+      labels <- paste0("Cluster ", 1:(ncol(admixture_df())-2))
       # print(labels)
       
-      map2(cluster_input_names(), labels, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;", colourInput(ns(.x), label = .y, value = "white")))
+      # Default colours for pie charts
+      pal <- colorRampPalette(c("green","blue")) # green-blue colour palette
+      cluster_cols <- pal(ncol(admixture_df())-2) # number of cluster colours for palette
+      # print(cluster_cols)
+      
+      # Render colourInput, cluster labels and cluster colours to UI
+      pmap_args <- list(cluster_input_names(), labels, cluster_cols)
+      pmap(pmap_args, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;",
+                            colourInput(ns(..1), label = ..2, value = ..3)))
     })
     
     # Collect colours chosen by users
