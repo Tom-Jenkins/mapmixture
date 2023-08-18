@@ -253,12 +253,11 @@ server <- function(id, admixture_df, coords_df) {
     })
 
     # Import advanced customisation theme options chosen by user
-    # Format of returned string: "theme_update(axis.text = element_blank(),axis.title = element_blank(),..."
+    # Format of returned string: "axis.text = element_blank(),axis.title = element_blank(),..."
     advanced_custom <- eventReactive(input$advanced_customisation_box, {
-        user_text <- paste0("theme_update(", input$advanced_customisation_box, ")")
-        str_text <- str_replace_all(user_text, "\n", ",")
+        user_text <- str_replace_all(input$advanced_customisation_box, "\n", ",")
         # print(str_text)
-        return(str_text)
+        return(user_text)
     })
 
     # Return parameters as a named list
