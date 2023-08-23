@@ -3,18 +3,18 @@ epsg_code,name
 3003,Monte Mario / Italy zone 1
 3035,ETRS89-extended / LAEA Europe
 3112,GDA94 / Geoscience Australia Lambert
+3832,WGS 84 / PDC Mercator
 3857,WGS 84 / Pseudo-Mercator
-4286,Qatar 1948
-4296,Sudan
+3994,WGS 84 / Mercator 41
 4326,WGS 84
 4490,China Geodetic Coordinate System 2000
-4607,St. Vincent 1945
 4618,SAD69
 4636,Petrels 1972
 4717,Cape Canaveral
 5940,WGS 84 / EPSG Russia Polar Stereographic
 6666,JGD2011
-9147,SIRGAS-Chile 2013
+8909,CR-SIRGAS / UTM zone 16N
+9191,WGS 84 / NIWA Albers
 21781,CH1903 / LV03
 23032,ED50 / UTM zone 32N
 27700,OSGB36 / British National Grid
