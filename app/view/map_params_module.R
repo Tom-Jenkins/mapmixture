@@ -131,12 +131,15 @@ server <- function(id, admixture_df, coords_df) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Import Coordinate Reference System chosen by user (default: LAEA Europe)
-    params_CRS <- eventReactive(input$crs_input, {
-      # Convert EPSG 4326 to EPSG 3857
-      str_replace(input$crs_input, "4326", "3857") |>
-        # Convert string to integer
-        as.integer(x = _)
+    # Import Coordinate Reference System chosen by user (default: WGS 84 / Pseudo-Mercator)
+    params_CRS <- reactive({
+      req(input$crs_input)
+      
+      # If user selects EPSG 4326, convert to EPSG 3857, else use selected EPSG
+      crs <- ifelse(input$crs_input == "4326",
+                    str_replace(input$crs_input, "4326", "3857") |> as.integer(x = _),
+                    input$crs_input |> as.integer(x = _))
+      return(crs)
     })
 
     # Import map boundary chosen by user (default is the boundary of the points in the coordinates file)
