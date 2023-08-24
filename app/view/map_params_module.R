@@ -83,7 +83,7 @@ ui <- function(id) {
       div(style = "margin-top: 2px;", switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
     ),
 
-    # Pie chart size ----
+    # Pie chart input ----
     div(style = "margin-top: -25px; display: flex;",
       div(
         numericInputIcon(
@@ -99,6 +99,7 @@ ui <- function(id) {
           )
         ),      
       div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieopacity_input"), label = strong("Opacity"), width = "80px", min = 0, max = 1, value = 1, step = 0.05)),
+      div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieborder_input"), label = strong("Border"), width = "80px", min = 0, max = 2, value = 0.3, step = 0.01)),
     ),
 
     # Map title ----
@@ -226,11 +227,12 @@ server <- function(id, admixture_df, coords_df) {
     scalebar_size <- reactive(input$scalebar_size)
     scalebar_toggle <- reactive(input$scalebar_toggle)
 
-    # Import pie chart size chosen by user
+    # Import pie chart inputs chosen by user
     pie_size <- eventReactive(input$piesize_input, {
       as.double(input$piesize_input)
     })
     pie_opacity <- reactive(input$pieopacity_input)
+    pie_border <- reactive(input$pieborder_input)
 
     # Import map title chosen by user
     param_title <- reactive(input$title_input)
@@ -279,6 +281,7 @@ server <- function(id, admixture_df, coords_df) {
         param_scalebar_toggle = scalebar_toggle,
         param_pie_size = pie_size,
         param_pie_opacity = pie_opacity,
+        param_pie_border = pie_border,
         param_title = param_title,
         param_land_col = user_land_col,
         param_map_theme = map_theme,
