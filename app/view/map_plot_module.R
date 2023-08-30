@@ -12,7 +12,8 @@ box::use(
   shinyjs[useShinyjs, onevent, runjs],
   stringr[str_replace_all, str_to_title],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
-  ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale]
+  ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale],
+  dplyr[count],
 )
 
 # Import custom R functions into module
@@ -49,6 +50,9 @@ ui <- function(id) {
 server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, arrow_size, arrow_toggle, scalebar_position, scalebar_size, scalebar_toggle, pie_size, pie_opacity, pie_border, user_title, user_land_col, map_theme, user_advanced) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    
+    # Sample size
+    # count(admixture_df(), admixture_df()[[1]])$n
 
     # Transform data into format required for scatterpie (returns a tibble) ----
     piedata <- reactive({
@@ -162,7 +166,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
       # Render download button and internal components ----
       output$dropdown_download_bttn <- renderUI({
-        div(style = "position: relative; margin-bottom: -20px; float: right;",
+        div(style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
           dropdown(
             style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
             strong("Download Map", class = "fs-4 text-success"),
