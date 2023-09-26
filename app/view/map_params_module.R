@@ -5,7 +5,7 @@ box::use(
   shiny[moduleServer, NS, tagList, fluidRow, column, h2, h3, h4, tableOutput, renderTable, plotOutput, renderPlot, sidebarLayout, sidebarPanel, mainPanel, selectInput, reactive, observeEvent, eventReactive, observe, br, icon, req, textInput, div, strong, bindEvent, freezeReactiveValue, debounce, textAreaInput, numericInput, uiOutput, renderUI, reactiveValues, wellPanel, tabsetPanel, tabPanel, sliderInput, fileInput, span, isolate],
   shinyWidgets[pickerInput, searchInput, actionBttn, numericInputIcon, switchInput, materialSwitch, dropdown, dropdownButton, tooltipOptions, autonumericInput],
   colourpicker[colourInput],
-  dplyr[group_by, summarise, n_distinct, arrange, select],
+  dplyr[group_by, summarise, n_distinct, arrange, select, filter],
   tidyr[contains],
   purrr[map, pmap, map_chr],
   stringr[str_to_lower, str_replace, str_replace_all],
@@ -19,9 +19,7 @@ box::use(
 
 
 # CRS options
-crs_data <- vroom("./app/static/data/EPSG_CRS.csv")
-epsg <- crs_data$epsg_code
-projection <- crs_data$name
+crs_data <- vroom("./app/static/data/EPSG_CRS.csv") |> arrange(.data = _, region, epsg_code)
 # epsg <- c(3035,3857,4326,27700)
 # projection <- c("ETRS89-extended / LAEA Europe","WGS 84 / Pseudo-Mercator","WGS 84","OSGB36 / British National Grid")
 
@@ -39,10 +37,21 @@ ui <- function(id) {
       width = "100%",
       selected = "3857",
       choicesOpt = list(
-        subtext = paste0("EPSG: ", projection)
+        subtext = paste0("EPSG: ", crs_data$name)
       ),
       options = list("live-search" = TRUE, size = 10),
-      choices = epsg
+      # Update for v1.0.4
+      choices = list(
+        Africa = filter(crs_data, region == "Africa")$epsg_code,
+        Americas = filter(crs_data, region == "Americas")$epsg_code,
+        Antarctica = filter(crs_data, region == "Antarctica")$epsg_code,
+        Arctic = filter(crs_data, region == "Arctic")$epsg_code,
+        Asia = filter(crs_data, region == "Asia")$epsg_code,
+        Europe = filter(crs_data, region == "Europe")$epsg_code,
+        Oceania = filter(crs_data, region == "Oceania")$epsg_code,
+        `Pacific Ocean` = filter(crs_data, region == "Pacific Ocean")$epsg_code,
+        World = filter(crs_data, region == "World")$epsg_code
+      ),
     ),
 
     # Boundary limits input ----
