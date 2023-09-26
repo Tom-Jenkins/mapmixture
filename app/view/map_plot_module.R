@@ -12,7 +12,8 @@ box::use(
   shinyjs[useShinyjs, onevent, runjs],
   stringr[str_replace_all, str_to_title],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback],
-  ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale]
+  ggspatial[annotation_north_arrow, north_arrow_orienteering, annotation_scale],
+  dplyr[count],
 )
 
 # Import custom R functions into module
@@ -46,9 +47,12 @@ ui <- function(id) {
 
 
 #' @export
-server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, arrow_size, arrow_toggle, scalebar_position, scalebar_size, scalebar_toggle, pie_size, pie_opacity, user_title, user_land_col, map_theme, user_advanced) {
+server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user_bbox, user_expand, cluster_cols, cluster_names, arrow_position, arrow_size, arrow_toggle, scalebar_position, scalebar_size, scalebar_toggle, pie_size, pie_opacity, pie_border, user_title, user_land_col, map_theme, user_advanced) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    
+    # Sample size
+    # count(admixture_df(), admixture_df()[[1]])$n
 
     # Transform data into format required for scatterpie (returns a tibble) ----
     piedata <- reactive({
@@ -90,7 +94,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
         coord_sf(xlim = c(boundary()[["xmin"]], boundary()[["xmax"]]),
                 ylim = c(boundary()[["ymin"]], boundary()[["ymax"]]),
                 expand = user_expand())+
-        geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data = piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())], size = 0.3, alpha = pie_opacity())+
+        geom_scatterpie(aes(x=lon, y=lat, group=site), pie_scale = pie_size(), data = piecoords(), cols = colnames(piecoords())[4:ncol(piecoords())], size = pie_border(), alpha = pie_opacity())+
         ggtitle(user_title())+
         xlab("Longitude")+
         ylab("Latitude")+
@@ -143,11 +147,11 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
       # Update ggplot theme ----
       tryCatch({
-        eval_tidy(parse_expr(user_advanced()))
+        update_theme <- paste0("theme_update(", user_advanced(), ")")
+        eval_tidy(parse_expr(update_theme))
       }, error = function(err) {
         # Show error message if user enters any invalid ggplot theme parameters
         showNotification(
-          # ui = paste0("Invalid Advanced Theme Customisation. ", err),
           ui = HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
           duration = 10,
           type = "err"
@@ -162,7 +166,7 @@ server <- function(id, bttn, admixture_df, coords_df, world_data, user_CRS, user
 
       # Render download button and internal components ----
       output$dropdown_download_bttn <- renderUI({
-        div(style = "position: relative; margin-bottom: -20px; float: right;",
+        div(style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
           dropdown(
             style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
             strong("Download Map", class = "fs-4 text-success"),

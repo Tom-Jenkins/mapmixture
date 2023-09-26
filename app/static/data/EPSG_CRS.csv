@@ -1,22 +1,30 @@
-epsg_code,name
-2056,CH1903+ / LV95
-3003,Monte Mario / Italy zone 1
-3035,ETRS89-extended / LAEA Europe
-3112,GDA94 / Geoscience Australia Lambert
-3857,WGS 84 / Pseudo-Mercator
-4286,Qatar 1948
-4296,Sudan
-4326,WGS 84
-4490,China Geodetic Coordinate System 2000
-4607,St. Vincent 1945
-4618,SAD69
-4636,Petrels 1972
-4717,Cape Canaveral
-5940,WGS 84 / EPSG Russia Polar Stereographic
-6666,JGD2011
-9147,SIRGAS-Chile 2013
-21781,CH1903 / LV03
-23032,ED50 / UTM zone 32N
-27700,OSGB36 / British National Grid
-28992,Amersfoort / RD New
-900913,Google Maps Global Mercator
+epsg_code,name,region
+2056,CH1903+ / LV95,Europe
+3003,Monte Mario / Italy zone 1,Europe
+3035,ETRS89-extended / LAEA Europe,Europe
+3857,WGS 84 / Pseudo-Mercator,World
+4326,WGS 84,World
+4490,China Geodetic Coordinate System 2000,Asia
+4618,SAD69,Americas
+4717,Cape Canaveral,Americas
+5940,WGS 84 / EPSG Russia Polar Stereographic,Arctic
+6666,JGD2011,Asia
+8909,CR-SIRGAS / UTM zone 16N,Americas
+21781,CH1903 / LV03,Europe
+23032,ED50 / UTM zone 32N,Europe
+27700,OSGB36 / British National Grid,Europe
+28992,Amersfoort / RD New,Europe
+900913,Google Maps Global Mercator,World
+3832,WGS 84 / PDC Mercator,Pacific Ocean
+3852,RSRGD2000 / DGLC2000,Antarctica
+3112,GDA94 / Geoscience Australia Lambert,Oceania
+3994,WGS 84 / Mercator 41,Pacific Ocean
+5479,RSRGD2000 / MSLC2000,Antarctica
+3031,WGS 84 / Antarctic Polar Stereographic,Antarctica
+7074,RGTAAF07 / UTM zone 37S,Oceania
+32761,WGS 84 / UPS South (NE),Antarctica
+3995,WGS 84 / Arctic Polar Stereographic,Arctic
+4263,Minna,Africa
+4222,Cape,Africa
+4307,Nord Sahara 1959,Africa
+29701,Tananarive (Paris) / Laborde Grid,Africa

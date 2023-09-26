@@ -35,7 +35,7 @@ ui <- function(id) {
       class = "custom-navbar",
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       span(
-        span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture"), span(class = "badge bg-light mx-1", "1.0.3")),
+        span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture"), span(class = "badge bg-light mx-1", "1.0.4")),
         a(
           style = "color: white;",
           href = "https://twitter.com/tom__jenkins",
@@ -196,6 +196,7 @@ server <- function(id) {
     selected_scalebar_toggle <- map_params_mod_outputs[["param_scalebar_toggle"]]
     selected_pie_size <- map_params_mod_outputs[["param_pie_size"]]
     selected_pie_opacity <- map_params_mod_outputs[["param_pie_opacity"]]
+    selected_pie_border <- map_params_mod_outputs[["param_pie_border"]]
     selected_title <- map_params_mod_outputs[["param_title"]]
     selected_land_col <- map_params_mod_outputs[["param_land_col"]]
     selected_map_theme <- map_params_mod_outputs[["param_map_theme"]]
@@ -223,6 +224,7 @@ server <- function(id) {
       user_land_col = selected_land_col,
       pie_size = selected_pie_size,
       pie_opacity = selected_pie_opacity,
+      pie_border = selected_pie_border,
       map_theme = selected_map_theme,
       user_advanced = selected_advanced
     )
