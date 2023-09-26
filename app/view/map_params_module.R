@@ -14,7 +14,7 @@ box::use(
   ggplot2[theme, element_text, element_line, element_rect, element_blank, margin],
   shinyFeedback[useShinyFeedback, showFeedbackWarning, hideFeedback, feedbackWarning],
   vroom[vroom],
-  grDevices[colorRampPalette,]
+  grDevices[colorRampPalette],
 )
 
 
@@ -49,7 +49,7 @@ ui <- function(id) {
         Asia = filter(crs_data, region == "Asia")$epsg_code,
         Europe = filter(crs_data, region == "Europe")$epsg_code,
         Oceania = filter(crs_data, region == "Oceania")$epsg_code,
-        `Pacific Ocean` = filter(crs_data, region == "Pacific Ocean")$epsg_code,
+        "Pacific Ocean" = filter(crs_data, region == "Pacific Ocean")$epsg_code,
         World = filter(crs_data, region == "World")$epsg_code
       ),
     ),
