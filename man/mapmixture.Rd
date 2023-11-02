@@ -88,40 +88,20 @@ the function will calculate the mean average admixture proportion for each site.
 }
 \examples{
 # Admixture Format 1
-admixture1 <- data.frame(
-  Site = c("London", "London", "Paris", "Paris", "Berlin", "Berlin",
-   "Rome", "Rome", "Madrid", "Madrid"),
-  Ind = c("London1", "London2", "Paris1", "Paris2", "Berlin1", "Berlin2",
-   "Rome1", "Rome2", "Madrid1", "Madrid2"),
-  Cluster1 = c(1.0, 0.9, 0.5, 0.5, 0.1, 0.1, 0, 0, 0, 0),
-  Cluster2 = c(0, 0.10, 0.50, 0.40, 0.50, 0.40, 0.01, 0.01, 0.70, 0.80),
-  Cluster3 = c(0, 0, 0, 0.10, 0.40, 0.50, 0.99, 0.99, 0.30, 0.20)
-)
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
 
 # Admixture Format 2
-admixture2 <- data.frame(
-  Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-  Ind = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-  Cluster1 = c(0.95, 0.5, 0.1, 0, 0),
-  Cluster2 = c(0.05, 0.45, 0.45, 0.01, 0.75),
-  Cluster3 = c(0, 0.05, 0.45, 0.99, 0.25)
-)
+file <- system.file("extdata", "admixture2.csv", package = "mapmixture")
+admixture2 <- read.csv(file)
 
 # Admixture Format 3
-admixture3 <- data.frame(
-  Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-  Ind = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-  Cluster1 = c(1, 1, 0, 0, 0),
-  Cluster2 = c(0, 0, 1, 0, 1),
-  Cluster3 = c(0, 0, 0, 1, 0)
-)
+file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+admixture3 <- read.csv(file)
 
 # Coordinates Format
-coordinates <- data.frame(
-  Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-  Lat = c(51.51, 48.85, 52.52, 41.90, 40.42),
-  Lon = c(-0.12, 2.35, 13.40, 12.49, -3.70)
-)
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
 
 # Plot using default parameters
 mapmixture(admixture1, coordinates)
@@ -131,10 +111,10 @@ mapmixture(admixture1, coordinates, crs = 3035)
 
 # Plot using custom parameters
 mapmixture(admixture1, coordinates,
-  cluster_cols = c("blue","purple","green"),
-  cluster_names = c("Group 1","Group 2", "Group 3"),
+  cluster_cols = c("blue","green"),
+  cluster_names = c("Group 1","Group 2"),
   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
-  boundary = c(xmin=-10, xmax=17, ymin=37, ymax=55),
+  boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
   pie_size = 1.5,
   pie_border = 0.3,
   pie_opacity = 1,

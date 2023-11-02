@@ -34,7 +34,7 @@
 #'   Cluster3 = c(0, 0.05, 0.45, 0.99, 0.25)
 #' )
 #'
-#' geom_pie_charts(df,
+#' add_pie_charts(df,
 #'   admix_columns = 4:ncol(df),
 #'   lat_column = "lat",
 #'   lon_column = "lon",
@@ -55,7 +55,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
   # Convert data.frame from wide to long format
   df_long <- tidyr::pivot_longer(
     data = df,
-    cols = admix_columns,
+    cols = dplyr::all_of(admix_columns),
     names_to = "cluster",
     values_to = "value"
   )

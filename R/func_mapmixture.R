@@ -37,40 +37,20 @@
 #'
 #' @examples
 #' # Admixture Format 1
-#' admixture1 <- data.frame(
-#'   Site = c("London", "London", "Paris", "Paris", "Berlin", "Berlin",
-#'    "Rome", "Rome", "Madrid", "Madrid"),
-#'   Ind = c("London1", "London2", "Paris1", "Paris2", "Berlin1", "Berlin2",
-#'    "Rome1", "Rome2", "Madrid1", "Madrid2"),
-#'   Cluster1 = c(1.0, 0.9, 0.5, 0.5, 0.1, 0.1, 0, 0, 0, 0),
-#'   Cluster2 = c(0, 0.10, 0.50, 0.40, 0.50, 0.40, 0.01, 0.01, 0.70, 0.80),
-#'   Cluster3 = c(0, 0, 0, 0.10, 0.40, 0.50, 0.99, 0.99, 0.30, 0.20)
-#' )
+#' file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+#' admixture1 <- read.csv(file)
 #'
 #' # Admixture Format 2
-#' admixture2 <- data.frame(
-#'   Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-#'   Ind = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-#'   Cluster1 = c(0.95, 0.5, 0.1, 0, 0),
-#'   Cluster2 = c(0.05, 0.45, 0.45, 0.01, 0.75),
-#'   Cluster3 = c(0, 0.05, 0.45, 0.99, 0.25)
-#' )
+#' file <- system.file("extdata", "admixture2.csv", package = "mapmixture")
+#' admixture2 <- read.csv(file)
 #'
 #' # Admixture Format 3
-#' admixture3 <- data.frame(
-#'   Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-#'   Ind = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-#'   Cluster1 = c(1, 1, 0, 0, 0),
-#'   Cluster2 = c(0, 0, 1, 0, 1),
-#'   Cluster3 = c(0, 0, 0, 1, 0)
-#' )
+#' file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+#' admixture3 <- read.csv(file)
 #'
 #' # Coordinates Format
-#' coordinates <- data.frame(
-#'   Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
-#'   Lat = c(51.51, 48.85, 52.52, 41.90, 40.42),
-#'   Lon = c(-0.12, 2.35, 13.40, 12.49, -3.70)
-#' )
+#' file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+#' coordinates <- read.csv(file)
 #'
 #' # Plot using default parameters
 #' mapmixture(admixture1, coordinates)
@@ -80,10 +60,10 @@
 #'
 #' # Plot using custom parameters
 #' mapmixture(admixture1, coordinates,
-#'   cluster_cols = c("blue","purple","green"),
-#'   cluster_names = c("Group 1","Group 2", "Group 3"),
+#'   cluster_cols = c("blue","green"),
+#'   cluster_names = c("Group 1","Group 2"),
 #'   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
-#'   boundary = c(xmin=-10, xmax=17, ymin=37, ymax=55),
+#'   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
 #'   pie_size = 1.5,
 #'   pie_border = 0.3,
 #'   pie_opacity = 1,
@@ -188,7 +168,8 @@ mapmixture <- function(
       panel.grid = ggplot2::element_line(colour = "white", linewidth = 0.1),
       panel.background = ggplot2::element_rect(fill = sea_colour),
       panel.border = ggplot2::element_rect(fill = NA, colour = "black", linewidth = 0.3),
-      plot.title = ggplot2::element_text(size = plot_title_size, face = "bold", margin = margin(0,0,10,0))
+      plot.title = ggplot2::element_text(size = plot_title_size, face = "bold",
+                                         margin = ggplot2::margin(0,0,10,0))
     )
 
 
@@ -200,7 +181,8 @@ mapmixture <- function(
   )
 
   # Add legend to plot using a dummy point data set (not ideal but works)
-  # NOTE: THE LEGEND KEY SIZE IS NOT WORKING ***
+  # NOTE: 02/11/2023: The legend key does not resize
+  # The only way to resize is to add a guides(fill = guide_legend(override.aes = list(size = 3)))
   plt <- plt+
     ggplot2::geom_point(
       data = legend_data,
@@ -209,28 +191,9 @@ mapmixture <- function(
     )+
     ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
     ggplot2::theme(
-      legend.title = element_blank(),
-      legend.key = element_rect(fill = NA)
+      legend.title = ggplot2::element_blank(),
+      legend.key = ggplot2::element_rect(fill = NA)
     )
-
-  # # TEST
-  # pt <- data.frame(
-  #   cluster = c("cluster1","cluster2","cluster3"),
-  #   x = rep(NA, 3),
-  #   y = rep(NA, 3)
-  # )
-  # pt$cluster <- factor(pt$cluster, levels = c("cluster1","cluster2","cluster3"))
-  # ggplot()+
-  #   geom_point(data = pt, aes(x=x,y=y,fill=as.factor(cluster)),
-  #              shape = 22, colour = "black", stroke = 0.3, size = 5)+
-  #   scale_fill_manual(values = c("red","yellow","green"))+
-  #   theme(
-  #     legend.position = "right",
-  #     legend.title = element_blank(),
-  #     # legend.key.size = grid::unit(2, unit = "line"),
-  #     legend.key = element_rect(fill = NA),
-  #     legend.text = element_text(size = 20)
-  #   )
 
   # Add north arrow if true
   if (arrow == TRUE) {

@@ -57,7 +57,7 @@ df <- data.frame(
   Cluster3 = c(0, 0.05, 0.45, 0.99, 0.25)
 )
 
-geom_pie_charts(df,
+add_pie_charts(df,
   admix_columns = 4:ncol(df),
   lat_column = "lat",
   lon_column = "lon",

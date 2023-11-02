@@ -119,23 +119,15 @@ mod_map_params_ui <- function(id) {
 #'
 #' @noRd
 #' @importFrom shiny moduleServer reactive req eventReactive
-#' @importFrom stringr str_replace str_replace_all
-#' @importFrom sf st_bbox st_as_sf st_set_crs st_crs
-#' @importFrom purrr pmap map_chr %||%
+#' @importFrom purrr %||%
 #' @importFrom colourpicker colourInput
-#' @importFrom ggplot2 theme element_text element_line element_rect element_blank margin
 mod_map_params_server <- function(id, admixture_df, coords_df){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Import Coordinate Reference System chosen by user (default: WGS 84 / Pseudo-Mercator) ----
+    # Import Coordinate Reference System chosen by user (default: WGS 84 EPSG:4326) ----
     params_CRS <- reactive({
       req(input$crs_input)
-
-      # If user selects EPSG 4326, convert to EPSG 3857, else use selected EPSG
-      # crs <- ifelse(input$crs_input == "4326",
-      #               str_replace(input$crs_input, "4326", "3857") |> as.integer(x = _),
-      #               input$crs_input |> as.integer(x = _))
       crs <- as.integer(input$crs_input)
       return(crs)
     })
@@ -148,11 +140,11 @@ mod_map_params_server <- function(id, admixture_df, coords_df){
       if (input$xmin_input != "" && input$xmax_input != "" && input$ymin_input != "" && input$ymax_input != "" && !is.na(as.double(input$xmin_input)) && !is.na(as.double(input$xmax_input)) && !is.na(as.double(input$ymin_input)) && !is.na(as.double(input$ymax_input))) {
 
         return(
-          st_bbox(c(xmin = as.double(input$xmin_input),
+          sf::st_bbox(c(xmin = as.double(input$xmin_input),
                     xmax = as.double(input$xmax_input),
                     ymin = as.double(input$ymin_input),
                     ymax = as.double(input$ymax_input)),
-                    crs = st_crs(4326))
+                    crs = sf::st_crs(4326))
         )
 
         # Default bounding box
@@ -184,14 +176,14 @@ mod_map_params_server <- function(id, admixture_df, coords_df){
 
       # Render colourInput, cluster labels and cluster colours to UI
       pmap_args <- list(cluster_col_inputIDs(), cluster_cols)
-      pmap(pmap_args, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;",
+      purrr::pmap(pmap_args, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;",
                             colourInput(ns(..1), label = NULL, value = ..2)))
     })
 
     # Collect colours chosen by user ----
     user_cols <- reactive({
       req(cluster_col_inputIDs())
-      colours <- map_chr(cluster_col_inputIDs(), ~ input[[.x]] %||% "")
+      colours <- purrr::map_chr(cluster_col_inputIDs(), ~ input[[.x]] %||% "")
       # print(colours)
       return(colours)
     })
@@ -215,14 +207,14 @@ mod_map_params_server <- function(id, admixture_df, coords_df){
 
       # Render cluster names to UI
       pmap_args <- list(cluster_name_inputIDs(), labels)
-      pmap(pmap_args, ~ div(style = "display: inline-block;",
+      purrr::pmap(pmap_args, ~ div(style = "display: inline-block;",
                             textInput(ns(..1), label = NULL, value = ..2, width = "100px", placeholder = ..2)))
     })
 
     # Collect cluster names chosen by user ----
     user_cluster_names <- reactive({
       req(cluster_name_inputIDs())
-      labels <- map_chr(cluster_name_inputIDs(), ~ input[[.x]] %||% "")
+      labels <- purrr::map_chr(cluster_name_inputIDs(), ~ input[[.x]] %||% "")
       # print(labels)
       return(labels)
     })
@@ -270,7 +262,7 @@ mod_map_params_server <- function(id, admixture_df, coords_df){
     # Import advanced customisation theme options chosen by user ----
     # Format of returned string: "axis.text = element_blank(),axis.title = element_blank(),..."
     advanced_custom <- eventReactive(input$advanced_customisation_box, {
-      user_text <- str_replace_all(input$advanced_customisation_box, "\n", ",")
+      user_text <- stringr::str_replace_all(input$advanced_customisation_box, "\n", ",")
       # print(user_text)
       return(user_text)
     })

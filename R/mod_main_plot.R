@@ -28,13 +28,11 @@ mod_main_plot_ui <- function(id) {
 #' @noRd
 #' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton
 #' @importFrom shinyjs runjs
-#' @importFrom sf st_transform
-#' @importFrom stringr str_to_title
 #' @importFrom rlang parse_expr eval_tidy
 #' @importFrom shinyWidgets dropdown radioGroupButtons
 #' @importFrom shinyFeedback showFeedbackWarning hideFeedback
 #' @importFrom htmltools HTML
-#' @importFrom ggplot2 ggsave theme_update
+#' @importFrom ggplot2 theme_update element_blank element_rect element_line element_text margin rel
 mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
                                  user_CRS, user_bbox, user_expand,
                                  cluster_cols, cluster_names,
@@ -230,7 +228,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
         if(input$filetype_radio_bttn == "PNG") {
           # Activate spinner while download in progress
           runjs("document.getElementById('spinner-download').classList.remove('hidden');")
-          ggsave(
+          ggplot2::ggsave(
             plot = output_map(),
             filename = file,
             device = "png",
@@ -247,7 +245,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
         if(input$filetype_radio_bttn == "JPEG") {
           # Activate spinner while download in progress
           runjs("document.getElementById('spinner-download').classList.remove('hidden');")
-          ggsave(
+          ggplot2::ggsave(
             plot = output_map(),
             filename = file,
             device = "jpeg",
@@ -264,7 +262,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
         if(input$filetype_radio_bttn == "PDF") {
           # Activate spinner while download in progress
           runjs("document.getElementById('spinner-download').classList.remove('hidden');")
-          ggsave(
+          ggplot2::ggsave(
             plot = output_map(),
             filename = file,
             device = "pdf",

@@ -2,50 +2,54 @@
 % Please edit documentation in R/func_bar_chart.R
 \name{structure_plot}
 \alias{structure_plot}
-\title{STRUCTURE Bar Chart}
+\title{STRUCTURE Barplot}
 \usage{
 structure_plot(
-  df,
+  admixture_df,
   type = "structure",
-  colours = NULL,
+  cluster_cols = NULL,
   site_dividers = TRUE,
   labels = "site",
+  site_ticks = TRUE,
   flip_axis = FALSE,
   facet_col = NULL,
   facet_row = NULL
 )
 }
 \arguments{
-\item{df}{a data frame (see examples).}
+\item{admixture_df}{a data.frame or tibble containing admixture data (see examples).}
+
+\item{type}{show a traditional STRUCTURE barplot ("structure")
+or a facet barplot ("facet").}
+
+\item{cluster_cols}{a character vector of colours the same length as the number of clusters.
+If \code{NULL}, a blue-green palette is used.}
+
+\item{site_dividers}{add dotted lines that divide sites (TRUE or FALSE).}
+
+\item{labels}{show labels at the site level or the
+individual level ("site" or "individual").}
+
+\item{site_ticks}{show ticks when labels = "site".}
+
+\item{flip_axis}{flip the axes so that the plot is vertical (TRUE or FALSE).
+Default is FALSE (horizontal barplot).}
+
+\item{facet_col}{number of columns to display for facet barplot.}
+
+\item{facet_row}{number of rows to display for facet barplot.}
 }
 \value{
 A ggplot object.
 }
 \description{
-Internal function used to create a traditional STRUCTURE plot or
-a facet bar chart based on admixture proportions.
+Plot a traditional STRUCTURE barplot or
+a facet barplot from individual admixture proportions.
 }
 \examples{
-df <- data.frame(
-  site = c("Berlin", "Berlin", "London", "London", "Madrid", "Madrid",
-          "Paris", "Paris", "Rome", "Rome"),
-  ind = c("Berlin1", "Berlin2", "London1", "London2", "Madrid1", "Madrid2",
-          "Paris1", "Paris2", "Rome1", "Rome2"),
-  cluster1 = c(0.1, 0.1, 1.0, 0.9, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0),
-  cluster2 = c(0.50, 0.40, 0.00, 0.10, 0.70, 0.80, 0.50, 0.40, 0.01, 0.01),
-  cluster3 = c(0.40, 0.50, 0.00, 0.00, 0.30, 0.20, 0.00, 0.10, 0.99, 0.99)
-)
+# Admixture Format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
 
-df <- data.frame(
-  site = c(rep("Site1", 30), rep("Site2", 30),
-           rep("Site3", 30), rep("Site4", 30)),
-  ind = c(paste0("site1_", 1:30), paste0("site2_", 1:30),
-          paste0("site3_", 1:30), paste0("site4_", 1:30)),
-  cluster1 = c(rep(0.5, 30), rep(0.25, 30), rep(0.05, 30), rep(0.05, 30)),
-  cluster2 = c(rep(0.25, 30), rep(0.50, 30), rep(0.25, 30), rep(0.05, 30)),
-  cluster3 = c(rep(0.20, 30), rep(0.20, 30), rep(0.20, 30), rep(0.50, 30)),
-  cluster4 = c(rep(0.05, 30), rep(0.05, 30), rep(0.50, 30), rep(0.40, 30))
-)
-
-structure_plot(df, type = "structure")
+structure_plot(admixture1, type = "structure")
 }

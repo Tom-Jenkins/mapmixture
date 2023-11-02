@@ -1,61 +1,58 @@
-#' STRUCTURE Bar Chart
+#' STRUCTURE Barplot
 #'
 #' @description
-#' Internal function used to create a traditional STRUCTURE plot or
-#' a facet bar chart based on admixture proportions.
+#' Plot a traditional STRUCTURE barplot or
+#' a facet barplot from individual admixture proportions.
 #'
-#' @param df a data frame (see examples).
+#' @param admixture_df a data.frame or tibble containing admixture data (see examples).
+#' @param type show a traditional STRUCTURE barplot ("structure")
+#' or a facet barplot ("facet").
+#' @param cluster_cols a character vector of colours the same length as the number of clusters.
+#' If `NULL`, a blue-green palette is used.
+#' @param site_dividers add dotted lines that divide sites (TRUE or FALSE).
+#' @param labels show labels at the site level or the
+#' individual level ("site" or "individual").
+#' @param site_ticks show ticks when labels = "site".
+#' @param flip_axis flip the axes so that the plot is vertical (TRUE or FALSE).
+#' Default is FALSE (horizontal barplot).
+#' @param facet_col number of columns to display for facet barplot.
+#' @param facet_row number of rows to display for facet barplot.
 #'
 #' @return A ggplot object.
 #' @export
 #'
 #' @examples
-#' df <- data.frame(
-#'   site = c("Berlin", "Berlin", "London", "London", "Madrid", "Madrid",
-#'           "Paris", "Paris", "Rome", "Rome"),
-#'   ind = c("Berlin1", "Berlin2", "London1", "London2", "Madrid1", "Madrid2",
-#'           "Paris1", "Paris2", "Rome1", "Rome2"),
-#'   cluster1 = c(0.1, 0.1, 1.0, 0.9, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0),
-#'   cluster2 = c(0.50, 0.40, 0.00, 0.10, 0.70, 0.80, 0.50, 0.40, 0.01, 0.01),
-#'   cluster3 = c(0.40, 0.50, 0.00, 0.00, 0.30, 0.20, 0.00, 0.10, 0.99, 0.99)
-#' )
+#' # Admixture Format 1
+#' file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+#' admixture1 <- read.csv(file)
 #'
-#' df <- data.frame(
-#'   site = c(rep("Site1", 30), rep("Site2", 30),
-#'            rep("Site3", 30), rep("Site4", 30)),
-#'   ind = c(paste0("site1_", 1:30), paste0("site2_", 1:30),
-#'           paste0("site3_", 1:30), paste0("site4_", 1:30)),
-#'   cluster1 = c(rep(0.5, 30), rep(0.25, 30), rep(0.05, 30), rep(0.05, 30)),
-#'   cluster2 = c(rep(0.25, 30), rep(0.50, 30), rep(0.25, 30), rep(0.05, 30)),
-#'   cluster3 = c(rep(0.20, 30), rep(0.20, 30), rep(0.20, 30), rep(0.50, 30)),
-#'   cluster4 = c(rep(0.05, 30), rep(0.05, 30), rep(0.50, 30), rep(0.40, 30))
-#' )
-#'
-#' structure_plot(df, type = "structure")
-structure_plot <- function(df, type = "structure", colours = NULL,
+#' structure_plot(admixture1, type = "structure")
+structure_plot <- function(admixture_df, type = "structure",
+                           cluster_cols = NULL,
                            site_dividers = TRUE, labels = "site",
+                           site_ticks = TRUE,
                            flip_axis = FALSE,
                            facet_col = NULL, facet_row = NULL) {
 
   # Number of clusters
-  num_clusters <- length(colnames(df[3:length(df)]))
+  num_clusters <- length(colnames(admixture_df[3:length(admixture_df)]))
 
   # Edit the names of the first two column headings
-  colnames(df)[1] <- "site"
-  colnames(df)[2] <- "ind"
+  colnames(admixture_df)[1] <- "site"
+  colnames(admixture_df)[2] <- "ind"
 
   # Convert data.frame from wide to long format
   df_long <- tidyr::pivot_longer(
-    data = df,
-    cols = 3:ncol(df),
+    data = admixture_df,
+    cols = 3:ncol(admixture_df),
     names_to = "cluster",
     values_to = "value"
   )
 
   # Create a vector of default colours if cluster_cols parameter not set
-  if (is.null(colours)) {
+  if (is.null(cluster_cols)) {
     pal <- grDevices::colorRampPalette(c("green","blue")) # green-blue colour palette
-    colours <- pal(num_clusters) # number of cluster colours for palette
+    cluster_cols <- pal(num_clusters) # number of cluster colours for palette
   }
 
 
@@ -63,7 +60,7 @@ structure_plot <- function(df, type = "structure", colours = NULL,
   if(type == "structure") {
 
     # Calculate the location of lines to divide individuals by site
-    cum_ind <- cumsum(dplyr::count(df, site)$n)
+    cum_ind <- cumsum(dplyr::count(admixture_df, !!as.name("site"))$n)
     site_divider_lines <- cum_ind[-length(cum_ind)]
 
     # Calculate the middle location to place each site label
@@ -79,7 +76,7 @@ structure_plot <- function(df, type = "structure", colours = NULL,
         width = 1
       )+
       ggplot2::scale_y_continuous(expand = c(0,0))+
-      ggplot2::scale_fill_manual(values = colours)+
+      ggplot2::scale_fill_manual(values = cluster_cols)+
       ggplot2::ylab("Admixture proportion\n")+
       ggplot2::theme(
         panel.grid = ggplot2::element_blank(),
@@ -99,25 +96,30 @@ structure_plot <- function(df, type = "structure", colours = NULL,
     # Flip axis if FALSE
     if (!flip_axis) {
 
-      # Add site labels and ticks
+      # Add site labels
       if (labels == "site") {
         structure_plt <- structure_plt+
-          ggplot2::annotate("text",
+          ggplot2::annotate("label",
             x = site_position,
-            y = rep(-0.03, length(site_position)),
-            label = unique(df$site),
+            y = rep(-0.025, length(site_position)),
+            label = unique(admixture_df$site), label.size = NA, fill = NA,
             vjust = 0, color = "black", size = 5, angle = 0
-          )+
-          ggplot2::annotate("segment",
-            x = site_position, xend = site_position,
-            y = rep(-0.008, length(site_position)), yend = 0,
-            colour = "black", linewidth = 1
           )+
           ggplot2::theme(
             axis.text.x = ggplot2::element_blank(),
             axis.ticks.x = ggplot2::element_blank(),
             axis.title.x = ggplot2::element_blank(),
-            plot.margin = margin(t = 10, r = 10, b = 15, l = 10, unit = "pt"),
+            plot.margin = margin(t = 10, r = 10, b = 10, l = 10, unit = "pt"),
+          )
+      }
+
+      # Add site ticks
+      if (site_ticks) {
+        structure_plt <- structure_plt+
+          ggplot2::annotate("segment",
+            x = site_position, xend = site_position,
+            y = rep(-0.005, length(site_position)), yend = 0,
+            colour = "black", linewidth = 1
           )
       }
 
@@ -132,29 +134,36 @@ structure_plot <- function(df, type = "structure", colours = NULL,
       }
     }
 
-    # Flip axis if TRUE  *** MARGIN ON SITE LABELS NOT WORKING ***
+    # Flip axis if TRUE
     if (flip_axis) {
 
-      # Add site labels and ticks
+      # Add site labels
       if (labels == "site") {
         structure_plt <- structure_plt+
           ggplot2::coord_flip()+
-          ggplot2::annotate("text",
+          ggplot2::annotate("label",
             x = site_position,
             y = rep(-0.025, length(site_position)),
-            label = unique(df$site),
-            vjust = 0.25, color = "black", size = 5,
-          )+
-          ggplot2::annotate("segment",
-            x = site_position, xend = site_position,
-            y = rep(-0.008, length(site_position)), yend = 0,
-            colour = "black", linewidth = 1
+            label = unique(admixture_df$site), label.size = NA, fill = NA,
+            vjust = 0.25, color = "black", size = 5
           )+
           ggplot2::theme(
             axis.text.y = ggplot2::element_blank(),
             axis.ticks.y = ggplot2::element_blank(),
             axis.title.y = ggplot2::element_blank(),
-            plot.margin = margin(t = 10, r = 10, b = 0, l = 100, unit = "pt"),
+            axis.text.x = ggplot2::element_text(size = 10),
+            # Bug: labels are still hidden even when left margin is expanded
+            plot.margin = margin(t = 10, r = 10, b = 0, l = 20, unit = "pt"),
+          )
+      }
+
+      # Add site ticks
+      if (site_ticks) {
+        structure_plt <- structure_plt+
+          ggplot2::annotate("segment",
+            x = site_position, xend = site_position,
+            y = rep(-0.005, length(site_position)), yend = 0,
+            colour = "black", linewidth = 1
           )
       }
 
@@ -165,6 +174,7 @@ structure_plot <- function(df, type = "structure", colours = NULL,
           ggplot2::theme(
             axis.title.y = ggplot2::element_blank(),
             axis.text.y = ggplot2::element_text(vjust = 0.25),
+            axis.text.x = ggplot2::element_text(size = 10),
             axis.title.x = ggplot2::element_text(size = 12),
             plot.margin = margin(t = 10, r = 15, b = 0, l = 30, unit = "pt"),
           )
@@ -188,7 +198,7 @@ structure_plot <- function(df, type = "structure", colours = NULL,
       )+
       ggplot2::scale_y_continuous(expand = c(0,0))+
       ggplot2::facet_wrap(~ site, scales = "free", nrow = facet_row, ncol = facet_col)+
-      ggplot2::scale_fill_manual(values = colours)+
+      ggplot2::scale_fill_manual(values = cluster_cols)+
       ggplot2::ylab("Admixture proportion")+
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
