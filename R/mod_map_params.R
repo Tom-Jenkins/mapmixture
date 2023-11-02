@@ -2,13 +2,11 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList strong textInput uiOutput br div selectInput numericInput textAreaInput
-#' @importFrom utils read.csv
 #' @importFrom shinyWidgets pickerInput switchInput numericInputIcon
 #' @importFrom colourpicker colourInput
-#' @importFrom grDevices colorRampPalette
 mod_map_params_ui <- function(id) {
   ns <- NS(id)
-  crs_data <- read.csv(system.file("extdata", "EPSG_CRS.csv", package = "mapmixture"))
+  crs_data <- utils::read.csv(system.file("extdata", "EPSG_CRS.csv", package = "mapmixture"))
   tagList(
 
     # Coordinate Reference System (CRS) input ----
@@ -180,7 +178,7 @@ mod_map_params_server <- function(id, admixture_df, coords_df){
       req(admixture_df())
 
       # Default colours for pie charts
-      pal <- colorRampPalette(c("green","blue")) # green-blue colour palette
+      pal <- grDevices::colorRampPalette(c("green","blue")) # green-blue colour palette
       cluster_cols <- pal(ncol(admixture_df())-2) # number of cluster colours for palette
       # print(cluster_cols)
 

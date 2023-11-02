@@ -46,7 +46,6 @@ mod_file_upload_ui <- function(id){
 #' @noRd
 #' @importFrom shiny moduleServer reactive req
 #' @importFrom shinyjs runjs
-#' @importFrom purrr map_lgl
 mod_file_upload_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -76,7 +75,7 @@ mod_file_upload_server <- function(id){
         # Extract data to test
         na_admix <- which(colSums(is.na(admix_df) | admix_df == "") > 0) # NAs or blank space in data
         cluster_cols <- admix_df[, 3:ncol(admix_df)] # subset cluster columns
-        colN_type <- map_lgl(cluster_cols, is.numeric) # cluster column type
+        colN_type <- purrr::map_lgl(cluster_cols, is.numeric) # cluster column type
 
         # 1. Check for NAs by column ----
         if (length(na_admix != 0)) {

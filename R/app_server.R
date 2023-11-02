@@ -2,7 +2,6 @@
 #'
 #' @noRd
 #' @import shiny
-#' @importFrom sf st_read
 
 app_server <- function(input, output, session) {
 
