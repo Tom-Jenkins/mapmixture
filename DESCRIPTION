@@ -1,0 +1,39 @@
+Package: mapmixture
+Title: A tool for spatial visualisation of admixture on a projected map
+Version: 1.1.0
+Authors@R: 
+    person("Tom", "Jenkins", , "tom.l.jenkins@outlook.com", role = c("aut", "cre"))
+Description: Mapmixture allows users to visualise admixture as pie charts
+    on a map. Users upload admixture proportions for each individual or
+    site, and a coordinates file containing location data. In data sets
+    where there are multiple individuals per site, the software will
+    calculate the average admixture proportion for each site.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    bslib (>= 0.5.0),
+    colourpicker,
+    dplyr,
+    ggplot2,
+    ggspatial,
+    grid,
+    htmltools,
+    purrr,
+    rlang,
+    sf,
+    shiny,
+    shinyFeedback,
+    shinyjs,
+    shinyWidgets,
+    stringr,
+    tidyr,
+    waiter
+Suggests: 
+    shinytest2,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 4.1.0)
+LazyData: true

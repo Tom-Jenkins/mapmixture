@@ -1,0 +1,141 @@
+:root {
+    --flatly-success: #18bc9c;
+    --flatly-warning: #f39c12;
+    --flatly-primary: #2c3e50;
+    --flatly-secondary: #95a5a6;
+    --flatly-light: #ecf0f1;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-file {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.form-control:focus {
+  border-color: var(--flatly-secondary);
+  outline: 0;
+  box-shadow: none;
+}
+
+.info-modal-bttn {
+  padding: 0;
+  position: relative;
+  padding-left: 5px;
+  padding-bottom: 5px;
+}
+
+.info-modal-bttn:active {
+  border-color: transparent !important;
+}
+
+.modal-close-bttn {
+  font-size: large;
+  width: 100px;
+}
+
+.error-message {
+  white-space: normal;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.shiny-file-input-progress {
+  display: none;
+}
+
+#plot_bttn-plot_bttn {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+#plot_bttn-plot_bttn:active {
+  background-color: #14a085;
+  border-color: #fff;
+}
+
+#plot_bttn-plot_bttn > i {
+  padding-right: 5px;
+}
+
+#map-download_bttn {
+  float: right;
+  padding-right: 40px;
+  padding-top: 5px;
+}
+
+#map_plot-download_bttn:active {
+  background-color: #14a085;
+  border-color: white;
+}
+
+.sidebar-container {
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #c9cccd;
+}
+
+#options-pills-container {
+  pointer-events: none;
+}
+
+.parameter-options-container {
+  padding-left: 5px;
+  padding-right: 20px;
+  padding-top: 10px;
+  margin-top: 5px;
+}
+
+.bootstrap-switch-normal {
+  margin-bottom: 4px;
+}
+
+.bootstrap-switch-primary {
+  padding-right: 10px;
+}
+
+.bootstrap-switch.bootstrap-switch-focused {
+  border-color: #ccc;
+  box-shadow: none;
+}
+
+.bootstrap-switch-id-map_params-arrow_toggle {
+  margin-bottom: 29px;
+}
+
+.bootstrap-switch-id-map_params-scalebar_toggle {
+  margin-bottom: 30px;
+}
+
+#example-file-formats-loading-page {
+  width: 500px;
+  opacity: 0.3;
+}
+
+#map_plot-filetype_radio_bttn-label {
+  padding-top: 10px;
+}
+
+.carousel-item {
+  background-color: white;
+}
+
+.carousel-item img {
+  padding-top: 10px;
+}
