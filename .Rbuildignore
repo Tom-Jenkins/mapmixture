@@ -2,3 +2,5 @@
 ^Mapmixture\.Rproj$
 ^\.Rproj\.user$
 _\.new\.png$
+^README\.Rmd$
+^\.github$
