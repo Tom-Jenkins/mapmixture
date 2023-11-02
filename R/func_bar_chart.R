@@ -100,10 +100,10 @@ structure_plot <- function(admixture_df, type = "structure",
       if (labels == "site") {
         structure_plt <- structure_plt+
           ggplot2::annotate("label",
-            x = site_position,
-            y = rep(-0.025, length(site_position)),
-            label = unique(admixture_df$site), label.size = NA, fill = NA,
-            vjust = 0, color = "black", size = 5, angle = 0
+                            x = site_position,
+                            y = rep(-0.025, length(site_position)),
+                            label = unique(admixture_df$site), label.size = NA, fill = NA,
+                            vjust = 0, color = "black", size = 5, angle = 0
           )+
           ggplot2::theme(
             axis.text.x = ggplot2::element_blank(),
@@ -117,9 +117,9 @@ structure_plot <- function(admixture_df, type = "structure",
       if (site_ticks) {
         structure_plt <- structure_plt+
           ggplot2::annotate("segment",
-            x = site_position, xend = site_position,
-            y = rep(-0.005, length(site_position)), yend = 0,
-            colour = "black", linewidth = 1
+                            x = site_position, xend = site_position,
+                            y = rep(-0.005, length(site_position)), yend = 0,
+                            colour = "black", linewidth = 1
           )
       }
 
@@ -142,10 +142,10 @@ structure_plot <- function(admixture_df, type = "structure",
         structure_plt <- structure_plt+
           ggplot2::coord_flip()+
           ggplot2::annotate("label",
-            x = site_position,
-            y = rep(-0.025, length(site_position)),
-            label = unique(admixture_df$site), label.size = NA, fill = NA,
-            vjust = 0.25, color = "black", size = 5
+                            x = site_position,
+                            y = rep(-0.025, length(site_position)),
+                            label = unique(admixture_df$site), label.size = NA, fill = NA,
+                            vjust = 0.25, color = "black", size = 5
           )+
           ggplot2::theme(
             axis.text.y = ggplot2::element_blank(),
@@ -161,9 +161,9 @@ structure_plot <- function(admixture_df, type = "structure",
       if (site_ticks) {
         structure_plt <- structure_plt+
           ggplot2::annotate("segment",
-            x = site_position, xend = site_position,
-            y = rep(-0.005, length(site_position)), yend = 0,
-            colour = "black", linewidth = 1
+                            x = site_position, xend = site_position,
+                            y = rep(-0.005, length(site_position)), yend = 0,
+                            colour = "black", linewidth = 1
           )
       }
 

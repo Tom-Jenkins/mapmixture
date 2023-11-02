@@ -83,17 +83,17 @@
 #' )
 mapmixture <- function(
     # Data input
-    admixture_df, coords_df,
-    # Parameter arguments
-    cluster_cols = NULL, cluster_names = NULL,
-    boundary = NULL, crs = 4326,
-    pie_size = 1, pie_border = 0.3, pie_opacity = 1,
-    land_colour = "#d9d9d9", sea_colour = "#deebf7",
-    expand = TRUE,
-    arrow = TRUE, arrow_size = 1, arrow_position = "tl",
-    scalebar = TRUE, scalebar_size = 1, scalebar_position = "tl",
-    plot_title = "", plot_title_size = 15,
-    axis_title_size = 12, axis_text_size = 10) {
+  admixture_df, coords_df,
+  # Parameter arguments
+  cluster_cols = NULL, cluster_names = NULL,
+  boundary = NULL, crs = 4326,
+  pie_size = 1, pie_border = 0.3, pie_opacity = 1,
+  land_colour = "#d9d9d9", sea_colour = "#deebf7",
+  expand = TRUE,
+  arrow = TRUE, arrow_size = 1, arrow_position = "tl",
+  scalebar = TRUE, scalebar_size = 1, scalebar_position = "tl",
+  plot_title = "", plot_title_size = 15,
+  axis_title_size = 12, axis_text_size = 10) {
 
   # Standarise input data ----
   admixture_df <- standardise_data(admixture_df, type = "admixture")

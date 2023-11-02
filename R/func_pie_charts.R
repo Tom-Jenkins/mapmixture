@@ -44,7 +44,7 @@
 #'   pie_size = 1
 #'   )
 add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colours,
-                            border, opacity, pie_size) {
+                           border, opacity, pie_size) {
 
   # Subset coordinates
   coords <- subset(df, select = c(lat_column, lon_column))
@@ -62,12 +62,12 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
 
   # Build pie charts for all sites and store as a list of ggplot objects
   pie_list <- purrr::map(unique(df$site), ~ build_pie_chart(
-      df = df_long,
-      location = .,
-      cols = pie_colours,
-      border = border,
-      opacity = opacity
-    )
+    df = df_long,
+    location = .,
+    cols = pie_colours,
+    border = border,
+    opacity = opacity
+  )
   )
 
   # Pie chart size formula
@@ -80,12 +80,12 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
 
   # Convert pie chart ggplot objects to annotation custom geom objects
   pie_annotation <- purrr::map(1:length(pie_list), ~ ggplot2::annotation_custom(
-      grob = ggplot2::ggplotGrob(pie_list[[.]]),
-      ymin = coord_list[[.]][1] - radius,
-      ymax = coord_list[[.]][1] + radius,
-      xmin = coord_list[[.]][2] - radius,
-      xmax = coord_list[[.]][2] + radius
-    )
+    grob = ggplot2::ggplotGrob(pie_list[[.]]),
+    ymin = coord_list[[.]][1] - radius,
+    ymax = coord_list[[.]][1] + radius,
+    xmin = coord_list[[.]][2] - radius,
+    xmax = coord_list[[.]][2] + radius
+  )
   )
 
   # Return list of annotation_custom objects
@@ -142,6 +142,3 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
     ggplot2::scale_fill_manual(values = cols)+
     ggplot2::theme_void()
 }
-
-
-
