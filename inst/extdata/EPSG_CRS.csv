@@ -1,0 +1,29 @@
+epsg_code,name,region
+4222,Cape,Africa
+4263,Minna,Africa
+4307,Nord Sahara 1959,Africa
+4618,SAD69,Americas
+4717,Cape Canaveral,Americas
+8909,CR-SIRGAS / UTM zone 16N,Americas
+3031,WGS 84 / Antarctic Polar Stereographic,Antarctica
+3852,RSRGD2000 / DGLC2000,Antarctica
+5479,RSRGD2000 / MSLC2000,Antarctica
+32761,WGS 84 / UPS South (NE),Antarctica
+3995,WGS 84 / Arctic Polar Stereographic,Arctic
+5940,WGS 84 / EPSG Russia Polar Stereographic,Arctic
+4490,China Geodetic Coordinate System 2000,Asia
+6666,JGD2011,Asia
+2056,CH1903+ / LV95,Europe
+3003,Monte Mario / Italy zone 1,Europe
+3035,ETRS89-extended / LAEA Europe,Europe
+21781,CH1903 / LV03,Europe
+23032,ED50 / UTM zone 32N,Europe
+27700,OSGB36 / British National Grid,Europe
+28992,Amersfoort / RD New,Europe
+3112,GDA94 / Geoscience Australia Lambert,Oceania
+7074,RGTAAF07 / UTM zone 37S,Oceania
+3832,WGS 84 / PDC Mercator,Pacific Ocean
+3994,WGS 84 / Mercator 41,Pacific Ocean
+3857,WGS 84 / Pseudo-Mercator,World
+4326,WGS 84,World
+900913,Google Maps Global Mercator,World
