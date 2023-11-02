@@ -1,0 +1,168 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# mapmixture
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+`mapmixture` is an R package and shiny app that enables users to visualise admixture as pie charts on a projected map or as traditional STRUCTURE barplots or facet barplots.
+
+## Installation
+
+You need to have [R](https://www.r-project.org/) (>= 4.1.0) installed on your system. Click [here](https://cran.r-project.org/bin/windows/base/) to download the latest version of R for Windows.
+
+Install the latest development version from GitHub:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Tom-Jenkins/mapmixture")
+```
+
+## Examples
+
+Run `mapmixture()` with using admixture format 1 and custom parameters:
+
+```{r}
+# Load package
+library(mapmixture)
+
+# Admixture Format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Coordinates
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+mapmixture(admixture1, coordinates,
+  cluster_cols = c("blue","green"),
+  cluster_names = c("Group 1","Group 2"),
+  crs = 3035,
+  boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
+  pie_size = 1,
+  pie_border = 0.3,
+  pie_opacity = 1,
+  land_colour = "#d9d9d9",
+  sea_colour = "#deebf7",
+  expand = TRUE,
+  arrow = TRUE,
+  arrow_size = 1,
+  arrow_position = "tl",
+  scalebar = TRUE,
+  scalebar_size = 1.5,
+  scalebar_position = "tl",
+  plot_title = "Mapmixture Figure Format 1",
+  plot_title_size = 12,
+  axis_title_size = 10,
+  axis_text_size = 8
+)
+```
+
+Run `mapmixture()` with using admixture format 3 and custom parameters:
+
+```{r}
+# Load package
+library(mapmixture)
+
+# Admixture Format 3
+file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+admixture3 <- read.csv(file)
+
+# Coordinates
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+mapmixture(admixture3, coordinates,
+  cluster_cols = c("blue","green"),
+  cluster_names = c("Group 1","Group 2"),
+  crs = 3035,
+  boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
+  pie_size = 1,
+  pie_border = 0.3,
+  pie_opacity = 1,
+  land_colour = "#d9d9d9",
+  sea_colour = "#deebf7",
+  expand = TRUE,
+  arrow = TRUE,
+  arrow_size = 1,
+  arrow_position = "tl",
+  scalebar = TRUE,
+  scalebar_size = 1.5,
+  scalebar_position = "tl",
+  plot_title = "Mapmixture Figure Format 3",
+  plot_title_size = 12,
+  axis_title_size = 10,
+  axis_text_size = 8
+)
+```
+
+Run `structure_plot()` to plot a traditional STRUCTURE barplot:
+
+```{r}
+# Load package
+library(mapmixture)
+
+# Admixture Format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+structure_plot(admixture1, type = "structure")
+```
+
+Run `structure_plot()` to plot a facet barplot:
+
+```{r}
+# Load package
+library(mapmixture)
+
+# Admixture Format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+structure_plot(admixture1, type = "facet", facet_col = 3)
+```
+
+## Shiny web server
+
+https://tomjenkins.shinyapps.io/mapmixture/
+
+## Format
+
+```{r}
+# Load package
+library(mapmixture)
+
+# Admixture Format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+head(admixture1)
+
+# Admixture Format 2
+file <- system.file("extdata", "admixture2.csv", package = "mapmixture")
+admixture2 <- read.csv(file)
+admixture2
+
+# Admixture Format 3
+file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+admixture3 <- read.csv(file)
+admixture3
+
+# Coordinates
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+coordinates
+```
