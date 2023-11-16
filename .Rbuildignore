@@ -5,3 +5,4 @@ _\.new\.png$
 ^README\.Rmd$
 ^\.github$
 ^codecov\.yml$
+^\.gitlab-ci\.yml$
