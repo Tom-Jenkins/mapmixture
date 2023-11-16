@@ -92,8 +92,8 @@ mapmixture <- function(
   expand = TRUE,
   arrow = TRUE, arrow_size = 1, arrow_position = "tl",
   scalebar = TRUE, scalebar_size = 1, scalebar_position = "tl",
-  plot_title = "", plot_title_size = 15,
-  axis_title_size = 12, axis_text_size = 10) {
+  plot_title = "", plot_title_size = 12,
+  axis_title_size = 10, axis_text_size = 8) {
 
   # Standarise input data ----
   admixture_df <- standardise_data(admixture_df, type = "admixture")
@@ -192,7 +192,8 @@ mapmixture <- function(
     ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
     ggplot2::theme(
       legend.title = ggplot2::element_blank(),
-      legend.key = ggplot2::element_rect(fill = NA)
+      legend.key = ggplot2::element_rect(fill = NA),
+      legend.text = ggplot2::element_text(vjust = 0.5),
     )
 
   # Add north arrow if true
@@ -238,6 +239,7 @@ mapmixture <- function(
 #'
 #' @description
 #' Internal function to calculate a default bounding box for a set of longitude and latitude coordinates
+#' @keywords internal
 #'
 #' @param data a data.frame or tibble containing three columns.
 #' 1st column is a character vector of site names.
