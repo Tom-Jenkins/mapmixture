@@ -7,7 +7,7 @@
 
 [![R-CMD-check](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main)
+coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main&kill_cache=1)
 <!-- badges: end -->
 
 `mapmixture` is an R package and shiny app that enables users to
