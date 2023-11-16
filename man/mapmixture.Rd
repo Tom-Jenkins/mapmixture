@@ -24,9 +24,9 @@ mapmixture(
   scalebar_size = 1,
   scalebar_position = "tl",
   plot_title = "",
-  plot_title_size = 15,
-  axis_title_size = 12,
-  axis_text_size = 10
+  plot_title_size = 12,
+  axis_title_size = 10,
+  axis_text_size = 8
 )
 }
 \arguments{

@@ -29,3 +29,4 @@ coords <- data.frame(
 calc_default_bbox(coords, expand = NULL)
 calc_default_bbox(coords, expand = 0.10)
 }
+\keyword{internal}

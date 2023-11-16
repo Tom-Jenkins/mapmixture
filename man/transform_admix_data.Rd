@@ -29,3 +29,4 @@ df_admix <- data.frame(
 
 transform_admix_data(df_admix)
 }
+\keyword{internal}

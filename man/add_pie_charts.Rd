@@ -65,5 +65,6 @@ add_pie_charts(df,
   border = 0.3,
   opacity = 1,
   pie_size = 1
-  )
+)
 }
+\keyword{internal}

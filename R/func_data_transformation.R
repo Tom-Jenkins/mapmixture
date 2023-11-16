@@ -3,6 +3,7 @@
 #' @description
 #' Internal function used to transform latitude and longitude coordinates
 #' from a bounding box to a target coordinate reference system.
+#' @keywords internal
 #'
 #' @param bbox a named numeric vector of length four, with `xmin`, `ymin`, `xmax` and `ymax` values.
 #' @param CRS a numeric value representing an ESPG.
@@ -26,6 +27,7 @@ transform_bbox <- function(bbox, CRS) {
 #'
 #' @description
 #' Internal function used to transform admixture data into the correct format for plotting.
+#' @keywords internal
 #'
 #' @param data A data.frame or tibble.
 #'
@@ -70,6 +72,7 @@ transform_admix_data <- function(data) {
 #'
 #' @description
 #' Internal function used to join coordinates and admixture pie data.
+#' @keywords internal
 #'
 #' @param coord_df A data.frame of site names and coordinates.
 #' @param admix_df A data.frame of site names and admixture data.
@@ -112,6 +115,7 @@ merge_coords_data <- function(coord_df, admix_df) {
 #' @description
 #' Internal function used to transform latitude and longitude coordinates in
 #' admixture data.frame.
+#' @keywords internal
 #'
 #' @param df a data.frame containing site names, lat and lon coordinates and admixture data.
 #' @param crs a coordinate reference system.

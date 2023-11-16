@@ -37,3 +37,4 @@ df <- data.frame(
 
 build_pie_chart(df, location = "London")
 }
+\keyword{internal}

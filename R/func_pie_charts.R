@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Internal function used to add pie charts to a ggplot object
+#' @keywords internal
 #'
 #' @param df a data frame (see examples).
 #' @param admix_columns the columns of the data frame containing admixture data.
@@ -42,7 +43,7 @@
 #'   border = 0.3,
 #'   opacity = 1,
 #'   pie_size = 1
-#'   )
+#' )
 add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colours,
                            border, opacity, pie_size) {
 
@@ -97,6 +98,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
 #'
 #' @description
 #' Internal function used to build a pie chart using ggplot
+#' @keywords internal
 #'
 #' @param df a data frame (see examples).
 #' @param location a string containing the site to subset.

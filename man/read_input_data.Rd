@@ -19,3 +19,4 @@ Internal function used to read in data from admixture or coordinates input file.
 file_path <- system.file("extdata", "admixture1.csv", package = "mapmixture")
 read_input_data(file_path)
 }
+\keyword{internal}

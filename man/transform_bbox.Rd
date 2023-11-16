@@ -22,3 +22,4 @@ from a bounding box to a target coordinate reference system.
 bbox <- c(xmin = -3.70, ymin = 40.42, xmax = 13.40, ymax = 52.52)
 transform_bbox(bbox, 3035)
 }
+\keyword{internal}

@@ -35,3 +35,4 @@ df_coords <- data.frame(
 
 merge_coords_data(df_coords, df_admix)
 }
+\keyword{internal}
