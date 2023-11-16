@@ -1,4 +1,4 @@
-Site Ind Cluster 1 Cluster 2
+Site Ind Cluster1 Cluster2
 Bergen Ber01 0.9999 1.00E-04
 Bergen Ber02 0.9999 1.00E-04
 Bergen Ber03 0.9999 1.00E-04
