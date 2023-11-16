@@ -174,8 +174,8 @@ map4 <- mapmixture(admixture1, coordinates,
   # Adjust the size of the legend keys
   guides(fill = guide_legend(override.aes = list(size = 5)))
 
-# Run structure_plot
-barplot <- structure_plot(admixture1,
+# Traditional structure barplot
+structure_barplot <- structure_plot(admixture1,
   type = "structure",
   cluster_cols = c("#91bfdb","#fc8d59"),
   site_dividers = TRUE,
@@ -192,11 +192,33 @@ barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
-grid.arrange(map4, barplot, nrow = 2, heights = c(4,1))
+grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
 #> Scale on map varies by more than 10%, scale bar may be inaccurate
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+``` r
+
+# Facet structure barplot
+facet_barplot <- structure_plot(admixture1,
+  type = "facet",
+  cluster_cols = c("#91bfdb","#fc8d59"),
+  facet_col = 2,
+  ylabel = "Admixture proportions",
+)+
+  theme(
+    axis.title.y = element_text(size = 10),
+    axis.text.y = element_text(size = 5),
+    strip.text = element_text(size = 8, vjust = 1, margin = margin(t=1.5, r=0, b=1.5, l=0)),
+  )
+
+# Arrange plots
+grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
+#> Scale on map varies by more than 10%, scale bar may be inaccurate
+```
+
+<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
 
 ## Interactive shiny web application
 
