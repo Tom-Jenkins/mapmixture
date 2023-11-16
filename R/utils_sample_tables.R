@@ -2,11 +2,10 @@
 #'
 #' @noRd
 #' @description Return HTML string containing content for the sample tables
-#' @importFrom htmltools HTML
 
 admixture_sample_table <- function() {
 
-  HTML(
+  htmltools::HTML(
     "
       <table class='table table-striped'>
         <thead>
@@ -68,7 +67,8 @@ admixture_sample_table <- function() {
 }
 
 coords_sample_table <- function() {
-  HTML(
+
+  htmltools::HTML(
     "
     <table class='table table-striped'>
         <thead>

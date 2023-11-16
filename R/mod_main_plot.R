@@ -3,16 +3,15 @@
 #' @noRd
 #' @importFrom shiny NS tagList uiOutput plotOutput
 #' @importFrom shinyjs runjs
-#' @importFrom waiter autoWaiter waiter_set_theme spin_loaders
 mod_main_plot_ui <- function(id) {
   ns <- NS(id)
   tagList(
 
     # Set waiter spinner theme (https://shiny.john-coene.com/waiter/)
-    waiter_set_theme(html = spin_loaders(15, color = "grey", style = "font-size: 50px;"), color = "#f5f5f5"),
+    waiter::waiter_set_theme(html = waiter::spin_loaders(15, color = "grey", style = "font-size: 50px;"), color = "#f5f5f5"),
 
     # Loading spinner ----
-    autoWaiter(id = ns("admixture_map")),
+    waiter::autoWaiter(id = ns("admixture_map")),
 
     # Render a download button ----
     uiOutput(ns("dropdown_download_bttn")),
@@ -26,12 +25,8 @@ mod_main_plot_ui <- function(id) {
 #' Main Plotting Module: Server
 #'
 #' @noRd
-#' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton
+#' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton downloadHandler observe
 #' @importFrom shinyjs runjs
-#' @importFrom rlang parse_expr eval_tidy
-#' @importFrom shinyWidgets dropdown radioGroupButtons
-#' @importFrom shinyFeedback showFeedbackWarning hideFeedback
-#' @importFrom htmltools HTML
 #' @importFrom ggplot2 theme_update element_blank element_rect element_line element_text margin rel
 mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
                                  user_CRS, user_bbox, user_expand,
@@ -93,11 +88,11 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       # Update ggplot theme ----
       tryCatch({
         update_theme <- paste0("theme_update(", user_advanced(), ")")
-        eval_tidy(parse_expr(update_theme))
+        rlang::eval_tidy(rlang::parse_expr(update_theme))
       }, error = function(err) {
         # Show error message if user enters any invalid ggplot theme parameters
         showNotification(
-          ui = HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
+          ui = htmltools::HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
           duration = 10,
           type = "err"
         )
@@ -112,10 +107,10 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")
       output$dropdown_download_bttn <- renderUI({
         div(id = "download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
-            dropdown(
+            shinyWidgets::dropdown(
               style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
               strong("Download Map", class = "fs-4 text-success"),
-              radioGroupButtons(
+              shinyWidgets::radioGroupButtons(
                 inputId = ns("filetype_radio_bttn"),
                 label = strong("Choose File Type:"),
                 choices = c("PNG","JPEG", "PDF"),
@@ -127,7 +122,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
               downloadButton(ns("download_bttn"), label = " Download",  class = "btn-success"),
 
               # HTML code to render a bootstrap spinner next to download button (hidden by default)
-              HTML("
+              htmltools::HTML("
               <div style='position: fixed; display: inline; margin-left: 25px; margin-top: 2px;'>
                 <div id='spinner-download' class='spinner-border text-primary hidden' role='status'>
                   <span class='sr-only'>Loading...</span>
@@ -145,22 +140,22 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # Width parameter feedback feedback warning
     observeEvent(input$plot_width, {
       if (input$plot_width == "" || input$plot_width == "0" || is.na(as.numeric(input$plot_width))) {
-        showFeedbackWarning("plot_width", text = NULL, icon = NULL)
-      } else { hideFeedback("plot_width") }
+        shinyFeedback::showFeedbackWarning("plot_width", text = NULL, icon = NULL)
+      } else { shinyFeedback::hideFeedback("plot_width") }
     })
 
     # Height parameter feedback warning
     observeEvent(input$plot_height, {
       if (input$plot_height == "" || input$plot_height == "0" || is.na(as.numeric(input$plot_height))) {
-        showFeedbackWarning("plot_height", text = NULL, icon = NULL)
-      } else { hideFeedback("plot_height") }
+        shinyFeedback::showFeedbackWarning("plot_height", text = NULL, icon = NULL)
+      } else { shinyFeedback::hideFeedback("plot_height") }
     })
 
     # DPI parameter feedback warning
     observeEvent(input$plot_dpi, {
       if (input$plot_dpi == "" || input$plot_dpi == "0" || is.na(as.numeric(input$plot_dpi))) {
-        showFeedbackWarning("plot_dpi", text = NULL, icon = NULL)
-      } else { hideFeedback("plot_dpi") }
+        shinyFeedback::showFeedbackWarning("plot_dpi", text = NULL, icon = NULL)
+      } else { shinyFeedback::hideFeedback("plot_dpi") }
     })
 
 

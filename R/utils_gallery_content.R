@@ -2,11 +2,10 @@
 #'
 #' @noRd
 #' @description Return HTML string containing content for the Gallery tabPanel
-#' @importFrom htmltools HTML
 
 gallery_content <- function() {
 
-  HTML(
+  htmltools::HTML(
     '
     <div id="gallery" class="carousel slide carousel-dark" data-interval="false">
 

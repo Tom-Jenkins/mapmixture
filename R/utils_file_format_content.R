@@ -2,11 +2,10 @@
 #'
 #' @noRd
 #' @description Return HTML string containing content for the File Format tabPanel
-#' @importFrom htmltools HTML
 
 file_format_content <- function() {
 
-  HTML(
+  htmltools::HTML(
     '
     </br>
     <div class="accordion accordion-flush" id="accordionfileFormat">
@@ -67,7 +66,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/coordinates.csv" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/mapmixture/blob/main/inst/extdata/coordinates.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>
@@ -149,7 +148,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/admixture_data.csv" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/mapmixture/blob/main/inst/extdata/admixture1.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>
@@ -230,7 +229,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/admixture_data_single.csv" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/mapmixture/blob/main/inst/extdata/admixture2.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>
@@ -304,7 +303,7 @@ file_format_content <- function() {
                         </tbody>
                     </table>
 
-                    <p>Click <a href="https://github.com/Tom-Jenkins/Mapmixture/blob/main/example_data/admixture_single_cluster.csv" target="_blank">here</a> to view an example CSV of this format.</p>
+                    <p>Click <a href="https://github.com/Tom-Jenkins/mapmixture/blob/main/inst/extdata/admixture3.csv" target="_blank">here</a> to view an example CSV of this format.</p>
 
                 </div>
             </div>

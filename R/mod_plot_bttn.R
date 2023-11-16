@@ -2,7 +2,6 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList tags icon
-#' @importFrom htmltools HTML
 mod_plot_bttn_ui <- function(id){
 ns <- NS(id)
 tagList(
@@ -12,7 +11,7 @@ tagList(
     id = ns("plot_bttn"),
     class = "btn btn-success action-button shiny-bound-input fs-5 disabled",
     icon("arrows-rotate"),
-    HTML("Plot Map")
+    htmltools::HTML("Plot Map")
   )
 )
 }

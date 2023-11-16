@@ -2,7 +2,6 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList tags span strong icon splitLayout div fileInput
-#' @importFrom shinyjs extendShinyjs
 mod_file_upload_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -44,7 +43,7 @@ mod_file_upload_ui <- function(id){
 #' File Upload Module: Server
 #'
 #' @noRd
-#' @importFrom shiny moduleServer reactive req
+#' @importFrom shiny moduleServer reactive req observe
 #' @importFrom shinyjs runjs
 mod_file_upload_server <- function(id){
   moduleServer(id, function(input, output, session){

@@ -13,7 +13,6 @@ mod_info_modals_ui <- function(id){
 #'
 #' @noRd
 #' @importFrom shiny NS tagList modalDialog strong br div observeEvent showModal
-#' @importFrom htmltools HTML
 mod_info_modals_server <- function(id, admixture_info_bttn, coords_info_bttn){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -32,7 +31,7 @@ mod_info_modals_server <- function(id, admixture_info_bttn, coords_info_bttn){
         br(),
         div(
           class = "text-center",
-          HTML('<button type="button" class="btn btn-success modal-close-bttn" data-dismiss="modal" data-bs-dismiss="modal">Close</button>')
+          htmltools::HTML('<button type="button" class="btn btn-success modal-close-bttn" data-dismiss="modal" data-bs-dismiss="modal">Close</button>')
         ),
         footer = NULL,
         easyClose = TRUE,

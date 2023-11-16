@@ -2,15 +2,13 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList strong textInput uiOutput br div selectInput numericInput textAreaInput
-#' @importFrom shinyWidgets pickerInput switchInput numericInputIcon
-#' @importFrom colourpicker colourInput
 mod_map_params_ui <- function(id) {
   ns <- NS(id)
   crs_data <- utils::read.csv(system.file("extdata", "EPSG_CRS.csv", package = "mapmixture"))
   tagList(
 
     # Coordinate Reference System (CRS) input ----
-    pickerInput(
+    shinyWidgets::pickerInput(
       inputId = ns("crs_input"),
       label = strong("Coordinate Reference System (EPSG)"),
       width = "100%",
@@ -41,7 +39,7 @@ mod_map_params_ui <- function(id) {
     div(style = "display: inline-block;", textInput(ns("ymax_input"), label = "ymax", width = "80px", placeholder = "64")),
 
     # Expand axes on map switch ----
-    switchInput(
+    shinyWidgets::switchInput(
       inputId = ns("expand_switch"),
       label = "Expand Axes",
       value = TRUE,
@@ -61,7 +59,7 @@ mod_map_params_ui <- function(id) {
     div(style = "display: flex; margin-bottom: -20px;",
         div(style = "display: inline-block; margin-top: -20px;", selectInput(ns("arrow_position"), label = strong("Arrow Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "top-left", width = "150px")),
         div(class = "px-1", style = "display: inline-block; margin-top: -20px;", numericInput(ns("arrow_size"), label = strong("Size"), min = 0, value = 1, step = 0.1, width = "80px")),
-        div(style = "margin-top: 12px;", switchInput(ns("arrow_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
+        div(style = "margin-top: 12px;", shinyWidgets::switchInput(ns("arrow_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
     ),
     br(),
 
@@ -69,13 +67,13 @@ mod_map_params_ui <- function(id) {
     div(style = "display: flex;",
         div(style = "display: inline-block; margin-top: -30px;", selectInput(ns("scalebar_position"), label = strong("Scalebar Position"), choices = c("bottom-left","bottom-right","top-left","top-right"), selected = "top-left", width = "150px")),
         div(class = "px-1", style = "display: inline-block; margin-top: -30px;", numericInput(ns("scalebar_size"), label = strong("Size"), min = 0, value = 1, step = 0.1, width = "80px")),
-        div(style = "margin-top: 2px;", switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
+        div(style = "margin-top: 2px;", shinyWidgets::switchInput(ns("scalebar_toggle"), label = NULL, onLabel = "ON", offLabel = "OFF", value = TRUE, inline = TRUE)),
     ),
 
     # Pie chart input ----
     div(style = "margin-top: -25px; display: flex;",
         div(
-          numericInputIcon(
+          shinyWidgets::numericInputIcon(
             inputId = ns("piesize_input"),
             label = strong("Pie Chart Size"),
             value = 2,
@@ -97,8 +95,8 @@ mod_map_params_ui <- function(id) {
 
     # Theme Options ----
     br(),
-    div(style = "display: inline-block;", colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
-    div(style = "display: inline-block;", colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),
+    div(style = "display: inline-block;", colourpicker::colourInput(ns("sea_input"), label = strong("Sea Colour"), value = "#deebf7")),
+    div(style = "display: inline-block;", colourpicker::colourInput(ns("land_input"), label = strong("Land Colour"), value = "#d9d9d9")),
     div(style = "display: inline-block;", numericInput(ns("text_size"), label = strong("Axis Text Size"), width = "100px", min = 0, value = 10, step = 0.1)),
     div(style = "display: inline-block;", numericInput(ns("title_size"), label = strong("Axis Title Size"), width = "100px", min = 0, value = 12, step = 0.1)),
 
@@ -120,7 +118,6 @@ mod_map_params_ui <- function(id) {
 #' @noRd
 #' @importFrom shiny moduleServer reactive req eventReactive
 #' @importFrom purrr %||%
-#' @importFrom colourpicker colourInput
 mod_map_params_server <- function(id, admixture_df, coords_df){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -177,7 +174,7 @@ mod_map_params_server <- function(id, admixture_df, coords_df){
       # Render colourInput, cluster labels and cluster colours to UI
       pmap_args <- list(cluster_col_inputIDs(), cluster_cols)
       purrr::pmap(pmap_args, ~ div(style = "display: inline-block; width: 100px; margin-top: 5px;",
-                            colourInput(ns(..1), label = NULL, value = ..2)))
+                             colourpicker::colourInput(ns(..1), label = NULL, value = ..2)))
     })
 
     # Collect colours chosen by user ----

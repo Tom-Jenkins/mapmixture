@@ -1,12 +1,7 @@
 #' Application User-Interface
 #'
 #' @noRd
-#' @import shiny
-#' @importFrom bslib bs_theme
-#' @importFrom htmltools HTML htmlDependency
-#' @importFrom shinyjs useShinyjs
-#' @importFrom waiter useWaiter
-#' @importFrom shinyFeedback useShinyFeedback
+#' @importFrom shiny addResourcePath fluidPage tags fluidRow span icon strong a sidebarLayout sidebarPanel div tabsetPanel tabPanel mainPanel
 
 app_ui <- function() {
 
@@ -22,19 +17,19 @@ app_ui <- function() {
     ),
 
     # Enable dependencies
-    useShinyjs(),
-    useWaiter(),
-    useShinyFeedback(),
+    shinyjs::useShinyjs(),
+    waiter::useWaiter(),
+    shinyFeedback::useShinyFeedback(),
 
     # Bootstrap version and bootswatch theme ----
-    theme = bs_theme(version = 5, bootswatch = "flatly"),
+    theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
 
     # Navbar with title and links ----
     fluidRow(
       class = "custom-navbar",
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       span(
-        span(icon("chart-pie", style = "margin-right: 5px;"), strong("Mapmixture"), span(class = "badge bg-light mx-1", "1.1.0")),
+        span(icon("chart-pie", style = "margin-right: 5px;"), strong("mapmixture"), span(class = "badge bg-light mx-1", "1.1.0")),
         a(
           style = "color: white;",
           href = "https://twitter.com/tom__jenkins",

@@ -2,16 +2,15 @@
 #'
 #' @noRd
 #' @description Return HTML string containing content for the About tabPanel
-#' @importFrom htmltools HTML
 
 about_content <- function() {
 
-  HTML(
+  htmltools::HTML(
     '
     </br>
-    <h4 class="text-primary">About Mapmixture</h4>
+    <h4 class="text-primary">About <code>mapmixture</code></h4>
     <p>
-      Mapmixture allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site, and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
+      <code>mapmixture</code> allows users to visualise admixture as pie charts on a map. Users upload admixture proportions for each individual or site, and a coordinates file containing location data. In data sets where there are multiple individuals per site, the software will calculate the average admixture proportion for each site.
     </p>
 
     <h4 class="text-primary">Quick start</h4>
@@ -27,7 +26,7 @@ about_content <- function() {
 
     <h4 class="text-primary">Defaults</h4>
     <p>
-      <strong>CRS:</strong> WGS 84 / Pseudo-Mercator coordinate reference system (EPSG: 3857).</br>
+      <strong>CRS:</strong> WGS 84 (EPSG: 4326).</br>
       <strong>Map boundary:</strong> Bounding box of all the latitude and longitude points in the coordinates file. If invalid xmin, xmax, ymin or ymax boundary limits are entered, the former default bounding box is used.</br>
       <strong>Scales:</strong> A north arrow and scalebar is added to the map.
     </p>
