@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main)
 <!-- badges: end -->
 
 `mapmixture` is an R package and shiny app that enables users to
@@ -210,7 +212,7 @@ facet_barplot <- structure_plot(admixture1,
   theme(
     axis.title.y = element_text(size = 10),
     axis.text.y = element_text(size = 5),
-    strip.text = element_text(size = 8, vjust = 1, margin = margin(t=1.5, r=0, b=1.5, l=0)),
+    strip.text = element_text(size = 6, vjust = 1, margin = margin(t=1.5, r=0, b=1.5, l=0)),
   )
 
 # Arrange plots

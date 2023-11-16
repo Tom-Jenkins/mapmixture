@@ -4,3 +4,4 @@
 _\.new\.png$
 ^README\.Rmd$
 ^\.github$
+^codecov\.yml$
