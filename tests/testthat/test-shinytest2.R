@@ -12,7 +12,6 @@ test_that("launch_mapmixture() successfully loads data and outputs map", {
   # output <- app$get_values()$output
   # str(output)
 
-
   app$click("plot_bttn-plot_bttn")
   output <- app$get_values()$output
   # str(output)
