@@ -137,7 +137,7 @@ map3 <- mapmixture(admixture1, coordinates,
     axis.text = element_text(size = 8),
   )+
   # Adjust the size of the legend keys
-  guides(fill = guide_legend(override.aes = list(size = 5)))
+  guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
 map3
 #> Scale on map varies by more than 10%, scale bar may be inaccurate
 ```
@@ -174,7 +174,7 @@ map4 <- mapmixture(admixture1, coordinates,
     legend.position = "top",
   )+
   # Adjust the size of the legend keys
-  guides(fill = guide_legend(override.aes = list(size = 5)))
+  guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
 
 # Traditional structure barplot
 structure_barplot <- structure_plot(admixture1,
@@ -221,6 +221,39 @@ grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
+
+Use a raster as the basemap:
+
+The raster (TIFF) used in the example below was downloaded from Natural
+Earth
+[here](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-1/).
+You need to install the [terra](https://github.com/rspatial/terra)
+package to use this feature. Currently, the `basemap` argument only
+accepts a `SpatRaster` object.
+
+``` r
+# Load packages
+library(mapmixture)
+library(terra)
+#> terra 1.7.55
+
+# Create SpatRaster object
+earth <- terra::rast("../NE1_50M_SR_W/NE1_50M_SR_W.tif")
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture
+map5 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
+map5
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ## Interactive shiny web application
 
