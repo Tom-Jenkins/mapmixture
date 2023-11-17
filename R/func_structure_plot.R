@@ -13,7 +13,8 @@
 #' individual level ("site" or "individual").
 #' @param site_dividers add dotted lines that divide sites (TRUE or FALSE).
 #' @param ylabel string for y label.
-#' @param site_labels character vector of site labels.
+#' @param site_order character vector of site labels used to customise the order of sites.
+#' If `NULL`, sites are ordered alphabetically.
 #' @param site_labels_size numeric value for site label size.
 #' @param site_labels_x numeric value for site label horizontal position.
 #' @param site_labels_y numeric value for site label vertical position.
@@ -33,10 +34,12 @@
 #' admixture1 <- read.csv(file)
 #'
 #' structure_plot(admixture1, type = "structure")
+#' structure_plot(admixture1, type = "facet", facet_col = 5)
 structure_plot <- function(admixture_df,
     type = "structure", cluster_cols = NULL, labels = "site", flip_axis = FALSE,
-    site_dividers = TRUE, ylabel = "Proportion",
-    site_labels = NULL, site_labels_size = 2,
+    ylabel = "Proportion",
+    site_dividers = TRUE, site_order = NULL,
+    site_labels_size = 2,
     site_labels_x = 0, site_labels_y = -0.025,
     site_ticks = TRUE, site_ticks_size = -0.01,
     facet_col = NULL, facet_row = NULL
@@ -57,15 +60,27 @@ structure_plot <- function(admixture_df,
     values_to = "value"
   )
 
+  # Change the positional order of sites if parameter is set
+  # First check that character vector is valid
+  if (!is.null(site_order)) {
+    if (all(site_order %in% unique(df_long$site))) {
+      df_long$site = factor(df_long$site, levels = site_order)
+    } else {
+      stop("one or more site labels in site_order do not match site labels in admixture_df.\nTry running: site_order %in% unique(admixture_df[[1]])")
+    }
+  }
+
+  # Character vector of site labels
+  if (!is.null(site_order)) {
+    site_labels <- levels(df_long$site)
+  } else {
+    site_labels <- unique(admixture_df$site)
+  }
+
   # Character vector of default colours if cluster_cols parameter not set
   if (is.null(cluster_cols)) {
     pal <- grDevices::colorRampPalette(c("green","blue")) # green-blue colour palette
     cluster_cols <- pal(num_clusters) # number of cluster colours for palette
-  }
-
-  # Character vector of default site labels if parameter not set
-  if (is.null(site_labels)) {
-    site_labels <- unique(admixture_df$site)
   }
 
   # Execute this code if type = "structure" ----

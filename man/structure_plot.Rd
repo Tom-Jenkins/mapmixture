@@ -10,9 +10,9 @@ structure_plot(
   cluster_cols = NULL,
   labels = "site",
   flip_axis = FALSE,
-  site_dividers = TRUE,
   ylabel = "Proportion",
-  site_labels = NULL,
+  site_dividers = TRUE,
+  site_order = NULL,
   site_labels_size = 2,
   site_labels_x = 0,
   site_labels_y = -0.025,
@@ -37,11 +37,12 @@ individual level ("site" or "individual").}
 \item{flip_axis}{flip the axes so that the plot is vertical (TRUE or FALSE).
 Default is FALSE (horizontal barplot).}
 
-\item{site_dividers}{add dotted lines that divide sites (TRUE or FALSE).}
-
 \item{ylabel}{string for y label.}
 
-\item{site_labels}{character vector of site labels.}
+\item{site_dividers}{add dotted lines that divide sites (TRUE or FALSE).}
+
+\item{site_order}{character vector of site labels used to customise the order of sites.
+If \code{NULL}, sites are ordered alphabetically.}
 
 \item{site_labels_size}{numeric value for site label size.}
 
@@ -70,4 +71,5 @@ file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
 admixture1 <- read.csv(file)
 
 structure_plot(admixture1, type = "structure")
+structure_plot(admixture1, type = "facet", facet_col = 5)
 }
