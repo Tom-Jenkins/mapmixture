@@ -2,7 +2,7 @@
 % Please edit documentation in R/func_mapmixture.R
 \name{mapmixture}
 \alias{mapmixture}
-\title{Map Pie Charts}
+\title{Plot Pie Charts on Map}
 \usage{
 mapmixture(
   admixture_df,
@@ -11,12 +11,13 @@ mapmixture(
   cluster_names = NULL,
   boundary = NULL,
   crs = 4326,
+  basemap = NULL,
   pie_size = 1,
   pie_border = 0.3,
   pie_opacity = 1,
   land_colour = "#d9d9d9",
   sea_colour = "#deebf7",
-  expand = TRUE,
+  expand = FALSE,
   arrow = TRUE,
   arrow_size = 1,
   arrow_position = "tl",
@@ -45,6 +46,9 @@ If \code{NULL}, a default bounding box is calculated.}
 
 \item{crs}{coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:\code{4326}).
 See \code{?sf::st_crs} for details.}
+
+\item{basemap}{a SpatRaster object to use as the basemap. A SpatRaster object can be created from a file
+using the terra::rast() function. If \code{NULL}, world country boundaries are used.}
 
 \item{pie_size}{a numeric value of zero or greater.}
 
@@ -120,7 +124,7 @@ mapmixture(admixture1, coordinates,
   pie_opacity = 1,
   land_colour = "#d9d9d9",
   sea_colour = "#deebf7",
-  expand = TRUE,
+  expand = FALSE,
   arrow = TRUE,
   arrow_size = 1,
   arrow_position = "tl",

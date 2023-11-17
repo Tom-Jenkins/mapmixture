@@ -1,4 +1,4 @@
-#' Map Pie Charts
+#' Plot Pie Charts on Map
 #'
 #' @description
 #' Plot admixture proportions as pie charts on a projected map.
@@ -15,6 +15,8 @@
 #' If `NULL`, a default bounding box is calculated.
 #' @param crs coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:`4326`).
 #' See `?sf::st_crs` for details.
+#' @param basemap a SpatRaster object to use as the basemap. A SpatRaster object can be created from a file
+#' using the terra::rast() function. If `NULL`, world country boundaries are used.
 #' @param pie_size a numeric value of zero or greater.
 #' @param pie_border a numeric value of zero or greater.
 #' @param pie_opacity a numeric value of zero to one.
@@ -69,7 +71,7 @@
 #'   pie_opacity = 1,
 #'   land_colour = "#d9d9d9",
 #'   sea_colour = "#deebf7",
-#'   expand = TRUE,
+#'   expand = FALSE,
 #'   arrow = TRUE,
 #'   arrow_size = 1,
 #'   arrow_position = "tl",
@@ -82,14 +84,14 @@
 #'   axis_text_size = 10
 #' )
 mapmixture <- function(
-    # Data input
+  # Data input
   admixture_df, coords_df,
   # Parameter arguments
   cluster_cols = NULL, cluster_names = NULL,
-  boundary = NULL, crs = 4326,
+  boundary = NULL, crs = 4326, basemap = NULL,
   pie_size = 1, pie_border = 0.3, pie_opacity = 1,
   land_colour = "#d9d9d9", sea_colour = "#deebf7",
-  expand = TRUE,
+  expand = FALSE,
   arrow = TRUE, arrow_size = 1, arrow_position = "tl",
   scalebar = TRUE, scalebar_size = 1, scalebar_position = "tl",
   plot_title = "", plot_title_size = 12,
@@ -121,6 +123,7 @@ mapmixture <- function(
     # Transform boundary to CRS if boundary parameter is set
     boundary <- transform_bbox(boundary, crs)
   }
+  # print(boundary)
 
   # Create a vector of default colours if cluster_cols parameter not set
   if (is.null(cluster_cols)) {
@@ -133,16 +136,49 @@ mapmixture <- function(
     cluster_names <- colnames(admix_coords)[4:ncol(admix_coords)]
   }
 
+  # Do these validation checks if basemap object is not NULL
+  if (!is.null(basemap)) {
 
-  # **** TESTING #1  ****
-  # earth <- terra::rast(system.file("extdata", "NE1_LR_LC.tif", package = "mapmixture"))
-  # earth <- terra::crop(earth, boundary)
+    # stop if basemap if not a SpatRaster object
+    if (!"SpatRaster" %in% class(basemap)){
+      stop("basemap object is not a SpatRaster object. Please use terra::rast() to create a SpatRaster from a file.")
+    }
 
+    # stop if basemap is not equal to the crs parameter
+    # if (sf::st_crs(basemap) != sf::st_crs(crs)) {
+    #   stop("CRS of basemap object does not match crs argument. Please use terra::project() to transform basemap to the correct CRS.")
+    # }
+  }
 
-  # Plot pie chart map
-  plt <- ggplot2::ggplot()+
-    # ggspatial::layer_spatial(earth)+ # **** TESTING #1  ****
-    ggplot2::geom_sf(data = world_boundaries, colour = "black", fill = land_colour, size = 0.1)+
+  # Initiate ggplot
+  plt <- ggplot2::ggplot()
+
+  # Add basemap using default world outlines if basemap parameter not set
+  if (is.null(basemap)) {
+    plt <- plt+
+      ggplot2::geom_sf(data = world_boundaries, colour = "black", fill = land_colour, size = 0.1)
+  }
+
+  # Add basemap using basemap object supplied by user
+  if (!is.null(basemap)) {
+
+    if (rlang::is_installed("terra")) {
+
+      # 1. Get an extent of boundary object in WGS 84 (EPSG:4326)
+      # 2. Crop basemap raster using this extent
+      # 3. Reproject basemap to crs argument before plotting
+      extent <- terra::project(terra::ext(boundary), paste0("epsg:",crs), paste0("epsg:",4326))
+      basemap <- terra::crop(basemap, extent)
+      basemap <- terra::project(basemap, paste0("epsg:", crs))
+      plt <- plt+
+        ggspatial::layer_spatial(basemap)
+    } else {
+      stop('Adding a raster basemap requires the terra package to be installed.\ninstall.packages("terra")')
+    }
+  }
+
+  # Add pie charts to map
+  plt <- plt+
     ggplot2::coord_sf(
       xlim = c(boundary[["xmin"]], boundary[["xmax"]]),
       ylim = c(boundary[["ymin"]], boundary[["ymax"]]),
@@ -187,13 +223,16 @@ mapmixture <- function(
     ggplot2::geom_point(
       data = legend_data,
       ggplot2::aes(x = !!as.name("x"), y = !!as.name("y"), fill = !!as.name("cluster")),
-      shape = 22, colour = "black", stroke = 0.3, size = 5 * pie_size
+      shape = 22, colour = "black", stroke = 0.3, size = 5 * pie_size , alpha = 0
     )+
     ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
     ggplot2::theme(
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_rect(fill = NA),
       legend.text = ggplot2::element_text(vjust = 0.5),
+    )+
+    ggplot2::guides(fill = ggplot2::guide_legend(
+      override.aes = list(alpha = 1))
     )
 
   # Add north arrow if true
