@@ -68,8 +68,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
     cols = pie_colours,
     border = border,
     opacity = opacity
-  )
-  )
+  ))
 
   # Pie chart size formula
   radius <- dplyr::case_when(
@@ -86,8 +85,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
     ymax = coord_list[[.]][1] + radius,
     xmin = coord_list[[.]][2] - radius,
     xmax = coord_list[[.]][2] + radius
-  )
-  )
+  ))
 
   # Return list of annotation_custom objects
   return(pie_annotation)
