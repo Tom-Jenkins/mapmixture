@@ -30,6 +30,7 @@ Imports:
     waiter
 Suggests: 
     shinytest2,
+    terra,
     testthat (>= 3.2.0)
 Config/testthat/edition: 3
 Depends: 
