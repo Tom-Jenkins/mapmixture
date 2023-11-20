@@ -12,11 +12,11 @@ test_that("read_input_data() outputs a data.frame with the expected number of co
   expect_s3_class(obj, "data.frame")
   expect_true(ncol(obj) >= 3)
 
-  expect_error(read_input_data(system.file("extdata", "admixture1_invalid", package = "mapmixture")))
-
   obj <- read_input_data(system.file("extdata", "coordinates.csv", package = "mapmixture"))
   expect_s3_class(obj, "data.frame")
   expect_true(ncol(obj) == 3)
+
+  expect_error(read_input_data("admixture1_invalid_ws"))
 })
 
 test_that("standardise_data() output a data.frame with the expected column names", {
