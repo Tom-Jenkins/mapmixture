@@ -232,7 +232,7 @@ map5 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
 map5
 ```
 
-## Interactive shiny web application
+## Launch interactive Shiny app
 
 ```{r eval=FALSE}
 # Load package
@@ -241,6 +241,9 @@ library(mapmixture)
 # Launch shiny app
 launch_mapmixture()
 ```
+
+## Link to online Shiny app
+https://tomjenkins.shinyapps.io/mapmixture/
 
 ## Format
 
@@ -268,3 +271,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 coordinates
 ```
+
+## Related software
+
+- [pophelper](https://github.com/royfrancis/pophelper)
+- [pophelperShiny](https://github.com/royfrancis/pophelperShiny)
+

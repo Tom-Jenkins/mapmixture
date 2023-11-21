@@ -6,8 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main)
+<!-- [![Codecov test coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main) -->
 <!-- badges: end -->
 
 `mapmixture` is an R package and shiny app that enables users to
@@ -255,7 +254,7 @@ map5
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
-## Interactive shiny web application
+## Launch interactive Shiny app
 
 ``` r
 # Load package
@@ -264,6 +263,10 @@ library(mapmixture)
 # Launch shiny app
 launch_mapmixture()
 ```
+
+## Link to online Shiny app
+
+<https://tomjenkins.shinyapps.io/mapmixture/>
 
 ## Format
 
@@ -331,3 +334,8 @@ coordinates
 #> 9          Shetland 60.17  -1.40
 #> 10             Vigo 42.49  -8.99
 ```
+
+## Related software
+
+- [pophelper](https://github.com/royfrancis/pophelper)
+- [pophelperShiny](https://github.com/royfrancis/pophelperShiny)
