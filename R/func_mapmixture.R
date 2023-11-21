@@ -15,8 +15,9 @@
 #' If `NULL`, a default bounding box is calculated.
 #' @param crs coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:`4326`).
 #' See `?sf::st_crs` for details.
-#' @param basemap a SpatRaster object to use as the basemap. A SpatRaster object can be created from a file
-#' using the terra::rast() function. If `NULL`, world country boundaries are used.
+#' @param basemap a SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
+#' using the terra::rast() function. A sf object can be created from a file
+#' using the sf::st_read() function. If `NULL`, world coastline boundaries are used.
 #' @param pie_size a numeric value of zero or greater.
 #' @param pie_border a numeric value of zero or greater.
 #' @param pie_opacity a numeric value of zero to one.
@@ -139,12 +140,12 @@ mapmixture <- function(
   # Do these validation checks if basemap object is not NULL
   if (!is.null(basemap)) {
 
-    # stop if basemap if not a SpatRaster object
-    if (!"SpatRaster" %in% class(basemap)){
-      stop("basemap object is not a SpatRaster object. Please use terra::rast() to create a SpatRaster from a file.")
+    # stop if basemap if not a SpatRaster or sf object
+    if (!(("SpatRaster" %in% class(basemap)) | ("sf" %in% class(basemap)))) {
+      stop("basemap is not a SpatRaster or sf object. Please use terra::rast() to create a SpatRaster object or sf::st_read() to create a sf object.")
     }
 
-    # stop if basemap is not equal to the crs parameter
+    # stop if basemap is not a sf object
     # if (sf::st_crs(basemap) != sf::st_crs(crs)) {
     #   stop("CRS of basemap object does not match crs argument. Please use terra::project() to transform basemap to the correct CRS.")
     # }
@@ -156,24 +157,36 @@ mapmixture <- function(
   # Add basemap using default world outlines if basemap parameter not set
   if (is.null(basemap)) {
     plt <- plt+
-      ggplot2::geom_sf(data = world_boundaries, colour = "black", fill = land_colour, size = 0.1)
+      ggplot2::geom_sf(data = sf::st_geometry(world_boundaries), colour = "black", fill = land_colour, size = 0.1)
   }
 
   # Add basemap using basemap object supplied by user
   if (!is.null(basemap)) {
 
-    if (rlang::is_installed("terra")) {
+    # If basemap is a SpatRaster object ----
+    if ("SpatRaster" %in% class(basemap)) {
+      if (rlang::is_installed("terra")) {
 
-      # 1. Get an extent of boundary object in WGS 84 (EPSG:4326)
-      # 2. Crop basemap raster using this extent
-      # 3. Reproject basemap to crs argument before plotting
-      extent <- terra::project(terra::ext(boundary), paste0("epsg:",crs), paste0("epsg:",4326))
-      basemap <- terra::crop(basemap, extent)
-      basemap <- terra::project(basemap, paste0("epsg:", crs))
+        # 1. Get an extent of boundary object in WGS 84 (EPSG:4326)
+        # 2. Crop basemap raster using this extent
+        # 3. Reproject basemap to crs argument before plotting
+        extent <- terra::project(terra::ext(boundary), paste0("epsg:",crs), paste0("epsg:",4326))
+        basemap <- terra::crop(basemap, extent)
+        basemap <- terra::project(basemap, paste0("epsg:", crs))
+        plt <- plt+
+          ggspatial::layer_spatial(basemap)
+      } else {
+        stop('Adding a raster basemap requires the terra package to be installed.\ninstall.packages("terra")')
+      }
+    }
+
+    # If basemap is a sf object ----
+    if ("sf" %in% class(basemap)) {
+
+      # 1. Reproject basemap to crs argument before plotting
+      basemap <- sf::st_geometry(sf::st_transform(x, crs = crs))
       plt <- plt+
-        ggspatial::layer_spatial(basemap)
-    } else {
-      stop('Adding a raster basemap requires the terra package to be installed.\ninstall.packages("terra")')
+        ggplot2::geom_sf(data = basemap, colour = "black", fill = land_colour, size = 0.1)
     }
   }
 

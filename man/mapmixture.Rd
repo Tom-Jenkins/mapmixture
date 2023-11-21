@@ -47,8 +47,9 @@ If \code{NULL}, a default bounding box is calculated.}
 \item{crs}{coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:\code{4326}).
 See \code{?sf::st_crs} for details.}
 
-\item{basemap}{a SpatRaster object to use as the basemap. A SpatRaster object can be created from a file
-using the terra::rast() function. If \code{NULL}, world country boundaries are used.}
+\item{basemap}{a SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
+using the terra::rast() function. A sf object can be created from a file
+using the sf::st_read() function. If \code{NULL}, world coastline boundaries are used.}
 
 \item{pie_size}{a numeric value of zero or greater.}
 
