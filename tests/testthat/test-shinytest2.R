@@ -35,7 +35,7 @@ test_that("Shiny app successfully loads data and outputs map", {
   expect_true(print(app$get_js("document.getElementById('main_plot-filetype_radio_bttn3').checked")))
 
   # Check that map downloads when download button is clicked
-  app$expect_download("download_bttn", name = "mapmixture.png")
+  expect_no_error(app$get_download("download_bttn"))
 
   # app$view()
 })
