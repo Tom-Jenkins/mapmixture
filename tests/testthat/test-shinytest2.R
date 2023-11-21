@@ -103,7 +103,7 @@ test_that("Invalid file uploads render feedback messages to UI", {
   # app$view()
 })
 
-test_that("Information modals render when button is clicked", {
+test_that("Admixture information modal renders when button is clicked", {
   app <- shinytest2::AppDriver$new(launch_mapmixture())
 
   # Click the admixture info button to open the modal
@@ -114,6 +114,12 @@ test_that("Information modals render when button is clicked", {
 
   # Close the modal
   app$click(selector = ".modal-close-bttn")
+
+  # app$view()
+})
+
+test_that("Coordinates information modal renders when button is clicked", {
+  app <- shinytest2::AppDriver$new(launch_mapmixture())
 
   # Click the coords info button to open the modal
   app$click(input = "file_upload-coords_info_bttn")
