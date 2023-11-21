@@ -6,3 +6,5 @@ _\.new\.png$
 ^\.github$
 ^codecov\.yml$
 ^\.gitlab-ci\.yml$
+^app\.R$
+^rsconnect$
