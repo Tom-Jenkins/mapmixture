@@ -184,7 +184,7 @@ mapmixture <- function(
     if ("sf" %in% class(basemap)) {
 
       # 1. Reproject basemap to crs argument before plotting
-      basemap <- sf::st_geometry(sf::st_transform(x, crs = crs))
+      basemap <- sf::st_geometry(sf::st_transform(basemap, crs = crs))
       plt <- plt+
         ggplot2::geom_sf(data = basemap, colour = "black", fill = land_colour, size = 0.1)
     }
