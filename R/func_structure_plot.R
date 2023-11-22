@@ -64,7 +64,9 @@ structure_plot <- function(admixture_df,
   # First check that character vector is valid
   if (!is.null(site_order)) {
     if (all(site_order %in% unique(df_long$site))) {
-      df_long$site = factor(df_long$site, levels = site_order)
+      df_long$site <- factor(df_long$site, levels = site_order)
+      df_long <- dplyr::arrange(df_long, site)
+      df_long$ind <- factor(df_long$ind, levels = unique(df_long$ind))
     } else {
       stop("one or more site labels in site_order do not match site labels in admixture_df.\nTry running: site_order %in% unique(admixture_df[[1]])")
     }
@@ -72,7 +74,7 @@ structure_plot <- function(admixture_df,
 
   # Character vector of site labels
   if (!is.null(site_order)) {
-    site_labels <- levels(df_long$site)
+    site_labels <- site_order
   } else {
     site_labels <- unique(admixture_df$site)
   }
