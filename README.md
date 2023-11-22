@@ -16,8 +16,8 @@ barplots.
 
 ## Installation
 
-You need to have [R](https://www.r-project.org/) (\>= 4.1.0) installed
-on your system. Click
+`mapmixture` requires [R](https://www.r-project.org/) (\>= 4.1.0) to be
+installed on your system. Click
 [here](https://cran.r-project.org/bin/windows/base/) to download the
 latest version of R for Windows.
 
@@ -83,7 +83,7 @@ map2 <- mapmixture(admixture3, coordinates,
   scalebar = TRUE,
   scalebar_size = 1.5,
   scalebar_position = "tl",
-  plot_title = "Mapmixture Figure",
+  plot_title = "Admixture Map",
   plot_title_size = 12,
   axis_title_size = 10,
   axis_text_size = 8
@@ -171,6 +171,7 @@ map4 <- mapmixture(admixture1, coordinates,
   # Adjust theme options
   theme(
     legend.position = "top",
+    plot.margin = margin(l = 10, r = 10),
   )+
   # Adjust the size of the legend keys
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
@@ -180,11 +181,15 @@ structure_barplot <- structure_plot(admixture1,
   type = "structure",
   cluster_cols = c("#91bfdb","#fc8d59"),
   site_dividers = TRUE,
+  site_order = c(
+    "Vigo","Ile de Re","Isles of Scilly","Mullet Peninsula",
+    "Shetland","Cromer","Helgoland","Flodevigen","Lysekil","Bergen"
+  ),
   labels = "site",
   flip_axis = FALSE,
   site_ticks_size = -0.05,
   site_labels_y = -0.35,
-  site_labels_size = 2.5
+  site_labels_size = 2.2
 )+
   # Adjust theme options
   theme(
@@ -223,12 +228,11 @@ grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
 
 Use a raster as the basemap:
 
-The raster (TIFF) used in the example below was downloaded from Natural
+The raster (TIFF) used in the example below was downloaded from the Natural
 Earth
 [here](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-1/).
 You need to install the [terra](https://github.com/rspatial/terra)
-package to use this feature. Currently, the `basemap` argument only
-accepts a `SpatRaster` object.
+package to use this feature. Currently, the `basemap` argument accepts a `SpatRaster` or `sf` object.
 
 ``` r
 # Load packages
@@ -253,6 +257,74 @@ map5
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+Add pie charts to an existing map:
+
+The vector data (shapefile) used in the example below was downloaded
+from Natural England Open Data Geoportal
+[here](https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::marine-conservation-zones-england/explore?location=53.749917%2C-5.534585%2C6.27).
+
+``` r
+# Load packages
+library(mapmixture)
+library(ggplot2)
+suppressPackageStartupMessages(library(dplyr))
+library(sf)
+#> Linking to GEOS 3.11.2, GDAL 3.6.2, PROJ 9.2.0; sf_use_s2() is TRUE
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Parameters
+crs <- 3035
+boundary <- c(xmin=-11, xmax=13, ymin=50, ymax=60) |> transform_bbox(bbox = _, crs)
+
+# Read in world coastlines and transform to CRS
+file <- system.file("extdata", "world.gpkg", package = "mapmixture")
+world <- st_read(file, quiet = TRUE) |> st_transform(x = _, crs = crs)
+
+# Read in Marine Conservation Zones shapefile
+# Extract polygons for Western Channel, Offshore Brighton and Swallow Sand
+# Transform to CRS
+mczs <- st_read("../Marine_Conservation_Zones_England/Marine_Conservation_Zones___Natural_England_and_JNCC.shp", quiet = TRUE) |>
+  dplyr::filter(.data = _, MCZ_NAME %in% c("Western Channel", "Offshore Brighton", "Swallow Sand")) |>
+  st_transform(x = _, crs = crs)
+
+# Run mapmixture helper functions to prepare admixture and coordinates data
+admixture_df <- standardise_data(admixture1, type = "admixture") |> transform_admix_data(data = _)
+coords_df <- standardise_data(coordinates, type = "coordinates")
+admix_coords <- merge_coords_data(coords_df, admixture_df) |> transform_df_coords(df = _, crs = crs)
+
+# Plot map and add pie charts
+map6 <- ggplot()+
+  geom_sf(data = world, colour = "black", fill = "#d9d9d9", size = 0.1)+
+  geom_sf(data = mczs, aes(fill = "MCZs"), size = 0.1)+
+  scale_fill_manual(values = c("red"))+
+  coord_sf(
+    xlim = c(boundary[["xmin"]], boundary[["xmax"]]),
+    ylim = c(boundary[["ymin"]], boundary[["ymax"]])
+  )+
+  add_pie_charts(admix_coords,
+    admix_columns = 4:ncol(admix_coords),
+    lat_column = "lat",
+    lon_column = "lon",
+    pie_colours = c("green","blue"),
+    border = 0.3,
+    opacity = 1,
+    pie_size = 0.8
+  )+
+  theme(
+    legend.title = element_blank(),
+  )
+map6
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ## Launch interactive Shiny app
 
