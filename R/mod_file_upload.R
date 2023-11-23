@@ -101,13 +101,13 @@ mod_file_upload_server <- function(id){
             )
           )
 
-          # 3. Check all cluster rows add up to exactly 1 ----
-        } else if (all(round(rowSums(cluster_cols), digits = 5) == 1) == FALSE) { # Fixed bug "Fix cluster sum bug" 8a4144a
-          runjs(
-            paste0(
-              "renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions in row ", toString(which(rowSums(cluster_cols) != 1)), ".')"
-            )
-          )
+        #   # 3. Check all cluster rows add up to exactly 1 ----
+        # } else if (all(round(rowSums(cluster_cols), digits = 5) == 1) == FALSE) { # Fixed bug "Fix cluster sum bug" 8a4144a
+        #   runjs(
+        #     paste0(
+        #       "renderFeedbackWarning('admixture', 'One or more cluster rows do not add up to 1. Check admixture proportions in row ", toString(which(rowSums(cluster_cols) != 1)), ".')"
+        #     )
+        #   )
 
           # If data valid then print success message to UI, convert colnames to lower case and return data
         } else {
