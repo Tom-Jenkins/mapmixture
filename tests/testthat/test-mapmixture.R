@@ -41,6 +41,22 @@ test_that("mapmixture() outputs a ggplot object", {
 
   expect_no_error(mapmixture(obj_admix3, obj_coords))
   expect_s3_class(mapmixture(obj_admix3, obj_coords), "ggplot")
+
+
+  obj_admix4 <- data.frame(
+    Site = c("London", "Paris", "Berlin", "Rome", "Madrid"),
+    Ind = c("London", "Paris", "Berlin", "Rome", "Madrid"),
+    Cluster1 = c(1, 1, 0, 0, 0),
+    Cluster2 = c(0, 0, 1, 0, 1),
+    Cluster3 = c(0, 0, 0, 1, 0)
+  )
+  obj_coords2 <- data.frame(
+    Site = c("London_error", "Paris", "Berlin", "Rome", "Madrid"),
+    Lat = c(51.51, 48.85, 52.52, 41.90, 40.42),
+    Lon = c(-0.12, 2.35, 13.40, 12.49, -3.70)
+  )
+
+  expect_error(mapmixture(obj_admix4, obj_coords2))
 })
 
 test_that("calc_default_bbox() outputs a correct bbox object", {

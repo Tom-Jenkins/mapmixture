@@ -102,6 +102,11 @@ mapmixture <- function(
   admixture_df <- standardise_data(admixture_df, type = "admixture")
   coords_df <- standardise_data(coords_df, type = "coordinates")
 
+  # Check coordinate site IDs exactly match admixture site IDs
+  if ( all(coords_df$site == unique(admixture_df$site)) == FALSE ) {
+    stop("Site names in coordinates data frame do not match site names in admixture data frame.")
+  }
+
   # Transform admixture data into a plotting format ----
   admixture_df <- transform_admix_data(admixture_df)
 
