@@ -99,12 +99,17 @@ mapmixture <- function(
   axis_title_size = 10, axis_text_size = 8) {
 
   # Standarise input data ----
-  admixture_df <- standardise_data(admixture_df, type = "admixture")
-  coords_df <- standardise_data(coords_df, type = "coordinates")
+  tryCatch({
+    admixture_df <- standardise_data(admixture_df, type = "admixture")
+    coords_df <- standardise_data(coords_df, type = "coordinates")
+  }, error = function(err) {
+    # Print error message if an error occurs from invalid inputs
+    stop("Invalid input: admixture_df and coord_df should be a data.frame or tibble in the correct format. Run ?mapmixture to check valid input formats.")
+  })
 
   # Check coordinate site IDs exactly match admixture site IDs
-  if ( all(coords_df$site == unique(admixture_df$site)) == FALSE ) {
-    stop("Site names in coordinates data frame do not match site names in admixture data frame.")
+  if ( all(coords_df[[1]] == unique(admixture_df[[1]])) == FALSE ) {
+    stop("Site names in coordinates data frame do not match site names in admixture data frame. Check site names are not empty or NA and that they match.")
   }
 
   # Transform admixture data into a plotting format ----
