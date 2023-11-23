@@ -45,6 +45,11 @@ structure_plot <- function(admixture_df,
     facet_col = NULL, facet_row = NULL
   ) {
 
+  # Check valid input file
+  if ( !"data.frame" %in% class(admixture_df) ) {
+    stop("Invalid input: admixture_df should be a data.frame or tibble in the correct format. Run ?structure_plot to check valid input format.")
+  }
+
   # Number of clusters
   num_clusters <- length(colnames(admixture_df[3:length(admixture_df)]))
 
