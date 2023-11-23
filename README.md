@@ -67,7 +67,7 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map2 <- mapmixture(admixture3, coordinates,
-  cluster_cols = c("blue","green"),
+  cluster_cols = c("green","blue"),
   cluster_names = c("Group A","Group B"),
   crs = 3035,
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
@@ -110,7 +110,7 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map3 <- mapmixture(admixture1, coordinates,
-  cluster_cols = c("#91bfdb","#fc8d59"),
+  cluster_cols = c("#fc8d59","#91bfdb"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
@@ -162,7 +162,7 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map4 <- mapmixture(admixture1, coordinates,
-  cluster_cols = c("#91bfdb","#fc8d59"),
+  cluster_cols = c("#fc8d59","#91bfdb"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-20, xmax=20, ymin=40, ymax=62),
@@ -179,7 +179,7 @@ map4 <- mapmixture(admixture1, coordinates,
 # Traditional structure barplot
 structure_barplot <- structure_plot(admixture1,
   type = "structure",
-  cluster_cols = c("#91bfdb","#fc8d59"),
+  cluster_cols = c("#fc8d59","#91bfdb"),
   site_dividers = TRUE,
   site_order = c(
     "Vigo","Ile de Re","Isles of Scilly","Mullet Peninsula",
@@ -209,7 +209,7 @@ grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
 # Facet structure barplot
 facet_barplot <- structure_plot(admixture1,
   type = "facet",
-  cluster_cols = c("#91bfdb","#fc8d59"),
+  cluster_cols = c("#fc8d59","#91bfdb"),
   facet_col = 2,
   ylabel = "Admixture proportions",
 )+
@@ -228,11 +228,12 @@ grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
 
 Use a raster as the basemap:
 
-The raster (TIFF) used in the example below was downloaded from the Natural
+The raster (TIFF) used in the example below was downloaded from Natural
 Earth
 [here](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-1/).
 You need to install the [terra](https://github.com/rspatial/terra)
-package to use this feature. Currently, the `basemap` argument accepts a `SpatRaster` or `sf` object.
+package to use this feature. Currently, the `basemap` argument only
+accepts a `SpatRaster` or `sf` object.
 
 ``` r
 # Load packages
@@ -261,7 +262,7 @@ map5
 Add pie charts to an existing map:
 
 The vector data (shapefile) used in the example below was downloaded
-from Natural England Open Data Geoportal
+from the Natural England Open Data Geoportal
 [here](https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::marine-conservation-zones-england/explore?location=53.749917%2C-5.534585%2C6.27).
 
 ``` r
