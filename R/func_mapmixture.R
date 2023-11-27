@@ -16,18 +16,18 @@
 #' @param crs coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:`4326`).
 #' See `?sf::st_crs` for details.
 #' @param basemap a SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
-#' using the terra::rast() function. A sf object can be created from a file
-#' using the sf::st_read() function. If `NULL`, world coastline boundaries are used.
+#' using the `terra::rast()` function. A sf object can be created from a file
+#' using the `sf::st_read()` function. If `NULL`, world coastline boundaries are used.
 #' @param pie_size a numeric value of zero or greater.
 #' @param pie_border a numeric value of zero or greater.
 #' @param pie_opacity a numeric value of zero to one.
 #' @param land_colour a string defining the colour of land.
 #' @param sea_colour a string defining the colour of sea.
 #' @param expand expand axes (`TRUE` or `FALSE`).
-#' @param arrow show arrow (`TRUE` or `FALSE`).
+#' @param arrow show arrow (`TRUE` or `FALSE`). Added using the `ggspatial::annotation_north_arrow()` function.
 #' @param arrow_size a numeric value of zero or greater.
 #' @param arrow_position a string defining the position of the arrow (`"tl"`, `"tr"`, `"bl"`, `"br"`).
-#' @param scalebar show scalebar (`TRUE` or `FALSE`).
+#' @param scalebar show scalebar (`TRUE` or `FALSE`). Added using the `ggspatial::annotation_scale()` function.
 #' @param scalebar_size a numeric value of zero or greater.
 #' @param scalebar_position a string defining the position of the scalebar (`"tl"`, `"tr"`, `"bl"`, `"br"`).
 #' @param plot_title a string defining the main title of the plot.
@@ -258,24 +258,6 @@ mapmixture <- function(
       override.aes = list(alpha = 1))
     )
 
-  # Add north arrow if true
-  if (arrow == TRUE) {
-    height_size <- arrow_size * 0.4
-    width_size <- arrow_size * 0.4
-    text_size <- arrow_size * 4
-    pad_size <- arrow_size * 0.5
-    plt <- plt+
-      ggspatial::annotation_north_arrow(
-        data = world_boundaries,
-        which_north = "true",
-        location = arrow_position,
-        height = grid::unit(height_size, "cm"),
-        width = grid::unit(width_size, "cm"),
-        pad_y = grid::unit(pad_size, "cm"),
-        style = ggspatial::north_arrow_orienteering(text_size = text_size)
-      )
-  }
-
   # Add scale bar if true
   if (scalebar == TRUE) {
     height_size <- scalebar_size * 0.15
@@ -287,8 +269,30 @@ mapmixture <- function(
         location = scalebar_position,
         width_hint = width_size,
         bar_cols = c("black","white"),
+        line_width = 0.5,
         height = grid::unit(height_size, "cm"),
         text_cex = text_size
+      )
+  }
+
+  # Add north arrow if true
+  if (arrow == TRUE) {
+    height_size <- arrow_size * 0.3
+    width_size <- arrow_size * 0.3
+    text_size <- arrow_size * 2
+    pad_size <- ifelse(scalebar == TRUE & scalebar_position == arrow_position, arrow_size * 0.5, 0.25)
+    plt <- plt+
+      ggspatial::annotation_north_arrow(
+        data = world_boundaries,
+        which_north = "true",
+        location = arrow_position,
+        height = grid::unit(height_size, "cm"),
+        width = grid::unit(width_size, "cm"),
+        pad_y = grid::unit(pad_size, "cm"),
+        style = ggspatial::north_arrow_orienteering(
+          text_size = text_size,
+          line_width = 0.5
+        )
       )
   }
 

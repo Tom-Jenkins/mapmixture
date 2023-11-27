@@ -48,8 +48,8 @@ If \code{NULL}, a default bounding box is calculated.}
 See \code{?sf::st_crs} for details.}
 
 \item{basemap}{a SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
-using the terra::rast() function. A sf object can be created from a file
-using the sf::st_read() function. If \code{NULL}, world coastline boundaries are used.}
+using the \code{terra::rast()} function. A sf object can be created from a file
+using the \code{sf::st_read()} function. If \code{NULL}, world coastline boundaries are used.}
 
 \item{pie_size}{a numeric value of zero or greater.}
 
@@ -63,13 +63,13 @@ using the sf::st_read() function. If \code{NULL}, world coastline boundaries are
 
 \item{expand}{expand axes (\code{TRUE} or \code{FALSE}).}
 
-\item{arrow}{show arrow (\code{TRUE} or \code{FALSE}).}
+\item{arrow}{show arrow (\code{TRUE} or \code{FALSE}). Added using the \code{ggspatial::annotation_north_arrow()} function.}
 
 \item{arrow_size}{a numeric value of zero or greater.}
 
 \item{arrow_position}{a string defining the position of the arrow (\code{"tl"}, \code{"tr"}, \code{"bl"}, \code{"br"}).}
 
-\item{scalebar}{show scalebar (\code{TRUE} or \code{FALSE}).}
+\item{scalebar}{show scalebar (\code{TRUE} or \code{FALSE}). Added using the \code{ggspatial::annotation_scale()} function.}
 
 \item{scalebar_size}{a numeric value of zero or greater.}
 
