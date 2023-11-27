@@ -11,19 +11,16 @@ gallery_content <- function() {
 
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img class="mx-auto d-block" src="./www/img/Mapmixture1.jpeg" alt="Example1" height="100%">
+          <img class="mx-auto d-block" src="./www/img/mapmixture1.jpeg" alt="Example1" height="100%">
         </div>
         <div class="carousel-item">
-          <img class="mx-auto d-block" src="./www/img/Mapmixture2.jpeg" alt="Example2" height="100%">
+          <img class="mx-auto d-block" src="./www/img/mapmixture2.jpeg" alt="Example2" height="100%">
         </div>
         <div class="carousel-item">
-          <img class="mx-auto d-block" src="./www/img/Mapmixture3.jpeg" alt="Example3" height="100%">
+          <img class="mx-auto d-block" src="./www/img/mapmixture3.jpeg" alt="Example3" height="100%">
         </div>
         <div class="carousel-item">
-          <img class="mx-auto d-block" src="./www/img/Mapmixture4.jpeg" alt="Example4" height="100%">
-        </div>
-        <div class="carousel-item">
-          <img class="mx-auto d-block" src="./www/img/Mapmixture5.jpeg" alt="Example5" height="100%">
+          <img class="mx-auto d-block" src="./www/img/mapmixture4.jpeg" alt="Example4" height="100%">
         </div>
       </div>
 
