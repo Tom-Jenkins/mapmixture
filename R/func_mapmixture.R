@@ -90,7 +90,7 @@ mapmixture <- function(
   # Parameter arguments
   cluster_cols = NULL, cluster_names = NULL,
   boundary = NULL, crs = 4326, basemap = NULL,
-  pie_size = 1, pie_border = 0.3, pie_opacity = 1,
+  pie_size = 1, pie_border = 0.2, pie_opacity = 1,
   land_colour = "#d9d9d9", sea_colour = "#deebf7",
   expand = FALSE,
   arrow = TRUE, arrow_size = 1, arrow_position = "tl",
@@ -167,7 +167,7 @@ mapmixture <- function(
   # Add basemap using default world outlines if basemap parameter not set
   if (is.null(basemap)) {
     plt <- plt+
-      ggplot2::geom_sf(data = sf::st_geometry(world_boundaries), colour = "black", fill = land_colour, size = 0.1)
+      ggplot2::geom_sf(data = sf::st_geometry(world_boundaries), colour = "black", fill = land_colour, linewidth = 0.1)
   }
 
   # Add basemap using basemap object supplied by user
@@ -196,7 +196,7 @@ mapmixture <- function(
       # 1. Reproject basemap to crs argument before plotting
       basemap <- sf::st_geometry(sf::st_transform(basemap, crs = crs))
       plt <- plt+
-        ggplot2::geom_sf(data = basemap, colour = "black", fill = land_colour, size = 0.1)
+        ggplot2::geom_sf(data = basemap, colour = "black", fill = land_colour, linewidth = 0.1)
     }
   }
 

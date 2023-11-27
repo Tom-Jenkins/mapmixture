@@ -86,7 +86,7 @@ mod_map_params_ui <- function(id) {
           )
         ),
         div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieopacity_input"), label = strong("Opacity"), width = "80px", min = 0, max = 1, value = 1, step = 0.05)),
-        div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieborder_input"), label = strong("Border"), width = "80px", min = 0, max = 2, value = 0.3, step = 0.01)),
+        div(class = "px-1", style = "display: inline-block;", numericInput(ns("pieborder_input"), label = strong("Border"), width = "80px", min = 0, max = 2, value = 0.2, step = 0.01)),
     ),
 
     # Map title ----
