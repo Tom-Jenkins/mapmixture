@@ -181,6 +181,7 @@ structure_barplot <- structure_plot(admixture1,
   type = "structure",
   cluster_cols = c("#f1a340","#998ec3"),
   site_dividers = TRUE,
+  divider_width = 0.4,
   site_order = c(
     "Vigo","Ile de Re","Isles of Scilly","Mullet Peninsula",
     "Shetland","Cromer","Helgoland","Flodevigen","Lysekil","Bergen"
