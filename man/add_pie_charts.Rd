@@ -10,9 +10,9 @@ add_pie_charts(
   lat_column,
   lon_column,
   pie_colours,
-  border,
-  opacity,
-  pie_size
+  border = 0.3,
+  opacity = 1,
+  pie_size = 1
 )
 }
 \arguments{
@@ -20,9 +20,9 @@ add_pie_charts(
 
 \item{admix_columns}{the columns of the data frame containing admixture data.}
 
-\item{lat_column}{a string defining the name of the latitude column.}
+\item{lat_column}{a string or integer representing the latitude column.}
 
-\item{lon_column}{a string defining the name of the longitude column.}
+\item{lon_column}{a string or integer representing the longitude column.}
 
 \item{pie_colours}{a vector of colours the same length as the number of clusters.}
 

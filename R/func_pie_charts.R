@@ -6,8 +6,8 @@
 #'
 #' @param df a data frame (see examples).
 #' @param admix_columns the columns of the data frame containing admixture data.
-#' @param lat_column a string defining the name of the latitude column.
-#' @param lon_column a string defining the name of the longitude column.
+#' @param lat_column a string or integer representing the latitude column.
+#' @param lon_column a string or integer representing the longitude column.
 #' @param pie_colours a vector of colours the same length as the number of clusters.
 #' @param border a numeric value of zero or greater.
 #' @param opacity a numeric value of zero to one.
@@ -45,10 +45,15 @@
 #'   pie_size = 1
 #' )
 add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colours,
-                           border, opacity, pie_size) {
+                           border = 0.3, opacity = 1, pie_size = 1) {
+
+  # Check the number of pie_colours is the same length as the number of clusters
+  if ( ncol(df)-3 != length(pie_colours) ) {
+    stop("Length of pie_colours is not equal to the number of clusters in data frame.")
+  }
 
   # Subset coordinates
-  coords <- subset(df, select = c(lat_column, lon_column))
+  coords <- df[c(lat_column, lon_column)]
 
   # Store coordinates as a list
   coord_list <- purrr::map(1:nrow(coords), ~ c(coords[., ]$lat, coords[., ]$lon))
