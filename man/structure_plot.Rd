@@ -12,6 +12,7 @@ structure_plot(
   flip_axis = FALSE,
   ylabel = "Proportion",
   site_dividers = TRUE,
+  divider_width = 1,
   site_order = NULL,
   site_labels_size = 2,
   site_labels_x = 0,
@@ -40,6 +41,8 @@ Default is FALSE (horizontal barplot).}
 \item{ylabel}{string for y label.}
 
 \item{site_dividers}{add dotted lines that divide sites (TRUE or FALSE).}
+
+\item{divider_width}{width of site divider lines.}
 
 \item{site_order}{character vector of site labels used to customise the order of sites.
 If \code{NULL}, sites are ordered alphabetically.}
