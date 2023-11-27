@@ -82,7 +82,7 @@ map2 <- mapmixture(admixture3, coordinates,
   expand = TRUE,
   arrow = TRUE,
   arrow_size = 1.5,
-  arrow_position = "tl",
+  arrow_position = "bl",
   scalebar = TRUE,
   scalebar_size = 1.5,
   scalebar_position = "tl",
@@ -110,7 +110,7 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map3 <- mapmixture(admixture1, coordinates,
-  cluster_cols = c("#fc8d59","#91bfdb"),
+  cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
@@ -157,7 +157,7 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map4 <- mapmixture(admixture1, coordinates,
-  cluster_cols = c("#fc8d59","#91bfdb"),
+  cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-20, xmax=20, ymin=40, ymax=62),
@@ -174,7 +174,7 @@ map4 <- mapmixture(admixture1, coordinates,
 # Traditional structure barplot
 structure_barplot <- structure_plot(admixture1,
   type = "structure",
-  cluster_cols = c("#fc8d59","#91bfdb"),
+  cluster_cols = c("#f1a340","#998ec3"),
   site_dividers = TRUE,
   site_order = c(
     "Vigo","Ile de Re","Isles of Scilly","Mullet Peninsula",
@@ -198,7 +198,7 @@ grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
 # Facet structure barplot
 facet_barplot <- structure_plot(admixture1,
   type = "facet",
-  cluster_cols = c("#fc8d59","#91bfdb"),
+  cluster_cols = c("#f1a340","#998ec3"),
   facet_col = 2,
   ylabel = "Admixture proportions",
 )+
