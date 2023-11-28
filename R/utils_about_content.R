@@ -27,7 +27,7 @@ about_content <- function() {
     <h4 class="text-primary">Defaults</h4>
     <p>
       <strong>CRS:</strong> WGS 84 (EPSG: 4326).</br>
-      <strong>Map boundary:</strong> Bounding box of all the latitude and longitude points in the coordinates file. If invalid xmin, xmax, ymin or ymax boundary limits are entered, the former default bounding box is used.</br>
+      <strong>Map boundary:</strong> Bounding box of all the latitude and longitude points in the coordinates file. If invalid xmin, xmax, ymin or ymax boundary limits are entered, the former default bounding box is used. Note that negative longitudes represent the western hemisphere and negative latitudes represent the southern hemisphere.</br>
       <strong>Scales:</strong> A north arrow and scalebar is added to the map.
     </p>
 
