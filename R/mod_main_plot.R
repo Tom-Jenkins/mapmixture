@@ -27,7 +27,7 @@ mod_main_plot_ui <- function(id) {
 #' @noRd
 #' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton downloadHandler observe
 #' @importFrom shinyjs runjs
-#' @importFrom ggplot2 theme_update element_blank element_rect element_line element_text margin rel
+#' @importFrom ggplot2 theme element_blank element_rect element_line element_text margin rel unit
 mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
                                  user_CRS, user_bbox, user_expand,
                                  cluster_cols, cluster_names,
@@ -48,12 +48,12 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     })
 
 
-    # Store plot in reactive ----
+    # Create map as reactive ----
     output_map <- reactive({
       req(admixture_df(), coords_df())
 
-      # Default pie chart map
-      mapmixture(
+      # Map
+      plt <- mapmixture(
         admixture_df = admixture_df(),
         coords_df = coords_df(),
         cluster_cols = cluster_cols(),
@@ -78,30 +78,37 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
         axis_title_size = title_size()
       )
 
-    }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
+      # Return plot
+      if (user_advanced() == "") return(plt)
+
+      # Add advanced theme customisation if the box is not empty
+      if (user_advanced() != "") {
+        tryCatch({
+          update_theme <- paste0("theme(", user_advanced(), ")")
+          print(update_theme)
+          plt <- plt+ rlang::eval_tidy(rlang::parse_expr(update_theme))
+          return(plt)
+        }, error = function(err) {
+          showNotification(
+            ui = htmltools::HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
+            duration = 10,
+            type = "err"
+          )
+          runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.add('hidden');")
+        })
+      }
+    })
 
 
     # Render map on click of button ----
     observeEvent(bttn(), priority = 1, {
       req(admixture_df(), coords_df(), output_map())
 
-      # Update ggplot theme ----
-      tryCatch({
-        update_theme <- paste0("theme_update(", user_advanced(), ")")
-        rlang::eval_tidy(rlang::parse_expr(update_theme))
-      }, error = function(err) {
-        # Show error message if user enters any invalid ggplot theme parameters
-        showNotification(
-          ui = htmltools::HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
-          duration = 10,
-          type = "err"
-        )
-      })
-
       # Render plot ----
       output$admixture_map <- renderPlot({
         output_map()
-      })
+      }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
+
 
       # Render download button and internal components ----
       runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")
