@@ -1,7 +1,6 @@
 test_that("transform_bbox() outputs a named numeric vector of length 4", {
 
   obj <- transform_bbox(c(xmin = -3.70, ymin = 40.42, xmax = 13.40, ymax = 52.52), 3035)
-  expect_s3_class(obj, "bbox")
   expect_length(obj, 4)
   expect_contains(names(obj), c("xmin", "xmin", "ymin", "ymax"))
 })

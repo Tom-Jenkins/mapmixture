@@ -2,25 +2,29 @@
 #'
 #' @description
 #' Internal function used to transform latitude and longitude coordinates
-#' from a bounding box to a target coordinate reference system.
+#' to a target coordinate reference system.
 #' @keywords internal
 #'
-#' @param bbox a named numeric vector of length four, with `xmin`, `ymin`, `xmax` and `ymax` values.
+#' @param bbox a named numeric vector of length four, with `xmin`, `xmax`, `ymin` and `ymax` values.
 #' @param CRS a numeric value representing an ESPG.
 #'
-#' @return A transformed named numeric vector
+#' @return a named numeric vector
 #' @export
 #'
 #' @examples
-#' bbox <- c(xmin = -3.70, ymin = 40.42, xmax = 13.40, ymax = 52.52)
+#' bbox <- c(xmin = -3.70, xmax = 13.40, ymin = 40.42, ymax = 52.52)
 #' transform_bbox(bbox, 3035)
 transform_bbox <- function(bbox, CRS) {
 
-  bbox |>
+  bbox1 <- bbox |>
     sf::st_bbox(obj = _, crs = 4326) |>
     sf::st_as_sfc(x = _) |>
     sf::st_transform(x = _, crs = CRS) |>
     sf::st_bbox(obj = _)
+
+  bbox2 <- c(bbox1$xmin, bbox1$xmax, bbox1$ymin, bbox1$ymax)
+
+  return(bbox2)
 }
 
 #' Transform Admixture Data
@@ -29,9 +33,9 @@ transform_bbox <- function(bbox, CRS) {
 #' Internal function used to transform admixture data into the correct format for plotting.
 #' @keywords internal
 #'
-#' @param data A data.frame or tibble.
+#' @param data a data.frame or tibble.
 #'
-#' @return A data.frame or tibble.
+#' @return a data.frame or tibble.
 #' @export
 #'
 #' @examples
@@ -74,8 +78,8 @@ transform_admix_data <- function(data) {
 #' Internal function used to join coordinates and admixture pie data.
 #' @keywords internal
 #'
-#' @param coord_df A data.frame of site names and coordinates.
-#' @param admix_df A data.frame of site names and admixture data.
+#' @param coord_df a data.frame of site names and coordinates.
+#' @param admix_df a data.frame of site names and admixture data.
 #'
 #' @return `data.frame`
 #' @export

@@ -7,19 +7,19 @@
 transform_bbox(bbox, CRS)
 }
 \arguments{
-\item{bbox}{a named numeric vector of length four, with \code{xmin}, \code{ymin}, \code{xmax} and \code{ymax} values.}
+\item{bbox}{a named numeric vector of length four, with \code{xmin}, \code{xmax}, \code{ymin} and \code{ymax} values.}
 
 \item{CRS}{a numeric value representing an ESPG.}
 }
 \value{
-A transformed named numeric vector
+a named numeric vector
 }
 \description{
 Internal function used to transform latitude and longitude coordinates
-from a bounding box to a target coordinate reference system.
+to a target coordinate reference system.
 }
 \examples{
-bbox <- c(xmin = -3.70, ymin = 40.42, xmax = 13.40, ymax = 52.52)
+bbox <- c(xmin = -3.70, xmax = 13.40, ymin = 40.42, ymax = 52.52)
 transform_bbox(bbox, 3035)
 }
 \keyword{internal}
