@@ -9,7 +9,7 @@
 <!-- [![Codecov test coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main) -->
 <!-- badges: end -->
 
-`mapmixture` is an R package and shiny app that enables users to
+`mapmixture` is an R package and Shiny app that enables users to
 visualise admixture as pie charts on a projected map. It also allows
 users to visualise admixture as traditional structure barplots or facet
 barplots.
@@ -28,9 +28,29 @@ Install the latest development version from GitHub:
 devtools::install_github("Tom-Jenkins/mapmixture")
 ```
 
+## Reference
+
+``` r
+mapmixture()         # main function
+structure_plot()     # plot traditional structure or facet barplot
+scatter_plot()       # plot PCA or DAPC results
+launch_mapmixture()  # launch mapmixture Shiny app
+```
+
+## Citation
+
+Jenkins TL (*in review*). <span class="smallcaps">mapmixture</span>: an
+R package and web app for spatial visualisation of admixture and
+population structure.
+
 ## Examples
 
-Standard usage of `mapmixture()`:
+#### Basic usage of `mapmixture()`
+
+<details>
+<summary>
+Code
+</summary>
 
 ``` r
 # Load package
@@ -46,12 +66,19 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map1 <- mapmixture(admixture1, coordinates, crs = 3035)
-map1
+# map1
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+</details>
 
-Customised usage of `mapmixture()`:
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+#### Customised usage of `mapmixture()`
+
+<details>
+<summary>
+Code
+</summary>
 
 ``` r
 # Load package
@@ -66,7 +93,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map2 <- mapmixture(admixture3, coordinates,
+map2 <- mapmixture(
+  admixture_df = admixture3,
+  coords_df = coordinates,
   cluster_cols = c("green","blue"),
   cluster_names = c("Group A","Group B"),
   crs = 3035,
@@ -88,12 +117,19 @@ map2 <- mapmixture(admixture3, coordinates,
   axis_title_size = 10,
   axis_text_size = 8
 )
-map2
+# map2
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+</details>
 
-Add additional geoms or theme options to `mapmixture()` ggplot object:
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+#### Add additional geoms or theme options to `mapmixture()` ggplot object
+
+<details>
+<summary>
+Code
+</summary>
 
 ``` r
 # Load packages
@@ -109,7 +145,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map3 <- mapmixture(admixture1, coordinates,
+map3 <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
@@ -137,14 +175,19 @@ map3 <- mapmixture(admixture1, coordinates,
   )+
   # Adjust the size of the legend keys
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
-map3
-#> Scale on map varies by more than 10%, scale bar may be inaccurate
+# map3
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+</details>
 
-Combine admixture mapmixture and barplot ggplot objects into a single
-figure:
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+#### Combine admixture mapmixture and barplot ggplot objects into a single figure
+
+<details>
+<summary>
+Code
+</summary>
 
 ``` r
 # Load packages
@@ -161,7 +204,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map4 <- mapmixture(admixture1, coordinates,
+map4 <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
@@ -177,7 +222,8 @@ map4 <- mapmixture(admixture1, coordinates,
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
 
 # Traditional structure barplot
-structure_barplot <- structure_plot(admixture1,
+structure_barplot <- structure_plot(
+  admixture_df = admixture1,
   type = "structure",
   cluster_cols = c("#f1a340","#998ec3"),
   site_dividers = TRUE,
@@ -199,13 +245,49 @@ structure_barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
-grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
-#> Scale on map varies by more than 10%, scale bar may be inaccurate
+# grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+</details>
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+<details>
+<summary>
+Code
+</summary>
 
 ``` r
+# Load packages
+library(mapmixture)
+library(ggplot2)
+library(gridExtra)
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture
+map4 <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("#f1a340","#998ec3"),
+  cluster_names = c("Ancestry 1","Ancestry 2"),
+  crs = 4326,
+  boundary = c(xmin=-20, xmax=20, ymin=40, ymax=62),
+  pie_size = 2.5,
+)+
+  # Adjust theme options
+  theme(
+    legend.position = "top",
+    plot.margin = margin(l = 10, r = 10),
+  )+
+  # Adjust the size of the legend keys
+  guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
 
 # Facet structure barplot
 facet_barplot <- structure_plot(admixture1,
@@ -221,13 +303,14 @@ facet_barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
-grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
-#> Scale on map varies by more than 10%, scale bar may be inaccurate
+# grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
+</details>
 
-Use a raster as the basemap:
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+#### Use a raster as the basemap
 
 The raster (TIFF) used in the example below was downloaded from Natural
 Earth
@@ -236,11 +319,15 @@ You need to install the [terra](https://github.com/rspatial/terra)
 package to use this feature. Currently, the `basemap` argument only
 accepts a `SpatRaster` or `sf` object.
 
+<details>
+<summary>
+Code
+</summary>
+
 ``` r
 # Load packages
 library(mapmixture)
 library(terra)
-#> terra 1.7.55
 
 # Create SpatRaster object
 earth <- terra::rast("../NE1_50M_SR_W/NE1_50M_SR_W.tif")
@@ -255,24 +342,30 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map5 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
-map5
+# map5
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+</details>
 
-Add pie charts to an existing map:
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+
+#### Add pie charts to an existing map
 
 The vector data (shapefile) used in the example below was downloaded
 from the Natural England Open Data Geoportal
 [here](https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::marine-conservation-zones-england/explore?location=53.749917%2C-5.534585%2C6.27).
 
+<details>
+<summary>
+Code
+</summary>
+
 ``` r
 # Load packages
 library(mapmixture)
 library(ggplot2)
-suppressPackageStartupMessages(library(dplyr))
+library(dplyr)
 library(sf)
-#> Linking to GEOS 3.11.2, GDAL 3.6.2, PROJ 9.2.0; sf_use_s2() is TRUE
 
 # Read in admixture file format 1
 file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
@@ -323,10 +416,12 @@ map6 <- ggplot()+
   theme(
     legend.title = element_blank(),
   )
-map6
+# map6
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+</details>
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 ## Launch interactive Shiny app
 
@@ -334,7 +429,7 @@ map6
 # Load package
 library(mapmixture)
 
-# Launch shiny app
+# Launch Shiny app
 launch_mapmixture()
 ```
 

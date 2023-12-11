@@ -9,7 +9,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE
 )
 ```
 
@@ -20,7 +22,7 @@ knitr::opts_chunk$set(
 <!-- [![Codecov test coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main) -->
 <!-- badges: end -->
 
-`mapmixture` is an R package and shiny app that enables users to visualise admixture as pie charts on a projected map. It also allows users to visualise admixture as traditional structure barplots or facet barplots.
+`mapmixture` is an R package and Shiny app that enables users to visualise admixture as pie charts on a projected map. It also allows users to visualise admixture as traditional structure barplots or facet barplots.
 
 ## Installation
 
@@ -33,11 +35,24 @@ Install the latest development version from GitHub:
 devtools::install_github("Tom-Jenkins/mapmixture")
 ```
 
+## Reference
+```r
+mapmixture()         # main function
+structure_plot()     # plot traditional structure or facet barplot
+scatter_plot()       # plot PCA or DAPC results
+launch_mapmixture()  # launch mapmixture Shiny app
+```
+
+## Citation
+Jenkins TL (*in review*). [mapmixture]{.smallcaps}: an R package and web app for spatial visualisation of admixture and population structure.
+
 ## Examples
 
-Standard usage of `mapmixture()`:
+#### Basic usage of `mapmixture()`
 
-```{r dpi = 300}
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
 # Load package
 library(mapmixture)
 
@@ -51,12 +66,19 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map1 <- mapmixture(admixture1, coordinates, crs = 3035)
+# map1
+```
+</details>
+```{r dpi=300, echo=FALSE}
 map1
 ```
 
-Customised usage of `mapmixture()`:
 
-```{r dpi = 300}
+#### Customised usage of `mapmixture()`
+
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
 # Load package
 library(mapmixture)
 
@@ -69,7 +91,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map2 <- mapmixture(admixture3, coordinates,
+map2 <- mapmixture(
+  admixture_df = admixture3,
+  coords_df = coordinates,
   cluster_cols = c("green","blue"),
   cluster_names = c("Group A","Group B"),
   crs = 3035,
@@ -91,11 +115,19 @@ map2 <- mapmixture(admixture3, coordinates,
   axis_title_size = 10,
   axis_text_size = 8
 )
+# map2
+```
+</details>
+```{r dpi=300, echo=FALSE}
 map2
 ```
 
-Add additional geoms or theme options to `mapmixture()` ggplot object:
-```{r dpi = 300}
+
+#### Add additional geoms or theme options to `mapmixture()` ggplot object
+
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
 # Load packages
 library(mapmixture)
 library(ggplot2)
@@ -109,7 +141,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map3 <- mapmixture(admixture1, coordinates,
+map3 <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
@@ -137,11 +171,19 @@ map3 <- mapmixture(admixture1, coordinates,
   )+
   # Adjust the size of the legend keys
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
+# map3
+```
+</details>
+```{r dpi=300, echo=FALSE}
 map3
 ```
 
-Combine admixture mapmixture and barplot ggplot objects into a single figure:
-```{r dpi = 300}
+
+#### Combine admixture mapmixture and barplot ggplot objects into a single figure
+
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
 # Load packages
 library(mapmixture)
 library(ggplot2)
@@ -156,7 +198,9 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map4 <- mapmixture(admixture1, coordinates,
+map4 <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
@@ -172,7 +216,8 @@ map4 <- mapmixture(admixture1, coordinates,
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
 
 # Traditional structure barplot
-structure_barplot <- structure_plot(admixture1,
+structure_barplot <- structure_plot(
+  admixture_df = admixture1,
   type = "structure",
   cluster_cols = c("#f1a340","#998ec3"),
   site_dividers = TRUE,
@@ -194,7 +239,46 @@ structure_barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
+# grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
+```
+</details>
+```{r dpi=300, echo=FALSE, }
 grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
+```
+
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
+# Load packages
+library(mapmixture)
+library(ggplot2)
+library(gridExtra)
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture
+map4 <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("#f1a340","#998ec3"),
+  cluster_names = c("Ancestry 1","Ancestry 2"),
+  crs = 4326,
+  boundary = c(xmin=-20, xmax=20, ymin=40, ymax=62),
+  pie_size = 2.5,
+)+
+  # Adjust theme options
+  theme(
+    legend.position = "top",
+    plot.margin = margin(l = 10, r = 10),
+  )+
+  # Adjust the size of the legend keys
+  guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
 
 # Facet structure barplot
 facet_barplot <- structure_plot(admixture1,
@@ -210,14 +294,21 @@ facet_barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
+# grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
+```
+</details>
+```{r dpi=300, echo=FALSE, }
 grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
 ```
 
-Use a raster as the basemap:  
+
+#### Use a raster as the basemap 
 
 The raster (TIFF) used in the example below was downloaded from Natural Earth [here](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-1/). You need to install the [terra](https://github.com/rspatial/terra) package to use this feature. Currently, the `basemap` argument only accepts a `SpatRaster` or `sf` object.
 
-```{r dpi = 300}
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
 # Load packages
 library(mapmixture)
 library(terra)
@@ -235,18 +326,25 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map5 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
+# map5
+```
+</details>
+```{r dpi=300, echo=FALSE}
 map5
 ```
 
-Add pie charts to an existing map: 
+
+#### Add pie charts to an existing map
 
 The vector data (shapefile) used in the example below was downloaded from the Natural England Open Data Geoportal [here](https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::marine-conservation-zones-england/explore?location=53.749917%2C-5.534585%2C6.27).
 
-```{r dpi = 300}
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
 # Load packages
 library(mapmixture)
 library(ggplot2)
-suppressPackageStartupMessages(library(dplyr))
+library(dplyr)
 library(sf)
 
 # Read in admixture file format 1
@@ -298,8 +396,13 @@ map6 <- ggplot()+
   theme(
     legend.title = element_blank(),
   )
+# map6
+```
+</details>
+```{r dpi=300, echo=FALSE}
 map6
 ```
+
 
 ## Launch interactive Shiny app
 
@@ -307,7 +410,7 @@ map6
 # Load package
 library(mapmixture)
 
-# Launch shiny app
+# Launch Shiny app
 launch_mapmixture()
 ```
 
