@@ -43,12 +43,23 @@
 #'
 #' # Scatter plot
 #' scatter_plot(pca_results, site_names)
+#'
+#' # Scatter plot with axes 1 and 3 and percent on axis labels
+#' scatter_plot(pca_results, site_names, axes = c(1,3), percent = percent)
+#'
+#' # Scatter plot with no centroids and segments
+#' scatter_plot(pca_results, site_names, axes = c(1,2), percent = percent,
+#'              centroids = FALSE, segments = FALSE)
+#'
+#' # Scatter plot with custom colours and coloured by other_group
+#' scatter_plot(pca_results, site_names, other_group = region_names,
+#'              percent = percent, colours = c("#f1a340","#998ec3"))
 scatter_plot <- function(
     dataframe, group_ids, other_group = NULL, type = "points",
     axes = c(1,2), colours = NULL, centroids = TRUE, segments = TRUE,
     point_size = 3, point_type = 21, ...,
     row_ids = NULL,
-    xlab = paste("Axis", axes[1]), ylab = paste("Axis", axes[2]), percent = NULL,
+    xlab = "Axis", ylab = "Axis", percent = NULL,
     plot_title = ""
   ) {
 
@@ -81,8 +92,8 @@ scatter_plot <- function(
 
   } else {
     # Set x and y labels to default
-    xlab <- xlab
-    ylab <- ylab
+    xlab <- paste(xlab, axes[1])
+    ylab <- paste(ylab, axes[2])
   }
 
   # Set colour_by to the group used to colour the scatter plot
