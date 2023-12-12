@@ -4,10 +4,10 @@
 #' Plot a traditional STRUCTURE barplot or
 #' a facet barplot from individual admixture proportions.
 #'
-#' @param admixture_df a data.frame or tibble containing admixture data (see examples).
+#' @param admixture_df data.frame or tibble containing admixture data (see examples).
 #' @param type show a traditional STRUCTURE barplot ("structure")
 #' or a facet barplot ("facet").
-#' @param cluster_cols a character vector of colours the same length as the number of clusters.
+#' @param cluster_cols character vector of colours the same length as the number of clusters.
 #' If `NULL`, a blue-green palette is used.
 #' @param labels show labels at the site level or the
 #' individual level ("site" or "individual").

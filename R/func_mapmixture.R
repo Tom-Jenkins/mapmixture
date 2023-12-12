@@ -5,35 +5,35 @@
 #' In data sets where there are multiple individuals per site,
 #' the function will calculate the mean average admixture proportion for each site.
 #'
-#' @param admixture_df a data.frame or tibble containing admixture data (see examples).
-#' @param coords_df a data.frame or tibble containing coordinates data (see examples).
-#' @param cluster_cols a character vector of colours the same length as the number of clusters.
+#' @param admixture_df data.frame or tibble containing admixture data (see examples).
+#' @param coords_df data.frame or tibble containing coordinates data (see examples).
+#' @param cluster_cols character vector of colours the same length as the number of clusters.
 #' If `NULL`, a blue-green palette is used.
-#' @param cluster_names a character vector of names the same length as the number of clusters.
+#' @param cluster_names character vector of names the same length as the number of clusters.
 #' If `NULL`, the cluster column names are used.
-#' @param boundary a named numeric vector defining the map bounding. e.g. `c(xmin=-15, xmax=15, ymin=30, ymax=50)`.
+#' @param boundary named numeric vector defining the map bounding. e.g. `c(xmin=-15, xmax=15, ymin=30, ymax=50)`.
 #' If `NULL`, a default bounding box is calculated.
 #' @param crs coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:`4326`).
 #' See `?sf::st_crs` for details.
-#' @param basemap a SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
+#' @param basemap SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
 #' using the `terra::rast()` function. A sf object can be created from a file
 #' using the `sf::st_read()` function. If `NULL`, world coastline boundaries are used.
-#' @param pie_size a numeric value of zero or greater.
-#' @param pie_border a numeric value of zero or greater.
-#' @param pie_opacity a numeric value of zero to one.
-#' @param land_colour a string defining the colour of land.
-#' @param sea_colour a string defining the colour of sea.
+#' @param pie_size numeric value of zero or greater.
+#' @param pie_border numeric value of zero or greater.
+#' @param pie_opacity numeric value of zero to one.
+#' @param land_colour string defining the colour of land.
+#' @param sea_colour string defining the colour of sea.
 #' @param expand expand axes (`TRUE` or `FALSE`).
 #' @param arrow show arrow (`TRUE` or `FALSE`). Added using the `ggspatial::annotation_north_arrow()` function.
-#' @param arrow_size a numeric value of zero or greater.
-#' @param arrow_position a string defining the position of the arrow (`"tl"`, `"tr"`, `"bl"`, `"br"`).
+#' @param arrow_size numeric value of zero or greater.
+#' @param arrow_position string defining the position of the arrow (`"tl"`, `"tr"`, `"bl"`, `"br"`).
 #' @param scalebar show scalebar (`TRUE` or `FALSE`). Added using the `ggspatial::annotation_scale()` function.
-#' @param scalebar_size a numeric value of zero or greater.
-#' @param scalebar_position a string defining the position of the scalebar (`"tl"`, `"tr"`, `"bl"`, `"br"`).
-#' @param plot_title a string defining the main title of the plot.
-#' @param plot_title_size a numeric value of zero or greater.
-#' @param axis_title_size a numeric value of zero or greater.
-#' @param axis_text_size a numeric value of zero or greater.
+#' @param scalebar_size numeric value of zero or greater.
+#' @param scalebar_position string defining the position of the scalebar (`"tl"`, `"tr"`, `"bl"`, `"br"`).
+#' @param plot_title string defining the main title of the plot.
+#' @param plot_title_size numeric value of zero or greater.
+#' @param axis_title_size numeric value of zero or greater.
+#' @param axis_text_size numeric value of zero or greater.
 #'
 #' @return A ggplot object.
 #' @export
