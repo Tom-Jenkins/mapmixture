@@ -7,9 +7,9 @@
 merge_coords_data(coord_df, admix_df)
 }
 \arguments{
-\item{coord_df}{A data.frame of site names and coordinates.}
+\item{coord_df}{a data.frame of site names and coordinates.}
 
-\item{admix_df}{A data.frame of site names and admixture data.}
+\item{admix_df}{a data.frame of site names and admixture data.}
 }
 \value{
 \code{data.frame}

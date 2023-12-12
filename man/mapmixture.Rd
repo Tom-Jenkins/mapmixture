@@ -31,57 +31,57 @@ mapmixture(
 )
 }
 \arguments{
-\item{admixture_df}{a data.frame or tibble containing admixture data (see examples).}
+\item{admixture_df}{data.frame or tibble containing admixture data (see examples).}
 
-\item{coords_df}{a data.frame or tibble containing coordinates data (see examples).}
+\item{coords_df}{data.frame or tibble containing coordinates data (see examples).}
 
-\item{cluster_cols}{a character vector of colours the same length as the number of clusters.
+\item{cluster_cols}{character vector of colours the same length as the number of clusters.
 If \code{NULL}, a blue-green palette is used.}
 
-\item{cluster_names}{a character vector of names the same length as the number of clusters.
+\item{cluster_names}{character vector of names the same length as the number of clusters.
 If \code{NULL}, the cluster column names are used.}
 
-\item{boundary}{a named numeric vector defining the map bounding. e.g. \code{c(xmin=-15, xmax=15, ymin=30, ymax=50)}.
+\item{boundary}{named numeric vector defining the map bounding. e.g. \code{c(xmin=-15, xmax=15, ymin=30, ymax=50)}.
 If \code{NULL}, a default bounding box is calculated.}
 
 \item{crs}{coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:\code{4326}).
 See \code{?sf::st_crs} for details.}
 
-\item{basemap}{a SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
+\item{basemap}{SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
 using the \code{terra::rast()} function. A sf object can be created from a file
 using the \code{sf::st_read()} function. If \code{NULL}, world coastline boundaries are used.}
 
-\item{pie_size}{a numeric value of zero or greater.}
+\item{pie_size}{numeric value of zero or greater.}
 
-\item{pie_border}{a numeric value of zero or greater.}
+\item{pie_border}{numeric value of zero or greater.}
 
-\item{pie_opacity}{a numeric value of zero to one.}
+\item{pie_opacity}{numeric value of zero to one.}
 
-\item{land_colour}{a string defining the colour of land.}
+\item{land_colour}{string defining the colour of land.}
 
-\item{sea_colour}{a string defining the colour of sea.}
+\item{sea_colour}{string defining the colour of sea.}
 
 \item{expand}{expand axes (\code{TRUE} or \code{FALSE}).}
 
 \item{arrow}{show arrow (\code{TRUE} or \code{FALSE}). Added using the \code{ggspatial::annotation_north_arrow()} function.}
 
-\item{arrow_size}{a numeric value of zero or greater.}
+\item{arrow_size}{numeric value of zero or greater.}
 
-\item{arrow_position}{a string defining the position of the arrow (\code{"tl"}, \code{"tr"}, \code{"bl"}, \code{"br"}).}
+\item{arrow_position}{string defining the position of the arrow (\code{"tl"}, \code{"tr"}, \code{"bl"}, \code{"br"}).}
 
 \item{scalebar}{show scalebar (\code{TRUE} or \code{FALSE}). Added using the \code{ggspatial::annotation_scale()} function.}
 
-\item{scalebar_size}{a numeric value of zero or greater.}
+\item{scalebar_size}{numeric value of zero or greater.}
 
-\item{scalebar_position}{a string defining the position of the scalebar (\code{"tl"}, \code{"tr"}, \code{"bl"}, \code{"br"}).}
+\item{scalebar_position}{string defining the position of the scalebar (\code{"tl"}, \code{"tr"}, \code{"bl"}, \code{"br"}).}
 
-\item{plot_title}{a string defining the main title of the plot.}
+\item{plot_title}{string defining the main title of the plot.}
 
-\item{plot_title_size}{a numeric value of zero or greater.}
+\item{plot_title_size}{numeric value of zero or greater.}
 
-\item{axis_title_size}{a numeric value of zero or greater.}
+\item{axis_title_size}{numeric value of zero or greater.}
 
-\item{axis_text_size}{a numeric value of zero or greater.}
+\item{axis_text_size}{numeric value of zero or greater.}
 }
 \value{
 A ggplot object.

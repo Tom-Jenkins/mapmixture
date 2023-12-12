@@ -24,12 +24,12 @@ structure_plot(
 )
 }
 \arguments{
-\item{admixture_df}{a data.frame or tibble containing admixture data (see examples).}
+\item{admixture_df}{data.frame or tibble containing admixture data (see examples).}
 
 \item{type}{show a traditional STRUCTURE barplot ("structure")
 or a facet barplot ("facet").}
 
-\item{cluster_cols}{a character vector of colours the same length as the number of clusters.
+\item{cluster_cols}{character vector of colours the same length as the number of clusters.
 If \code{NULL}, a blue-green palette is used.}
 
 \item{labels}{show labels at the site level or the

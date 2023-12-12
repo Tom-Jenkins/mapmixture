@@ -17,8 +17,8 @@ scatter_plot(
   point_type = 21,
   ...,
   row_ids = NULL,
-  xlab = paste("Axis", axes[1]),
-  ylab = paste("Axis", axes[2]),
+  xlab = "Axis",
+  ylab = "Axis",
   percent = NULL,
   plot_title = ""
 )
@@ -82,4 +82,15 @@ percent <- c(5.6, 4.5, 3.2, 2.0, 0.52)
 
 # Scatter plot
 scatter_plot(pca_results, site_names)
+
+# Scatter plot with axes 1 and 3 and percent on axis labels
+scatter_plot(pca_results, site_names, axes = c(1,3), percent = percent)
+
+# Scatter plot with no centroids and segments
+scatter_plot(pca_results, site_names, axes = c(1,2), percent = percent,
+             centroids = FALSE, segments = FALSE)
+
+# Scatter plot with custom colours and coloured by other_group
+scatter_plot(pca_results, site_names, other_group = region_names,
+             percent = percent, colours = c("#f1a340","#998ec3"))
 }
