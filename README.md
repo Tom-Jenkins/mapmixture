@@ -45,7 +45,7 @@ population structure.
 
 ## Examples
 
-#### Basic usage of `mapmixture()`
+#### Basic usage of mapmixture
 
 <details>
 <summary>
@@ -73,7 +73,7 @@ map1 <- mapmixture(admixture1, coordinates, crs = 3035)
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-#### Customised usage of `mapmixture()`
+#### Customised usage of mapmixture
 
 <details>
 <summary>
@@ -124,7 +124,7 @@ map2 <- mapmixture(
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
-#### Add additional geoms or theme options to `mapmixture()` ggplot object
+#### Add additional geoms or theme options to mapmixture ggplot object
 
 <details>
 <summary>
@@ -182,7 +182,7 @@ map3 <- mapmixture(
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
-#### Combine admixture mapmixture and barplot ggplot objects into a single figure
+#### Combine admixture map and barplot ggplot objects into a single figure
 
 <details>
 <summary>
@@ -316,8 +316,8 @@ The raster (TIFF) used in the example below was downloaded from Natural
 Earth
 [here](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-1/).
 You need to install the [terra](https://github.com/rspatial/terra)
-package to use this feature. Currently, the `basemap` argument only
-accepts a `SpatRaster` or `sf` object.
+package to use this feature. Currently, the `basemap` argument accepts a
+`SpatRaster` or a `sf` object.
 
 <details>
 <summary>
@@ -399,7 +399,7 @@ admix_coords <- merge_coords_data(coords_df, admixture_df) |> transform_df_coord
 map6 <- ggplot()+
   geom_sf(data = world, colour = "black", fill = "#d9d9d9", size = 0.1)+
   geom_sf(data = mczs, aes(fill = "MCZs"), size = 0.1)+
-  scale_fill_manual(values = c("red"))+
+  scale_fill_manual(values = c("yellow"))+
   coord_sf(
     xlim = c(boundary[["xmin"]], boundary[["xmax"]]),
     ylim = c(boundary[["ymin"]], boundary[["ymax"]])
