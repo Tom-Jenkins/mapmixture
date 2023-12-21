@@ -423,6 +423,64 @@ map6 <- ggplot()+
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
+#### Scatter plot of PCA or DAPC results from genotypes
+
+<details>
+<summary>
+Code
+</summary>
+
+``` r
+# Load packages
+library(mapmixture)
+library(ggplot2)
+library(adegenet)
+library(RColorBrewer)
+library(gridExtra)
+
+# Load example genotypes
+data("dapcIllus")
+geno = dapcIllus$a
+
+# Change population labels
+popNames(geno) = c("Pop1","Pop2","Pop3","Pop4","Pop5","Pop6")
+
+# Define colour palette
+cols = brewer.pal(nPop(geno), "RdYlBu")
+
+# Perform PCA
+pca1 = dudi.pca(geno, scannf = FALSE, nf = 3)
+
+# Percent of genetic variance explained by each axis
+percent = round(pca1$eig/sum(pca1$eig)*100, digits = 1)
+
+# Scatter plot with centroids and segments
+scatter1 <- scatter_plot(
+  dataframe = pca1$li,
+  group_ids = geno$pop,
+  type = "points",
+  axes = c(1,2),
+  percent = percent,
+  colours = cols
+)
+
+# Scatter plot with labels instead of points
+scatter2 <- scatter_plot(
+  dataframe = pca1$li,
+  group_ids = geno$pop,
+  type = "labels",
+  labels = rownames(pca1$li),
+  colours = cols
+)
+
+# Arrange plots
+# grid.arrange(scatter1, scatter2, ncol = 2)
+```
+
+</details>
+
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+
 ## Launch interactive Shiny app
 
 ``` r

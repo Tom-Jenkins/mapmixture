@@ -24,4 +24,9 @@ test_that("scatter_plot() outputs a ggplot object", {
   # Scatter plot with custom colours and coloured by other_group
   expect_no_error(scatter_plot(pca_results, site_names, other_group = region_names, percent = percent, colours = c("#f1a340","#998ec3")))
   expect_s3_class(scatter_plot(pca_results, site_names, other_group = region_names, percent = percent, colours = c("#f1a340","#998ec3")), "ggplot")
+
+  # Scatter plot with individual labels
+  expect_no_error(scatter_plot(pca_results, site_names, type = "labels", labels = rownames(pca_results)))
+  expect_s3_class(scatter_plot(pca_results, site_names, type = "labels", labels = rownames(pca_results)), "ggplot")
+
 })

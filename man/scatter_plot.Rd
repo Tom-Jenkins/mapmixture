@@ -16,7 +16,7 @@ scatter_plot(
   point_size = 3,
   point_type = 21,
   ...,
-  row_ids = NULL,
+  labels = NULL,
   xlab = "Axis",
   ylab = "Axis",
   percent = NULL,
@@ -41,17 +41,18 @@ If \code{NULL}, scatter plot is coloured by group_ids.}
 \item{colours}{character vector of colours the same length as the number of
 groups defined in group_ids or other_group.}
 
-\item{centroids}{add centroids to plot (TRUE or FALSE).}
+\item{centroids}{add centroids to plot (\code{TRUE} or \code{FALSE}).}
 
-\item{segments}{add segments to plot (TRUE or FALSE).}
+\item{segments}{add segments to plot (\code{TRUE} or \code{FALSE}).}
 
 \item{point_size}{numeric value for point size.}
 
 \item{point_type}{numeric value for point type (shape).}
 
-\item{...}{additional arguments passed to \code{ggplot2::geom_point}.}
+\item{...}{additional arguments passed to \code{ggplot2::geom_point} when \code{type = "points"}
+or to \code{ggplot2::geom_label} when \code{type = "labels"}.}
 
-\item{row_ids}{character vector of IDs defining labels when \code{type = "label"}.
+\item{labels}{character vector of IDs defining labels when \code{type = "label"}.
 If \code{NULL}, row names are used (integers from 1:nrow(dataframe)).}
 
 \item{xlab}{string defining x axis label.}
@@ -93,4 +94,8 @@ scatter_plot(pca_results, site_names, axes = c(1,2), percent = percent,
 # Scatter plot with custom colours and coloured by other_group
 scatter_plot(pca_results, site_names, other_group = region_names,
              percent = percent, colours = c("#f1a340","#998ec3"))
+
+# Scatter plot with individual labels
+scatter_plot(pca_results, site_names, type = "labels",
+             labels = rownames(pca_results))
 }
