@@ -18,6 +18,7 @@
 #' @param segments add segments to plot (`TRUE` or `FALSE`).
 #' @param point_size numeric value for point size.
 #' @param point_type numeric value for point type (shape).
+#' @param centroid_size numeric value for centroid label size.
 #' @param ... additional arguments passed to `ggplot2::geom_point` when `type = "points"`
 #' or to `ggplot2::geom_label` when `type = "labels"`.
 #' @param labels character vector of IDs defining labels when `type = "label"`.
@@ -62,7 +63,7 @@
 scatter_plot <- function(
     dataframe, group_ids, other_group = NULL, type = "points",
     axes = c(1,2), colours = NULL, centroids = TRUE, segments = TRUE,
-    point_size = 3, point_type = 21, ...,
+    point_size = 3, point_type = 21, centroid_size = 3, ...,
     labels = NULL,
     xlab = "Axis", ylab = "Axis", percent = NULL,
     plot_title = ""
@@ -162,7 +163,7 @@ scatter_plot <- function(
               x = !!as.name("cen1"), y = !!as.name("cen2"),
               label = !!as.name("group_ids"), fill = !!as.name("group_ids")
             ),
-            size = 3, alpha = 0.9, label.padding = ggplot2::unit(0.1, "cm"),
+            size = centroid_size, alpha = 0.9, label.padding = ggplot2::unit(0.15, "lines"),
             show.legend = FALSE
           )
       }
@@ -214,7 +215,7 @@ scatter_plot <- function(
               x = !!as.name("cen1"), y = !!as.name("cen2"),
               label = !!as.name("group_ids"), fill = !!as.name("other_group")
             ),
-            size = 3, alpha = 0.9, label.padding = ggplot2::unit(0.1, "cm"),
+            size = centroid_size, alpha = 0.9, label.padding = ggplot2::unit(0.15, "lines"),
             show.legend = FALSE
           )
       }

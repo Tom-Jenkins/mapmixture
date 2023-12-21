@@ -398,7 +398,7 @@ admix_coords <- merge_coords_data(coords_df, admixture_df) |> transform_df_coord
 # Plot map and add pie charts
 map6 <- ggplot()+
   geom_sf(data = world, colour = "black", fill = "#d9d9d9", size = 0.1)+
-  geom_sf(data = mczs, aes(fill = "MCZs"), size = 0.1)+
+  geom_sf(data = mczs, aes(fill = "MCZs"), linewidth = 0.3)+
   scale_fill_manual(values = c("yellow"))+
   coord_sf(
     xlim = c(boundary[["xmin"]], boundary[["xmax"]]),
@@ -445,6 +445,9 @@ geno = dapcIllus$a
 # Change population labels
 popNames(geno) = c("Pop1","Pop2","Pop3","Pop4","Pop5","Pop6")
 
+# Region names
+region_names <- rep(c("Region1", "Region2"), each = 300)
+
 # Define colour palette
 cols = brewer.pal(nPop(geno), "RdYlBu")
 
@@ -461,20 +464,86 @@ scatter1 <- scatter_plot(
   type = "points",
   axes = c(1,2),
   percent = percent,
-  colours = cols
-)
+  colours = cols,
+  point_size = 2,
+  point_type = 21,
+  centroid_size = 2,
+  stroke = 0.1,
+  plot_title = "PCA coloured by group_ids"
+)+
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 6),
+    plot.title = element_text(size = 10),
+  )
+
+# Same as scatter1 but no segments and axis 1 and 3 are shown
+scatter2 <- scatter_plot(
+  dataframe = pca1$li,
+  group_ids = geno$pop,
+  type = "points",
+  axes = c(1,3),
+  percent = percent,
+  colours = cols,
+  point_size = 2,
+  point_type = 21,
+  centroids = TRUE,
+  centroid_size = 2,
+  segments = FALSE,
+  stroke = 0.1,
+  plot_title = "PCA no segments and axis 1 and 3 shown"
+)+
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 6),
+    plot.title = element_text(size = 10),
+  )
+
+# Same as scatter1 but coloured by region
+scatter3 <- scatter_plot(
+  dataframe = pca1$li,
+  group_ids = geno$pop,
+  other_group = region_names,
+  type = "points",
+  axes = c(1,2),
+  percent = percent,
+  colours = cols,
+  point_size = 2,
+  point_type = 21,
+  centroid_size = 2,
+  stroke = 0.1,
+  plot_title = "PCA coloured by other_group"
+)+
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 6),
+    plot.title = element_text(size = 10),
+  )
 
 # Scatter plot with labels instead of points
-scatter2 <- scatter_plot(
+scatter4 <- scatter_plot(
   dataframe = pca1$li,
   group_ids = geno$pop,
   type = "labels",
   labels = rownames(pca1$li),
-  colours = cols
-)
+  colours = cols,
+  size = 2,
+  label.size = 0.10,
+  label.padding = unit(0.10, "lines"),
+  plot_title = "PCA using labels instead of points"
+)+
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 6),
+    plot.title = element_text(size = 10),
+  )
 
 # Arrange plots
-# grid.arrange(scatter1, scatter2, ncol = 2)
+# grid.arrange(scatter1, scatter2, scatter3, scatter4)
 ```
 
 </details>

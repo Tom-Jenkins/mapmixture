@@ -15,6 +15,7 @@ scatter_plot(
   segments = TRUE,
   point_size = 3,
   point_type = 21,
+  centroid_size = 3,
   ...,
   labels = NULL,
   xlab = "Axis",
@@ -48,6 +49,8 @@ groups defined in group_ids or other_group.}
 \item{point_size}{numeric value for point size.}
 
 \item{point_type}{numeric value for point type (shape).}
+
+\item{centroid_size}{numeric value for centroid label size.}
 
 \item{...}{additional arguments passed to \code{ggplot2::geom_point} when \code{type = "points"}
 or to \code{ggplot2::geom_label} when \code{type = "labels"}.}
