@@ -66,6 +66,9 @@ structure_plot <- function(admixture_df,
     values_to = "value"
   )
 
+  # Convert site column to factor
+  df_long$site <- factor(df_long$site, levels = unique(df_long$site))
+
   # Change the positional order of sites if parameter is set
   # First check that character vector is valid
   if (!is.null(site_order)) {
@@ -79,11 +82,7 @@ structure_plot <- function(admixture_df,
   }
 
   # Character vector of site labels
-  if (!is.null(site_order)) {
-    site_labels <- site_order
-  } else {
-    site_labels <- unique(admixture_df$site)
-  }
+  site_labels <- as.character(unique(df_long$site))
 
   # Character vector of default colours if cluster_cols parameter not set
   if (is.null(cluster_cols)) {
@@ -94,8 +93,11 @@ structure_plot <- function(admixture_df,
   # Execute this code if type = "structure" ----
   if(type == "structure") {
 
+    # Sample size per site in the correct order
+    sample_size_order <- dplyr::count(df_long, !!as.name("site"))$n / num_clusters
+    cum_ind <- cumsum(sample_size_order)
+
     # Calculate the location of lines to divide individuals by site
-    cum_ind <- cumsum(dplyr::count(admixture_df, !!as.name("site"))$n)
     site_divider_lines <- cum_ind[-length(cum_ind)]
 
     # Calculate the middle location to place each site label
