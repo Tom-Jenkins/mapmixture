@@ -39,9 +39,10 @@ launch_mapmixture()  # launch mapmixture Shiny app
 
 ## Citation
 
-Jenkins TL (*in review*). <span class="smallcaps">mapmixture</span>: an
-R package and web app for spatial visualisation of admixture and
-population structure.
+Jenkins TL (*in press*). <span class="smallcaps">mapmixture</span>: an R
+package and web app for spatial visualisation of admixture and
+population structure, *Molecular Ecology Resources*. DOI:
+10.1111/1755-0998.13943.
 
 ## Examples
 
