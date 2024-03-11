@@ -5,7 +5,7 @@ bibentry(
   journal  = "Molecular Ecology Resources",
   year     = 2024,
   volume   = 00,
-  number   = ,
+  number   = "",
   pages    = "e13943",
   doi      = "10.1111/1755-0998.13943"
 )
