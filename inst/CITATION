@@ -1,11 +1,11 @@
 bibentry(
   bibtype  = "Article",
   title    = "mapmixture: an R package and web app for spatial visualisation of admixture and population structure",
-  author   = "Tom L Jenkins",
+  author   = "Tom L. Jenkins",
   journal  = "Molecular Ecology Resources",
   year     = 2024,
-  volume   = 00,
-  number   = "",
+  volume   = 24,
+  number   = "4",
   pages    = "e13943",
   doi      = "10.1111/1755-0998.13943"
 )
