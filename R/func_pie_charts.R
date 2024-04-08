@@ -136,14 +136,28 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
     cols <- pal(nrow(df_site)) # number of cluster colours for palette
   }
 
-  # Build pie chart
-  ggplot2::ggplot(data = df_site)+
-    ggplot2::geom_bar(
-      ggplot2::aes(x = "", y = !!as.name("value"), fill = !!as.name("cluster")),
-      width = 1, stat = "identity", colour = "black",
-      show.legend = FALSE, linewidth = border, alpha = opacity
-    )+
-    ggplot2::coord_polar(theta = "y")+
-    ggplot2::scale_fill_manual(values = cols)+
-    ggplot2::theme_void()
+  # Build pie chart using theta = "x" for single-coloured pie charts (File Format 3)
+  if ( any(df_site$value == 1) ) {
+    ggplot2::ggplot(data = df_site)+
+      ggplot2::geom_bar(
+        ggplot2::aes(x = "", y = !!as.name("value"), fill = !!as.name("cluster")),
+        width = 1, stat = "identity", colour = "black",
+        show.legend = FALSE, linewidth = border, alpha = opacity
+      )+
+      ggplot2::coord_polar(theta = "x")+
+      ggplot2::scale_fill_manual(values = cols)+
+      ggplot2::theme_void()
+
+  # Otherwise build pie chart using theta = "y"
+  } else {
+    ggplot2::ggplot(data = df_site)+
+      ggplot2::geom_bar(
+        ggplot2::aes(x = "", y = !!as.name("value"), fill = !!as.name("cluster")),
+        width = 1, stat = "identity", colour = "black",
+        show.legend = FALSE, linewidth = border, alpha = opacity
+      )+
+      ggplot2::coord_polar(theta = "y")+
+      ggplot2::scale_fill_manual(values = cols)+
+      ggplot2::theme_void()
+  }
 }
