@@ -10,6 +10,7 @@ scatter_plot(
   other_group = NULL,
   type = "points",
   ...,
+  labels = NULL,
   axes = c(1, 2),
   colours = NULL,
   centroids = TRUE,
@@ -17,7 +18,9 @@ scatter_plot(
   point_size = 3,
   point_type = 21,
   centroid_size = 3,
-  labels = NULL,
+  hvline_type = "dotted",
+  hvline_size = 0.5,
+  hvline_colour = "black",
   xlab = "Axis",
   ylab = "Axis",
   percent = NULL,
@@ -41,6 +44,9 @@ If \code{NULL}, scatter plot is coloured by group_ids.}
 or to \code{ggplot2::geom_label} when \code{type = "labels"},
 or to \code{ggplot2::geom_text} when \code{type = "text"}.}
 
+\item{labels}{character vector of IDs defining labels when \code{type = "label"} or \code{type = "text"}.
+If \code{NULL}, row names are used (integers from 1:nrow(dataframe)).}
+
 \item{axes}{integer vector of length two defining which axes to plot.}
 
 \item{colours}{character vector of colours the same length as the number of
@@ -56,8 +62,12 @@ groups defined in group_ids or other_group.}
 
 \item{centroid_size}{numeric value for centroid label size.}
 
-\item{labels}{character vector of IDs defining labels when \code{type = "label"}.
-If \code{NULL}, row names are used (integers from 1:nrow(dataframe)).}
+\item{hvline_type}{integer or string defining linetype (\code{1} or \code{"dotted"}).
+Input \code{0} for no horizontal and vertical lines.}
+
+\item{hvline_size}{integer defining linewidth.}
+
+\item{hvline_colour}{string defining line colour.}
 
 \item{xlab}{string defining x axis label.}
 
@@ -101,5 +111,8 @@ scatter_plot(pca_results, site_names, other_group = region_names,
 
 # Scatter plot with individual labels
 scatter_plot(pca_results, site_names, type = "labels",
+             labels = rownames(pca_results))
+# Scatter plot with individual text
+scatter_plot(pca_results, site_names, type = "text",
              labels = rownames(pca_results))
 }

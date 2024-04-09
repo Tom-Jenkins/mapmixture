@@ -22,13 +22,17 @@
 #' @param point_size numeric value for point size.
 #' @param point_type numeric value for point type (shape).
 #' @param centroid_size numeric value for centroid label size.
-#' @param labels character vector of IDs defining labels when `type = "label"`.
+#' @param labels character vector of IDs defining labels when `type = "label"` or `type = "text"`.
 #' If `NULL`, row names are used (integers from 1:nrow(dataframe)).
 #' @param xlab string defining x axis label.
 #' @param ylab string defining y axis label.
 #' @param percent numeric vector the same length as `ncol(dataframe)` defining the
 #' percentage of variance explained by each axis.
 #' @param plot_title string defining the main title of the plot.
+#' @param hvline_type integer or string defining linetype (`1` or `"dotted"`).
+#' Input `0` for no horizontal and vertical lines.
+#' @param hvline_size integer defining linewidth.
+#' @param hvline_colour string defining line colour.
 #'
 #' @return A ggplot object.
 #' @export
@@ -61,11 +65,15 @@
 #' # Scatter plot with individual labels
 #' scatter_plot(pca_results, site_names, type = "labels",
 #'              labels = rownames(pca_results))
+#' # Scatter plot with individual text
+#' scatter_plot(pca_results, site_names, type = "text",
+#'              labels = rownames(pca_results))
 scatter_plot <- function(
     dataframe, group_ids, other_group = NULL, type = "points", ...,
+    labels = NULL,
     axes = c(1,2), colours = NULL, centroids = TRUE, segments = TRUE,
     point_size = 3, point_type = 21, centroid_size = 3,
-    labels = NULL,
+    hvline_type = "dotted", hvline_size = 0.5, hvline_colour = "black",
     xlab = "Axis", ylab = "Axis", percent = NULL,
     plot_title = ""
   ) {
@@ -111,8 +119,8 @@ scatter_plot <- function(
       ggplot2::aes(x = !!as.name(colnames(df)[1]), y = !!as.name(colnames(df)[2]))
     )+
       # Zero horizontal and vertical lines
-      ggplot2::geom_hline(yintercept = 0)+
-      ggplot2::geom_vline(xintercept = 0)+
+      ggplot2::geom_hline(yintercept = 0, linetype = hvline_type, linewidth = hvline_size, colour = hvline_colour)+
+      ggplot2::geom_vline(xintercept = 0, linetype = hvline_type, linewidth = hvline_size, colour = hvline_colour)+
       # Title
       ggplot2::ggtitle(plot_title)+
       # Labels
@@ -252,8 +260,8 @@ scatter_plot <- function(
       )
     )+
       # Zero horizontal and vertical lines
-      ggplot2::geom_hline(yintercept = 0)+
-      ggplot2::geom_vline(xintercept = 0)+
+      ggplot2::geom_hline(yintercept = 0, linetype = hvline_type, linewidth = hvline_size, colour = hvline_colour)+
+      ggplot2::geom_vline(xintercept = 0, linetype = hvline_type, linewidth = hvline_size, colour = hvline_colour)+
       # Title
       ggplot2::ggtitle(plot_title)+
       # Labels
@@ -301,8 +309,8 @@ scatter_plot <- function(
       )
     )+
       # Zero horizontal and vertical lines
-      ggplot2::geom_hline(yintercept = 0)+
-      ggplot2::geom_vline(xintercept = 0)+
+      ggplot2::geom_hline(yintercept = 0, linetype = hvline_type, linewidth = hvline_size, colour = hvline_colour)+
+      ggplot2::geom_vline(xintercept = 0, linetype = hvline_type, linewidth = hvline_size, colour = hvline_colour)+
       # Title
       ggplot2::ggtitle(plot_title)+
       # Labels
