@@ -8,3 +8,4 @@ _\.new\.png$
 ^\.gitlab-ci\.yml$
 ^app\.R$
 ^rsconnect$
+^cran-comments\.md$

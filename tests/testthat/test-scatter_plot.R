@@ -29,4 +29,7 @@ test_that("scatter_plot() outputs a ggplot object", {
   expect_no_error(scatter_plot(pca_results, site_names, type = "labels", labels = rownames(pca_results)))
   expect_s3_class(scatter_plot(pca_results, site_names, type = "labels", labels = rownames(pca_results)), "ggplot")
 
+  # Scatter plot with individual text
+  expect_no_error(scatter_plot(pca_results, site_names, type = "text", labels = rownames(pca_results)))
+  expect_s3_class(scatter_plot(pca_results, site_names, type = "text", labels = rownames(pca_results)), "ggplot")
 })

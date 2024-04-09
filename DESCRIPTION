@@ -2,10 +2,12 @@ Package: mapmixture
 Title: Spatial Visualisation of Admixture on a Projected Map
 Version: 1.1.0
 Authors@R: 
-    person("Tom", "Jenkins", , "tom.l.jenkins@outlook.com", role = c("aut", "cre"))
-Description: mapmixture is an R package and shiny app that enables users to 
-    visualise admixture as pie charts on a projected map. It also allows users 
-    to visualise admixture as traditional structure barplots or facet barplots.
+    person("Tom", "Jenkins", , "tom.l.jenkins@outlook.com", role = c("aut", "cre","cph"))
+Description: 
+  A suite of functions to visualise admixture as pie charts on a projected map, 
+  admixture as traditional structure barplots or facet barplots, and scatter 
+  plots from genotype principal components analysis. A Shiny app allows users 
+  to create admixture maps interactively.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
