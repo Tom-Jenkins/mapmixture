@@ -136,21 +136,39 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
     cols <- pal(nrow(df_site)) # number of cluster colours for palette
   }
 
-  # Build pie chart using theta = "x" for single-coloured pie charts (File Format 3)
+  # Build pie chart for single-coloured pie charts (File Format 3)
   if ( any(df_site$value == 1) ) {
-    ggplot2::ggplot(data = df_site)+
-      ggplot2::geom_bar(
-        ggplot2::aes(x = "", y = !!as.name("value"), fill = !!as.name("cluster")),
-        width = 1, stat = "identity", colour = "black",
-        show.legend = FALSE, linewidth = border, alpha = opacity
-      )+
-      ggplot2::coord_polar(theta = "x")+
-      ggplot2::scale_fill_manual(values = cols)+
-      ggplot2::theme_void()
 
-  # Otherwise build pie chart using theta = "y"
+    # Which cluster row has proportion of 1
+    proportion1 <- df_site[which(df_site$value == 1), ]
+
+    # Extract the cluster name
+    cluster_name <- proportion1$cluster
+
+    # Extract the cluster number
+    cluster_number <- as.numeric(stringr::str_extract(cluster_name, "\\d+"))
+
+    # Extract the corresponding colour
+    cluster_col <- cols[cluster_number]
+
+    # Create a circle using circleGrob
+    circle <- grid::circleGrob(
+      x = ggplot2::unit(0.5, "npc"),
+      y = ggplot2::unit(0.5, "npc"),
+      r = ggplot2::unit(0.35, "npc"),
+      gp = grid::gpar(col = "black", fill = cluster_col)
+    )
+
+    # Plot
+    plt <- ggplot2::ggplot() +
+      ggplot2::geom_point(ggplot2::aes(x = NA, y = NA))+
+      ggplot2::annotation_custom(grob = circle)+
+      ggplot2::theme_void()
+    return(plt)
+
+  # Build pie chart for multi-coloured pie charts (File Format 1 and 2)
   } else {
-    ggplot2::ggplot(data = df_site)+
+    plt <- ggplot2::ggplot(data = df_site)+
       ggplot2::geom_bar(
         ggplot2::aes(x = "", y = !!as.name("value"), fill = !!as.name("cluster")),
         width = 1, stat = "identity", colour = "black",
@@ -159,5 +177,6 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
       ggplot2::coord_polar(theta = "y")+
       ggplot2::scale_fill_manual(values = cols)+
       ggplot2::theme_void()
+    return(plt)
   }
 }
