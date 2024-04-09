@@ -156,12 +156,12 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
       x = ggplot2::unit(0.5, "npc"),
       y = ggplot2::unit(0.5, "npc"),
       r = ggplot2::unit(0.35, "npc"),
-      gp = grid::gpar(col = "black", fill = cluster_col)
+      gp = grid::gpar(col = "black", fill = cluster_col, alpha = opacity, lwd = border)
     )
 
     # Plot
     plt <- ggplot2::ggplot() +
-      ggplot2::geom_point(ggplot2::aes(x = NA, y = NA))+
+      ggplot2::geom_point(ggplot2::aes(x = NA, y = NA), colour = "transparent")+
       ggplot2::annotation_custom(grob = circle)+
       ggplot2::theme_void()
     return(plt)
