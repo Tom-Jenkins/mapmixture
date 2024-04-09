@@ -9,6 +9,7 @@ scatter_plot(
   group_ids,
   other_group = NULL,
   type = "points",
+  ...,
   axes = c(1, 2),
   colours = NULL,
   centroids = TRUE,
@@ -16,7 +17,6 @@ scatter_plot(
   point_size = 3,
   point_type = 21,
   centroid_size = 3,
-  ...,
   labels = NULL,
   xlab = "Axis",
   ylab = "Axis",
@@ -35,7 +35,11 @@ E.g. a vector of site names, a vector of biological categories such as male or f
 E.g. a vector of country names (see examples).
 If \code{NULL}, scatter plot is coloured by group_ids.}
 
-\item{type}{string defining whether to show points (\code{"points"}) or labels (\code{"labels"}).}
+\item{type}{string defining whether to show points (\code{"points"}), labels (\code{"labels"}), or text (\code{"text"}).}
+
+\item{...}{additional arguments passed to \code{ggplot2::geom_point} when \code{type = "points"},
+or to \code{ggplot2::geom_label} when \code{type = "labels"},
+or to \code{ggplot2::geom_text} when \code{type = "text"}.}
 
 \item{axes}{integer vector of length two defining which axes to plot.}
 
@@ -51,9 +55,6 @@ groups defined in group_ids or other_group.}
 \item{point_type}{numeric value for point type (shape).}
 
 \item{centroid_size}{numeric value for centroid label size.}
-
-\item{...}{additional arguments passed to \code{ggplot2::geom_point} when \code{type = "points"}
-or to \code{ggplot2::geom_label} when \code{type = "labels"}.}
 
 \item{labels}{character vector of IDs defining labels when \code{type = "label"}.
 If \code{NULL}, row names are used (integers from 1:nrow(dataframe)).}

@@ -10,7 +10,10 @@
 #' @param other_group secondary character vector of IDs defining how to colour the scatter plot.
 #' E.g. a vector of country names (see examples).
 #' If `NULL`, scatter plot is coloured by group_ids.
-#' @param type string defining whether to show points (`"points"`) or labels (`"labels"`).
+#' @param type string defining whether to show points (`"points"`), labels (`"labels"`), or text (`"text"`).
+#' @param ... additional arguments passed to `ggplot2::geom_point` when `type = "points"`,
+#' or to `ggplot2::geom_label` when `type = "labels"`,
+#' or to `ggplot2::geom_text` when `type = "text"`.
 #' @param axes integer vector of length two defining which axes to plot.
 #' @param colours character vector of colours the same length as the number of
 #' groups defined in group_ids or other_group.
@@ -19,8 +22,6 @@
 #' @param point_size numeric value for point size.
 #' @param point_type numeric value for point type (shape).
 #' @param centroid_size numeric value for centroid label size.
-#' @param ... additional arguments passed to `ggplot2::geom_point` when `type = "points"`
-#' or to `ggplot2::geom_label` when `type = "labels"`.
 #' @param labels character vector of IDs defining labels when `type = "label"`.
 #' If `NULL`, row names are used (integers from 1:nrow(dataframe)).
 #' @param xlab string defining x axis label.
@@ -61,9 +62,9 @@
 #' scatter_plot(pca_results, site_names, type = "labels",
 #'              labels = rownames(pca_results))
 scatter_plot <- function(
-    dataframe, group_ids, other_group = NULL, type = "points",
+    dataframe, group_ids, other_group = NULL, type = "points", ...,
     axes = c(1,2), colours = NULL, centroids = TRUE, segments = TRUE,
-    point_size = 3, point_type = 21, centroid_size = 3, ...,
+    point_size = 3, point_type = 21, centroid_size = 3,
     labels = NULL,
     xlab = "Axis", ylab = "Axis", percent = NULL,
     plot_title = ""
@@ -275,7 +276,56 @@ scatter_plot <- function(
     if (!is.null(colours)) {
       plt <- plt+
         ggplot2::scale_fill_manual(values = colours)
-        # ggplot2::scale_colour_manual(values = colours)
+    }
+  }
+
+
+  # TEXT SCATTER PLOT ----
+  if (type == "text") {
+
+    # Add individual names if parameter is set
+    if (is.null(labels)) {
+      df$labels <- rownames(df)
+    } else {
+      df$labels <- labels
+    }
+
+    # Scatter plot
+    plt <- ggplot2::ggplot(
+      data = df,
+      ggplot2::aes(
+        x = !!as.name(colnames(df)[1]),
+        y = !!as.name(colnames(df)[2]),
+        label = !!as.name("labels"),
+        colour = !!as.name("group_ids")
+      )
+    )+
+      # Zero horizontal and vertical lines
+      ggplot2::geom_hline(yintercept = 0)+
+      ggplot2::geom_vline(xintercept = 0)+
+      # Title
+      ggplot2::ggtitle(plot_title)+
+      # Labels
+      ggplot2::labs(x = xlab, y = ylab)
+
+    # Text
+    plt <- plt+
+      ggplot2::geom_text(
+        ...,
+        show.legend = FALSE
+      )
+
+    # Add a transparent point aesthetic and use this as the legend
+    plt <- plt+
+      ggplot2::geom_point(ggplot2::aes(fill = !!as.name("group_ids")), alpha = 0)+
+      ggplot2::guides(colour = ggplot2::guide_legend(
+        override.aes = list(alpha = 1, shape = 21, size = 6, colour = "black"))
+      )
+
+    # Add custom colours if parameter is set
+    if (!is.null(colours)) {
+      plt <- plt+
+        ggplot2::scale_colour_manual(values = colours)
     }
   }
 
@@ -286,7 +336,7 @@ scatter_plot <- function(
       legend.title = element_blank(),
       legend.position = "right",
       legend.text = element_text(size = 10),
-      legend.key = element_rect(fill = NA),
+      legend.key = element_blank(),
       legend.key.size = unit(0.7, "cm"),
       panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
       panel.background = element_blank(),
