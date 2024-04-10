@@ -5,8 +5,11 @@
 
 app_ui <- function() {
 
-  # Add www/ directory to resource path
-  addResourcePath(prefix = "www", directoryPath = system.file("www", package = "mapmixture"))
+  # Add www/ directory to resource path (deployment)
+  # addResourcePath(prefix = "www", directoryPath = system.file("www", package = "mapmixture"))
+
+  # Add www/ directory to resource path (developer mode)
+  addResourcePath(prefix = "www", directoryPath = "./inst/www/")
 
   # App UI
   fluidPage(
@@ -38,7 +41,7 @@ app_ui <- function() {
         ),
         a(
           style = "color: white;",
-          href = "https://github.com/Tom-Jenkins/Mapmixture",
+          href = "https://github.com/Tom-Jenkins/mapmixture",
           target = "_blank",
           span(style = "float: right; margin-right: 20px;", icon("github", style = "margin-right: 5px;"), "GitHub")),
       ),
@@ -62,17 +65,22 @@ app_ui <- function() {
         ),
 
         # Tab panel for map and bar chart input parameters ----
-        div(class = "nav-justified",
-            tabsetPanel(
-              type = "pills",
-              id = "options-pills-container",
-              tabPanel(
-                class = "parameter-options-container",
-                title = "Map Options",
-                mod_map_params_ui("map_params")
-                # map_params_module$ui(ns("map_params_module")),
-              )
-            )
+        tabsetPanel(
+          type = "pills",
+          id = "options-pills-container",
+          # Map parameters
+          tabPanel(
+            class = "parameter-options-container",
+            title = "Map Options",
+            mod_map_params_ui("map_params")
+            # map_params_module$ui(ns("map_params_module")),
+          ),
+          # Barplot parameters
+          tabPanel(
+            class = "parameter-options-container",
+            title = "Barplot Options",
+            mod_barplot_params_ui("barplot_params")
+          ),
         ),
       ),
 
@@ -83,6 +91,11 @@ app_ui <- function() {
             title = "Admixture Map",
             icon = icon("earth-europe"),
             mod_main_plot_ui("main_plot")
+          ),
+          tabPanel(
+            title = "Structure Plot",
+            icon = icon("chart-simple"),
+            mod_main_plot_ui("bar_plot")
           ),
           tabPanel(
             title = "File Format",
