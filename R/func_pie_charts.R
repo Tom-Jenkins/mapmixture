@@ -159,6 +159,16 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
       gp = grid::gpar(col = "black", fill = cluster_col, alpha = opacity, lwd = border)
     )
 
+    # # Create a vertical line
+    # line <- grid::linesGrob(
+    #   x = c(0.5, 0.5),
+    #   y = c(0.5, ggplot2::unit(0.5 + 0.35, "npc")),
+    #   gp = grid::gpar(col = "black", lwd = border)
+    # )
+    #
+    # # Draw the circle and the line
+    # single_colour_pie <- grid::gTree(children = grid::gList(circle, line))
+
     # Plot
     plt <- ggplot2::ggplot() +
       ggplot2::geom_point(ggplot2::aes(x = NA, y = NA), colour = "transparent")+
