@@ -9,6 +9,10 @@
 #' or a facet barplot ("facet").
 #' @param cluster_cols character vector of colours the same length as the number of clusters.
 #' If `NULL`, a blue-green palette is used.
+#' @param cluster_names character vector of names the same length as the number of clusters.
+#' If `NULL`, the cluster column names are used.
+#' @param legend add legend at position (`"none"`, `"top"`, `"right"`, `"bottom"` or `"left"`).
+#' Default is to hide legend.
 #' @param labels show labels at the site level or the
 #' individual level ("site" or "individual").
 #' @param site_dividers add dotted lines that divide sites (TRUE or FALSE).
@@ -37,7 +41,9 @@
 #' structure_plot(admixture1, type = "structure")
 #' structure_plot(admixture1, type = "facet", facet_col = 5)
 structure_plot <- function(admixture_df,
-    type = "structure", cluster_cols = NULL, labels = "site", flip_axis = FALSE,
+    type = "structure", cluster_cols = NULL, cluster_names = NULL,
+    legend = "none",
+    labels = "site", flip_axis = FALSE,
     ylabel = "Proportion",
     site_dividers = TRUE, divider_width = 1,
     site_order = NULL, site_labels_size = 2,
@@ -90,6 +96,11 @@ structure_plot <- function(admixture_df,
     cluster_cols <- pal(num_clusters) # number of cluster colours for palette
   }
 
+  # Create a vector of default cluster names if parameter not set
+  if (is.null(cluster_names)) {
+    cluster_names <- colnames(admixture_df)[3:ncol(admixture_df)]
+  }
+
   # Execute this code if type = "structure" ----
   if(type == "structure") {
 
@@ -113,12 +124,13 @@ structure_plot <- function(admixture_df,
         width = 1
       )+
       ggplot2::scale_y_continuous(expand = c(0,0))+
-      ggplot2::scale_fill_manual(values = cluster_cols)+
+      ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
       ggplot2::ylab(paste0(ylabel,"\n"))+
       ggplot2::theme(
         panel.grid = ggplot2::element_blank(),
         panel.background = ggplot2::element_blank(),
-        legend.position = "none",
+        legend.position = legend,
+        legend.title = ggplot2::element_blank(),
       )
 
     # Add site divider lines if TRUE
@@ -235,7 +247,7 @@ structure_plot <- function(admixture_df,
       )+
       ggplot2::scale_y_continuous(expand = c(0,0))+
       ggplot2::facet_wrap(~ site, scales = "free", nrow = facet_row, ncol = facet_col)+
-      ggplot2::scale_fill_manual(values = cluster_cols)+
+      ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
       ggplot2::ylab(paste0(ylabel,"\n"))+
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
@@ -244,7 +256,8 @@ structure_plot <- function(admixture_df,
         strip.text = ggplot2::element_text(colour="black", size=12),
         panel.grid = ggplot2::element_blank(),
         panel.background = ggplot2::element_blank(),
-        legend.position = "none",
+        legend.position = legend,
+        legend.title = ggplot2::element_blank(),
       )
 
     # Return
