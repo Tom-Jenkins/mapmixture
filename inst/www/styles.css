@@ -49,16 +49,16 @@
   display: none;
 }
 
-#plot_bttn-plot_bttn {
+.plot-bttn {
   margin-top: 5px;
   margin-bottom: 20px;
+  width: 130px;
 }
-#plot_bttn-plot_bttn:active {
+.plot-bttn:active {
   background-color: #14a085;
   border-color: #fff;
 }
-
-#plot_bttn-plot_bttn > i {
+.plot-bttn > i {
   padding-right: 5px;
 }
 
@@ -138,4 +138,8 @@
 
 .carousel-item img {
   padding-top: 10px;
+}
+
+.param-bttn-100px {
+  width: 100px !important;
 }

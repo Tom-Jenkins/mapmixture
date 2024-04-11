@@ -108,7 +108,17 @@ function renderFeedbackWarning (file, text) {
 // ---------- //
 // Function to clear plotOutput content when Plot Data button is (re)clicked
 // ---------- //
-function clearPlotOutput () {
+function clearPlotOutput (plot) {
+
+  // Do this for map
+  if (plot == "map") {
     document.getElementById("main_plot-admixture_map").textContent = "";
     document.getElementById("main_plot-dropdown_download_bttn").classList.add("hidden");
+  }
+
+  // Do this for bar
+  if (plot == "bar") {
+    document.getElementById("bar_plot-admixture_barplot").textContent = "";
+/*    document.getElementById("main_plot-dropdown_download_bttn").classList.add("hidden");*/
+  }
 };
