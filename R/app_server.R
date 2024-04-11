@@ -14,18 +14,21 @@ app_server <- function(input, output, session) {
   # Capture button click events ----
   admixture_info_bttn <- mod_file_upload_outputs[["admixture_info_bttn"]]
   coords_info_bttn <- mod_file_upload_outputs[["coords_info_bttn"]]
-  plot_bttn <- mod_plot_bttn_server("plot_bttn")[["plot_bttn"]]
+  plot_bttn_outputs <- mod_plot_bttn_server("plot_bttn")
+  plot_map_bttn <- plot_bttn_outputs[["plot_map_bttn"]]
+  plot_bar_bttn <- plot_bttn_outputs[["plot_bar_bttn"]]
 
   # Information modals module ----
   mod_info_modals_server("info_modals_module", admixture_info_bttn, coords_info_bttn)
 
   # Parameters modules ----
   mod_map_params_outputs <- mod_map_params_server("map_params", admixture_df = admixture_data, coords_df = coords_data)
+  mod_bar_params_outputs <- mod_barplot_params_server("barplot_params", admixture_df = admixture_data)
 
-  # Plot map module ----
+  # Main Map module ----
   mod_main_plot_server(
     "main_plot",
-    bttn = plot_bttn,
+    bttn = plot_map_bttn,
     admixture_df = admixture_data,
     coords_df = coords_data,
     user_CRS = mod_map_params_outputs[["params_CRS"]],
@@ -49,6 +52,22 @@ app_server <- function(input, output, session) {
     title_size = mod_map_params_outputs[["param_title_size"]],
     plot_title_size = mod_map_params_outputs[["param_plot_title_size"]],
     user_advanced = mod_map_params_outputs[["param_advanced"]]
+  )
+
+  # Structure Barplot module ----
+  mod_barplot_plot_server(
+    "bar_plot",
+    bttn = plot_bar_bttn,
+    admixture_df = admixture_data,
+    user_bar_type = mod_bar_params_outputs[["param_bar_type"]],
+    user_legend = mod_bar_params_outputs[["param_legend"]],
+    cluster_cols = mod_bar_params_outputs[["param_cols"]],
+    cluster_names = mod_bar_params_outputs[["param_cluster_names"]],
+    site_divider = mod_bar_params_outputs[["param_divider"]],
+    divider_lwd = mod_bar_params_outputs[["param_divider_lwd"]],
+    site_ticks = mod_bar_params_outputs[["param_ticks"]],
+    ticks_size = mod_bar_params_outputs[["param_ticks_size"]]
+
   )
 
 }

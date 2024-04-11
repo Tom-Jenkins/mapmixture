@@ -65,21 +65,23 @@ app_ui <- function() {
         ),
 
         # Tab panel for map and bar chart input parameters ----
-        tabsetPanel(
-          type = "pills",
-          id = "options-pills-container",
-          # Map parameters
-          tabPanel(
-            class = "parameter-options-container",
-            title = "Map Options",
-            mod_map_params_ui("map_params")
-            # map_params_module$ui(ns("map_params_module")),
-          ),
-          # Barplot parameters
-          tabPanel(
-            class = "parameter-options-container",
-            title = "Barplot Options",
-            mod_barplot_params_ui("barplot_params")
+        span(class = "nav-justified",
+          tabsetPanel(
+            type = "pills",
+            id = "options-pills-container",
+            # Map parameters
+            tabPanel(
+              class = "parameter-options-container primary",
+              title = "Map Options",
+              mod_map_params_ui("map_params")
+              # map_params_module$ui(ns("map_params_module")),
+            ),
+            # Barplot parameters
+            tabPanel(
+              class = "parameter-options-container",
+              title = "Barplot Options",
+              mod_barplot_params_ui("barplot_params")
+            ),
           ),
         ),
       ),
@@ -87,6 +89,7 @@ app_ui <- function() {
       # Main panel for displaying outputs ----
       mainPanel(
         tabsetPanel(
+          id = "app-tabset-panel",
           tabPanel(
             title = "Admixture Map",
             icon = icon("earth-europe"),
@@ -95,7 +98,7 @@ app_ui <- function() {
           tabPanel(
             title = "Structure Plot",
             icon = icon("chart-simple"),
-            mod_main_plot_ui("bar_plot")
+            mod_barplot_plot_ui("bar_plot")
           ),
           tabPanel(
             title = "File Format",

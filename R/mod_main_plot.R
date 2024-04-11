@@ -1,4 +1,4 @@
-#' Main Plotting Module: UI
+#' Main Map Plotting Module: UI
 #'
 #' @noRd
 #' @importFrom shiny NS tagList uiOutput plotOutput
@@ -22,7 +22,7 @@ mod_main_plot_ui <- function(id) {
 }
 
 
-#' Main Plotting Module: Server
+#' Main Map Plotting Module: Server
 #'
 #' @noRd
 #' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton downloadHandler observe
@@ -44,9 +44,8 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # Must be outside the renderPlot observer AND
     #   have coords_df() inside observer to fix coords_file feedback bug
     observeEvent(c(bttn(), coords_df()), priority = 2, {
-      runjs("clearPlotOutput()")
+      runjs("clearPlotOutput('map')")
     })
-
 
     # Create map as reactive ----
     output_map <- reactive({
@@ -104,11 +103,36 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     observeEvent(bttn(), priority = 1, {
       req(admixture_df(), coords_df(), output_map())
 
+      runjs("
+        // Select the element you want to click
+        const pillsMap = document.querySelector('#options-pills-container > li:nth-child(1) > a');
+
+        // Create a new click event
+        const clickEvent = new Event('click', { bubbles: true });
+
+        // Dispatch the click event on the element
+        pillsMap.dispatchEvent(clickEvent);
+      ")
+
       # Render plot ----
       output$admixture_map <- renderPlot({
         output_map()
       }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
 
+      # Delay by one second to allow rendering before switching tabs
+      runjs("
+        setTimeout( () => {
+
+          // Select the element you want to click
+          const navMap = document.querySelector('#app-tabset-panel > li:nth-child(1) > a');
+
+          // Create a new click event
+          const clickEvent = new Event('click', { bubbles: true });
+
+          // Dispatch the click event on the element
+          navMap.dispatchEvent(clickEvent);
+        }, 1000)
+      ")
 
       # Render download button and internal components ----
       runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")

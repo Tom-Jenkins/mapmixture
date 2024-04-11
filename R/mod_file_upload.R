@@ -57,6 +57,10 @@ mod_file_upload_server <- function(id){
       runjs("document.getElementById('admixture-success').classList.add('hidden')")
       runjs("document.getElementById('admixture-warning').classList.add('hidden')")
 
+      # Disable button if not already disabled
+      runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.add('disabled')")
+      runjs("document.getElementById('options-pills-container').style.pointerEvents = 'none';")
+
       # Remove all previous error messages from UI
       runjs("if(document.getElementById('admixture-error-message')) document.getElementById('admixture-error-message').remove()")
 
@@ -112,6 +116,13 @@ mod_file_upload_server <- function(id){
           # If data valid then print success message to UI, convert colnames to lower case and return data
         } else {
           runjs("renderFeedbackSuccess('admixture')")
+
+          # Remove disabled class from Plot Bar button when valid status is TRUE
+          runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.remove('disabled');")
+
+          # Enable pointer event on parameter pills
+          runjs("document.getElementById('options-pills-container').style.pointerEvents = 'auto';")
+
           return(admix_df)
         }
       }
@@ -191,11 +202,11 @@ mod_file_upload_server <- function(id){
     observe({
       # If TRUE
       if (input_valid()) {
-        runjs("document.getElementById('plot_bttn-plot_bttn').classList.remove('disabled')")
+        runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.remove('disabled')")
       }
       # If FALSE
       if (!input_valid()) {
-        runjs("document.getElementById('plot_bttn-plot_bttn').classList.add('disabled')")
+        runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.add('disabled')")
       }
     })
 
