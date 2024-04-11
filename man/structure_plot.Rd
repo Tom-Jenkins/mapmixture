@@ -8,6 +8,7 @@ structure_plot(
   admixture_df,
   type = "structure",
   cluster_cols = NULL,
+  legend = FALSE,
   labels = "site",
   flip_axis = FALSE,
   ylabel = "Proportion",
@@ -31,6 +32,9 @@ or a facet barplot ("facet").}
 
 \item{cluster_cols}{character vector of colours the same length as the number of clusters.
 If \code{NULL}, a blue-green palette is used.}
+
+\item{legend}{add legend at position (\code{"none"}, \code{"top"}, \code{"right"}, \code{"bottom"} or \code{"left"}).
+Default is to hide legend.}
 
 \item{labels}{show labels at the site level or the
 individual level ("site" or "individual").}
