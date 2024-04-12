@@ -117,11 +117,13 @@ function clearPlotOutput (plot) {
   if (plot == "map") {
     document.getElementById("main_plot-admixture_map").textContent = "";
     document.getElementById("main_plot-dropdown_download_bttn").classList.add("hidden");
+    document.getElementById("map_download_bttn_display").classList.add("hidden");
   }
 
   // Do this for bar
   if (plot == "bar") {
     document.getElementById("bar_plot-admixture_barplot").textContent = "";
-/*    document.getElementById("main_plot-dropdown_download_bttn").classList.add("hidden");*/
+    document.getElementById("bar_plot-dropdown_download_bttn").classList.add("hidden");
+    document.getElementById("bar_download_bttn_display").classList.add("hidden");
   }
 };

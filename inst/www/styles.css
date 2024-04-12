@@ -73,6 +73,17 @@
   border-color: white;
 }
 
+#bar_plot-download_bttn:active {
+  background-color: #14a085;
+  border-color: white;
+}
+
+#bar-download_bttn {
+  float: right;
+  padding-right: 40px;
+  padding-top: 5px;
+}
+
 .sidebar-container {
   overflow-y: scroll;
 }
@@ -148,3 +159,12 @@
 .param-bttn-100px {
   width: 100px !important;
 }
+
+/*Hide the site order elements (future feature)*/
+#barplot_params-bar_site_order-label {
+  display: none;
+}
+#barplot_params-bar_site_order {
+  display: none;
+}
+

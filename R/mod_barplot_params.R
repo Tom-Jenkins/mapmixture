@@ -28,6 +28,14 @@ mod_barplot_params_ui <- function(id) {
     ),
     br(),
 
+    # Y label ----
+    textInput(
+      inputId = ns("bar_y_label"),
+      label = strong("Y Label"),
+      value = "Proportion",
+      width = "275px"
+    ),
+
     # Labels to display (sites or individuals) button ----
     shinyWidgets::radioGroupButtons(
       inputId = ns("bar_labels_bttn"),
@@ -71,9 +79,9 @@ mod_barplot_params_ui <- function(id) {
     br(),
 
     # Site labels size, x and y positions ----
-    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_size"), label = strong("Label Size"), width = "80px", min = 0, value = 2)),
-    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_x"), label = strong("Label X"), width = "80px", value = 0)),
-    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_y"), label = strong("Label Y"), width = "80px", value = 1, min = 0, max = 2, step = 0.01)),
+    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_size"), label = strong("Site Size"), width = "80px", min = 0, value = 2)),
+    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_x"), label = strong("Site X"), width = "80px", value = 0)),
+    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_y"), label = strong("Site Y"), width = "80px", value = 1, min = -2, max = 2, step = 0.1)),
     br(),
 
     # Site ticks ----
@@ -94,9 +102,9 @@ mod_barplot_params_ui <- function(id) {
         inputId = ns("bar_site_ticks_size"),
         label = NULL,
         value = 1,
-        min = 0,
-        max = 2,
-        step = 0.01,
+        min = -5,
+        max = 5,
+        step = 0.1,
         width = "80px"
       )
     ),
@@ -221,14 +229,14 @@ mod_barplot_params_server <- function(id, admixture_df){
     # Import ticks and tick size chosen by user ----
     user_ticks <- reactive(input$bar_site_ticks)
     user_ticks_size <- reactive({
-      return(input$bar_site_ticks_size-1 +-0.01)
+      return(-0.01 - input$bar_site_ticks_size/500)
     })
 
     # Import site labels size, x and y positions ----
     user_site_labs_size <- reactive(input$bar_site_labs_size)
     user_site_labs_x <- reactive(input$bar_site_labs_x)
     user_site_labs_y <- reactive({
-      return(input$bar_site_labs_y-1 +-0.025)
+      return(-0.025 - input$bar_site_labs_y/100)
     })
 
     # Import flip axis chosen by user ----
@@ -243,6 +251,9 @@ mod_barplot_params_server <- function(id, admixture_df){
       if (is.na(input$bar_facet_row)) return(NULL)
       if (!is.na(input$bar_facet_row)) return(input$bar_facet_row)
     })
+
+    # Import y label chosen by user ----
+    user_y_label <- reactive(input$bar_y_label)
 
     # Update facet_col with the maximum number of sites
     observeEvent(admixture_df(), {
@@ -271,7 +282,8 @@ mod_barplot_params_server <- function(id, admixture_df){
         param_bar_labels = user_bar_labels,
         param_flip_axes = user_flip_axes,
         param_facet_col = user_facet_col,
-        param_facet_row = user_facet_row
+        param_facet_row = user_facet_row,
+        param_y_label = user_y_label
       )
     )
 

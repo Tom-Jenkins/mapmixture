@@ -139,7 +139,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       # Render download button and internal components ----
       runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")
       output$dropdown_download_bttn <- renderUI({
-        div(id = "download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
+        div(id = "map_download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
             shinyWidgets::dropdown(
               style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
               strong("Download Map", class = "fs-4 text-success"),

@@ -34,8 +34,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
                                     site_divider, divider_lwd,
                                     site_ticks, ticks_size,
                                     site_labs_size, site_labs_x, site_labs_y,
-                                    flip_axes, facet_col, facet_row
-
+                                    flip_axes, facet_col, facet_row, y_label
                                  ) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -45,7 +44,6 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
     # observeEvent(c(bttn()), priority = 2, {
     #   runjs("clearPlotOutput('bar')")
     # })
-
 
     # Create barplot as reactive ----
     output_barplot <- reactive({
@@ -68,7 +66,8 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
         site_labels_y = site_labs_y(),
         flip_axis = flip_axes(),
         facet_col = facet_col(),
-        facet_row = NULL
+        facet_row = NULL,
+        ylabel = y_label()
       )
 
       # Return plot
@@ -117,10 +116,10 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
       # Render download button and internal components ----
       runjs("document.getElementById('bar_plot-dropdown_download_bttn').classList.remove('hidden');")
       output$dropdown_download_bttn <- renderUI({
-        div(id = "download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
+        div(id = "bar_download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
             shinyWidgets::dropdown(
               style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
-              strong("Download Map", class = "fs-4 text-success"),
+              strong("Download Barplot", class = "fs-4 text-success"),
               shinyWidgets::radioGroupButtons(
                 inputId = ns("filetype_radio_bttn"),
                 label = strong("Choose File Type:"),
@@ -221,7 +220,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
     })
 
 
-    # Download map when button is clicked ----
+    # Download barplot when button is clicked ----
     output$download_bttn <- downloadHandler(
       filename = function() {
         ifelse(input$filetype_radio_bttn == "PNG", paste0("Barplot_figure", ".png"),

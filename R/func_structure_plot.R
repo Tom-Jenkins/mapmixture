@@ -168,7 +168,7 @@ structure_plot <- function(admixture_df,
           ggplot2::annotate("segment",
             x = site_position, xend = site_position,
             y = rep(site_ticks_size, length(site_position)), yend = 0,
-            colour = "black", linewidth = 1
+            colour = "black", linewidth = 0.8
           )
       }
 
@@ -212,7 +212,7 @@ structure_plot <- function(admixture_df,
           ggplot2::annotate("segment",
             x = site_position, xend = site_position,
             y = rep(site_ticks_size, length(site_position)), yend = 0,
-            colour = "black", linewidth = 1
+            colour = "black", linewidth = 0.8
           )
       }
 

@@ -73,7 +73,8 @@ app_server <- function(input, output, session) {
     bar_labels = mod_bar_params_outputs[["param_bar_labels"]],
     flip_axes = mod_bar_params_outputs[["param_flip_axes"]],
     facet_col = mod_bar_params_outputs[["param_facet_col"]],
-    facet_row = mod_bar_params_outputs[["param_facet_row"]]
+    facet_row = mod_bar_params_outputs[["param_facet_row"]],
+    y_label = mod_bar_params_outputs[["param_y_label"]]
 
   )
 
