@@ -29,10 +29,12 @@ mod_barplot_plot_ui <- function(id) {
 #' @importFrom shinyjs runjs
 #' @importFrom ggplot2 theme element_blank element_rect element_line element_text margin rel unit
 mod_barplot_plot_server <- function(id, bttn, admixture_df,
-                                    user_bar_type, user_legend,
+                                    user_bar_type, bar_labels, user_legend,
                                     cluster_cols, cluster_names,
                                     site_divider, divider_lwd,
-                                    site_ticks, ticks_size
+                                    site_ticks, ticks_size,
+                                    site_labs_size, site_labs_x, site_labs_y,
+                                    flip_axes, facet_col, facet_row
 
                                  ) {
   moduleServer(id, function(input, output, session) {
@@ -53,13 +55,20 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
       plt <- structure_plot(
         admixture_df = admixture_df(),
         type = user_bar_type(),
+        labels = bar_labels(),
         cluster_cols = cluster_cols(),
         cluster_names = cluster_names(),
         legend = user_legend(),
         site_dividers = site_divider(),
         divider_width = divider_lwd(),
         site_ticks = site_ticks(),
-        site_ticks_size = ticks_size()
+        site_ticks_size = ticks_size(),
+        site_labels_size = site_labs_size(),
+        site_labels_x = site_labs_x(),
+        site_labels_y = site_labs_y(),
+        flip_axis = flip_axes(),
+        facet_col = facet_col(),
+        facet_row = NULL
       )
 
       # Return plot

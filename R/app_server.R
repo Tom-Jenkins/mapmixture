@@ -66,7 +66,14 @@ app_server <- function(input, output, session) {
     site_divider = mod_bar_params_outputs[["param_divider"]],
     divider_lwd = mod_bar_params_outputs[["param_divider_lwd"]],
     site_ticks = mod_bar_params_outputs[["param_ticks"]],
-    ticks_size = mod_bar_params_outputs[["param_ticks_size"]]
+    ticks_size = mod_bar_params_outputs[["param_ticks_size"]],
+    site_labs_size = mod_bar_params_outputs[["param_site_labs_size"]],
+    site_labs_x = mod_bar_params_outputs[["param_site_labs_x"]],
+    site_labs_y = mod_bar_params_outputs[["param_site_labs_y"]],
+    bar_labels = mod_bar_params_outputs[["param_bar_labels"]],
+    flip_axes = mod_bar_params_outputs[["param_flip_axes"]],
+    facet_col = mod_bar_params_outputs[["param_facet_col"]],
+    facet_row = mod_bar_params_outputs[["param_facet_row"]]
 
   )
 

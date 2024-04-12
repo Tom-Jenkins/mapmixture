@@ -30,7 +30,7 @@ mod_barplot_params_ui <- function(id) {
 
     # Labels to display (sites or individuals) button ----
     shinyWidgets::radioGroupButtons(
-      inputId = "bar_labels_bttn",
+      inputId = ns("bar_labels_bttn"),
       label = strong("Display Labels"),
       choices = c("Site", "Individual"),
       status = "secondary param-bttn-100px",
@@ -73,7 +73,7 @@ mod_barplot_params_ui <- function(id) {
     # Site labels size, x and y positions ----
     div(style = "display: inline-block;", numericInput(ns("bar_site_labs_size"), label = strong("Label Size"), width = "80px", min = 0, value = 2)),
     div(style = "display: inline-block;", numericInput(ns("bar_site_labs_x"), label = strong("Label X"), width = "80px", value = 0)),
-    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_y"), label = strong("Label Y"), width = "80px", value = -0.025)),
+    div(style = "display: inline-block;", numericInput(ns("bar_site_labs_y"), label = strong("Label Y"), width = "80px", value = 1, min = 0, max = 2, step = 0.01)),
     br(),
 
     # Site ticks ----
@@ -93,7 +93,10 @@ mod_barplot_params_ui <- function(id) {
       numericInput(
         inputId = ns("bar_site_ticks_size"),
         label = NULL,
-        value = -0.01,
+        value = 1,
+        min = 0,
+        max = 2,
+        step = 0.01,
         width = "80px"
       )
     ),
@@ -111,10 +114,8 @@ mod_barplot_params_ui <- function(id) {
     ),
 
     # Facet Grid ----
-    div(style = "display: inline-block;", numericInput(ns("bar_facet_col"), label = strong("Facet Col"), width = "80px", min = 0, value = NULL)),
-    div(style = "display: inline-block;", numericInput(ns("bar_facet_row"), label = strong("Facet Row"), width = "80px", min = 0, value = NULL)),
-
-
+    div(style = "display: inline-block;", numericInput(ns("bar_facet_col"), label = strong("Facet Col"), width = "80px", min = 1, value = NULL)),
+    div(style = "display: none; ", numericInput(ns("bar_facet_row"), label = strong("Facet Row"), width = "80px", min = 1, value = NULL)),
   )
 }
 
@@ -122,7 +123,7 @@ mod_barplot_params_ui <- function(id) {
 #' Barplot Parameters Module: Server
 #'
 #' @noRd
-#' @importFrom shiny moduleServer reactive req eventReactive
+#' @importFrom shiny moduleServer reactive req eventReactive updateNumericInput
 mod_barplot_params_server <- function(id, admixture_df){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -205,6 +206,12 @@ mod_barplot_params_server <- function(id, admixture_df){
       return(labels)
     })
 
+    # Import label types chosen by user ----
+    user_bar_labels <- reactive({
+      if(input$bar_labels_bttn == "Site") return("site")
+      if(input$bar_labels_bttn == "Individual") return("individual")
+    })
+
     # Import site order chosen by user ---- TODO
 
     # Import site divider chosen by user ----
@@ -213,16 +220,42 @@ mod_barplot_params_server <- function(id, admixture_df){
 
     # Import ticks and tick size chosen by user ----
     user_ticks <- reactive(input$bar_site_ticks)
-    user_ticks_size <- reactive(input$bar_site_ticks_size)
+    user_ticks_size <- reactive({
+      return(input$bar_site_ticks_size-1 +-0.01)
+    })
 
-    # Import site labels size, x and y positions ---- TODO
+    # Import site labels size, x and y positions ----
+    user_site_labs_size <- reactive(input$bar_site_labs_size)
+    user_site_labs_x <- reactive(input$bar_site_labs_x)
+    user_site_labs_y <- reactive({
+      return(input$bar_site_labs_y-1 +-0.025)
+    })
 
-    # Import flip axis chosen by user ---- TODO
+    # Import flip axis chosen by user ----
+    user_flip_axes <- reactive(input$bar_flip_axes_switch)
 
-    # Import facet grid chosen by user ---- TODO
+    # Import facet grid chosen by user ----
+    user_facet_col <- reactive({
+      if (is.na(input$bar_facet_col)) return(NULL)
+      if (!is.na(input$bar_facet_col)) return(input$bar_facet_col)
+    })
+    user_facet_row <- reactive({
+      if (is.na(input$bar_facet_row)) return(NULL)
+      if (!is.na(input$bar_facet_row)) return(input$bar_facet_row)
+    })
+
+    # Update facet_col with the maximum number of sites
+    observeEvent(admixture_df(), {
+      updateNumericInput(
+        session = session,
+        inputId = "bar_facet_col",
+        max = length(unique(admixture_df()[[1]]))
+      )
+      print(length(unique(admixture_df()[[1]])))
+    })
 
 
-    # Return parameters as a named list ---- TODO
+    # Return parameters as a named list ----
     return(
       list(
         param_bar_type = params_bar_type,
@@ -232,7 +265,14 @@ mod_barplot_params_server <- function(id, admixture_df){
         param_divider = user_divider,
         param_divider_lwd = user_divider_lwd,
         param_ticks = user_ticks,
-        param_ticks_size = user_ticks_size
+        param_ticks_size = user_ticks_size,
+        param_site_labs_size = user_site_labs_size,
+        param_site_labs_x = user_site_labs_x,
+        param_site_labs_y = user_site_labs_y,
+        param_bar_labels = user_bar_labels,
+        param_flip_axes = user_flip_axes,
+        param_facet_col = user_facet_col,
+        param_facet_row = user_facet_row
       )
     )
 
