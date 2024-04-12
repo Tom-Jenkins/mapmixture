@@ -43,9 +43,9 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # Clear any plots from plotOutput container ----
     # Must be outside the renderPlot observer AND
     #   have coords_df() inside observer to fix coords_file feedback bug
-    observeEvent(c(bttn(), coords_df()), priority = 2, {
-      runjs("clearPlotOutput('map')")
-    })
+    # observeEvent(c(bttn(), coords_df()), priority = 2, {
+    #   runjs("clearPlotOutput('map')")
+    # })
 
     # Create map as reactive ----
     output_map <- reactive({
@@ -102,6 +102,8 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # Render map on click of button ----
     observeEvent(bttn(), priority = 1, {
       req(admixture_df(), coords_df(), output_map())
+
+      runjs("clearPlotOutput('map')")
 
       runjs("
         // Select the element you want to click

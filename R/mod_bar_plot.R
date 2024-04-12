@@ -40,9 +40,9 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
 
     # Clear any plots from plotOutput container ----
     # Must be outside the renderPlot observer
-    observeEvent(c(bttn()), priority = 2, {
-      runjs("clearPlotOutput('bar')")
-    })
+    # observeEvent(c(bttn()), priority = 2, {
+    #   runjs("clearPlotOutput('bar')")
+    # })
 
 
     # Create barplot as reactive ----
@@ -69,6 +69,8 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
     # Render barplot on click of button ----
     observeEvent(bttn(), priority = 1, {
       req(admixture_df(), output_barplot())
+
+      runjs("clearPlotOutput('bar')")
 
       runjs("
         // Select the element you want to click
@@ -97,6 +99,8 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
 
           // Dispatch the click event on the element
           navBar.dispatchEvent(clickEvent);
+
+          navBar.style.pointerEvents = 'auto';
         }, 1000)
       ")
 
