@@ -251,7 +251,6 @@ mod_barplot_params_server <- function(id, admixture_df){
         inputId = "bar_facet_col",
         max = length(unique(admixture_df()[[1]]))
       )
-      print(length(unique(admixture_df()[[1]])))
     })
 
 
