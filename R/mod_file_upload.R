@@ -119,6 +119,7 @@ mod_file_upload_server <- function(id){
 
           # Remove disabled class from Plot Bar button when valid status is TRUE
           runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.remove('disabled');")
+          runjs("document.getElementById('app-tabset-panel > li:nth-child(2)').style.pointerEvents = 'auto';")
 
           # Enable pointer event on parameter pills
           runjs("document.getElementById('options-pills-container').style.pointerEvents = 'auto';")
