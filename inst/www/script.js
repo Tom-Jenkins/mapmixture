@@ -16,6 +16,7 @@ const mainContainerHeight = window.innerHeight - navbarHeight - navbarHeightMarg
 document.querySelector(".sidebar-container").style.height = `${sidebarContainerHeight}px`;
 document.querySelector(".parameter-options-container").style.height = `${sidebarOptionsContainerHeight}px`;
 document.getElementById("main_plot-admixture_map").style.height = `${mainContainerHeight}px`;
+document.getElementById("bar_plot-admixture_barplot").style.height = `${mainContainerHeight}px`;
 document.querySelectorAll(".carousel-item").forEach(function(element) {
   element.style.height = `${mainContainerHeight - 5}px`;
 });
@@ -24,6 +25,7 @@ document.querySelectorAll(".carousel-item").forEach(function(element) {
 // For example, when the user drags the browser from a laptop screen to a desktop screen (or vice versa)
 window.addEventListener("resize", () => {
   document.getElementById("main_plot-admixture_map").textContent = "";
+  document.getElementById("bar_plot-admixture_barplot").textContent = "";
 
   const sidebarContainerHeight = window.innerHeight - navbarHeight - navbarHeightMargin - 20;
   const sidebarNonParamContainerHeight = document.querySelector(".sidebar-nonparam-container").offsetHeight;
@@ -33,6 +35,7 @@ window.addEventListener("resize", () => {
   document.querySelector(".sidebar-container").style.height = `${sidebarContainerHeight}px`;
   document.querySelector(".parameter-options-container").style.height = `${sidebarOptionsContainerHeight}px`;
   document.getElementById("main_plot-admixture_map").style.height = `${window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 20}px`;
+  document.getElementById("bar_plot-admixture_barplot").style.height = `${window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 25}px`;
   document.querySelectorAll(".carousel-item").forEach(function(element) {
     element.style.height = `${window.innerHeight - navbarHeight - navbarHeightMargin - navtabsHeight - 25}px`;
   });
