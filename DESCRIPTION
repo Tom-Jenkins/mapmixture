@@ -1,6 +1,6 @@
 Package: mapmixture
 Title: Spatial Visualisation of Admixture on a Projected Map
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: 
     person("Tom", "Jenkins", , "tom.l.jenkins@outlook.com", role = c("aut", "cre","cph"))
 Description: 
