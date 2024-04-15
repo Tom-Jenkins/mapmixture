@@ -380,9 +380,9 @@ coordinates <- read.csv(file)
 crs <- 3035
 boundary <- c(xmin=-11, xmax=13, ymin=50, ymax=60) |> transform_bbox(bbox = _, crs)
 
-# Read in world coastlines and transform to CRS
-file <- system.file("extdata", "world.gpkg", package = "mapmixture")
-world <- st_read(file, quiet = TRUE) |> st_transform(x = _, crs = crs)
+# Read in world countries from Natural Earth and transform to CRS
+load(system.file("extdata", "countries10.rda", package = "mapmixture"))
+world <- st_transform(get("countries10"), crs = crs)
 
 # Read in Marine Conservation Zones shapefile
 # Extract polygons for Western Channel, Offshore Brighton and Swallow Sand

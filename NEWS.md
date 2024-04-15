@@ -1,3 +1,3 @@
-# mapmixture 1.1.0
+# mapmixture 1.1.1
 
 * Initial CRAN submission.

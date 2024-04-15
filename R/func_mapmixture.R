@@ -59,31 +59,31 @@
 #' mapmixture(admixture1, coordinates)
 #'
 #' # Plot using the ETRS89-extended / LAEA Europe coordinate reference system
-#' mapmixture(admixture1, coordinates, crs = 3035)
+#' # mapmixture(admixture1, coordinates, crs = 3035)
 #'
 #' # Plot using custom parameters
-#' mapmixture(admixture1, coordinates,
-#'   cluster_cols = c("blue","green"),
-#'   cluster_names = c("Group 1","Group 2"),
-#'   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
-#'   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
-#'   pie_size = 1.5,
-#'   pie_border = 0.2,
-#'   pie_opacity = 1,
-#'   land_colour = "#d9d9d9",
-#'   sea_colour = "#deebf7",
-#'   expand = FALSE,
-#'   arrow = TRUE,
-#'   arrow_size = 1,
-#'   arrow_position = "tl",
-#'   scalebar = TRUE,
-#'   scalebar_size = 1,
-#'   scalebar_position = "tl",
-#'   plot_title = "Mapmixture Figure",
-#'   plot_title_size = 15,
-#'   axis_title_size = 12,
-#'   axis_text_size = 10
-#' )
+#' # mapmixture(admixture1, coordinates,
+#' #   cluster_cols = c("blue","green"),
+#' #   cluster_names = c("Group 1","Group 2"),
+#' #   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
+#' #   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
+#' #   pie_size = 1.5,
+#' #   pie_border = 0.2,
+#' #   pie_opacity = 1,
+#' #   land_colour = "#d9d9d9",
+#' #   sea_colour = "#deebf7",
+#' #   expand = FALSE,
+#' #   arrow = TRUE,
+#' #   arrow_size = 1,
+#' #   arrow_position = "tl",
+#' #   scalebar = TRUE,
+#' #   scalebar_size = 1,
+#' #   scalebar_position = "tl",
+#' #   plot_title = "Mapmixture Figure",
+#' #   plot_title_size = 15,
+#' #   axis_title_size = 12,
+#' #   axis_text_size = 10
+#' # )
 mapmixture <- function(
   # Data input
   admixture_df, coords_df,
@@ -98,7 +98,25 @@ mapmixture <- function(
   plot_title = "", plot_title_size = 12,
   axis_title_size = 10, axis_text_size = 8) {
 
-  # Standarise input data ----
+
+  # Download countries10.rda file to mapmixture extdata directory if not present
+  # https://github.com/ropensci/rnaturalearthhires
+  tryCatch({
+    filepath <- system.file("extdata", "countries10.rda", package = "mapmixture")
+    if (filepath == "") {
+      message("Downloading countries10 data from Natural Earth...")
+      url <- "https://github.com/ropensci/rnaturalearthhires/raw/master/data/countries10.rda"
+      desfile <- paste0(system.file("extdata", package = "mapmixture"), "/countries10.rda")
+      utils::download.file(url, destfile = desfile, mode = "wb")
+      message("Data downloaded to 'mapmixture/inst/extdata' folder.")
+      }
+    }, error = function(err) {
+      # Print error message if an error occurs from downloading
+      stop("Error downloading data from Natural Earth. Please check internet connection.")
+  })
+
+
+  # Standardise input data ----
   tryCatch({
     admixture_df <- standardise_data(admixture_df, type = "admixture")
     coords_df <- standardise_data(coords_df, type = "coordinates")
@@ -119,10 +137,11 @@ mapmixture <- function(
   admix_coords <- merge_coords_data(coords_df, admixture_df)
 
   # Read in world boundaries
-  world_boundaries <- sf::st_read(system.file("extdata", "world.gpkg", package = "mapmixture"), quiet = TRUE)
+  # world_boundaries <- sf::st_read(system.file("extdata", "world.gpkg", package = "mapmixture"), quiet = TRUE)
+  load(system.file("extdata", "countries10.rda", package = "mapmixture"))
 
   # Transform world boundaries to CRS
-  world_boundaries <- sf::st_transform(world_boundaries, crs = crs)
+  world_boundaries <- sf::st_transform(get("countries10"), crs = crs)
 
   # Transform coordinates in admix_coords object to CRS
   admix_coords <- transform_df_coords(admix_coords, crs = crs)
