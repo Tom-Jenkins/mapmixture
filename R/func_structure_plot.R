@@ -72,8 +72,13 @@ structure_plot <- function(admixture_df,
     values_to = "value"
   )
 
-  # Convert site column to factor
+  # Sort data.frame by site and then by individual
+  df_long <- dplyr::arrange(df_long, df_long[["site"]], df_long[["ind"]])
+
+  # Convert site and individual column to factor
   df_long$site <- factor(df_long$site, levels = unique(df_long$site))
+  df_long$ind <- factor(df_long$ind, levels = unique(df_long$ind))
+  # print(str(df_long))
 
   # Change the positional order of sites if parameter is set
   # First check that character vector is valid
