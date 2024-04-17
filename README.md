@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml)
+[![cran](https://www.r-pkg.org/badges/version/mapmixture)](https://CRAN.R-project.org/package=mapmixture)
 <!-- [![Codecov test coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main) -->
 <!-- badges: end -->
 
@@ -20,6 +21,12 @@ barplots.
 installed on your system. Click
 [here](https://cran.r-project.org/bin/windows/base/) to download the
 latest version of R for Windows.
+
+Install the latest stable release from CRAN:
+
+``` r
+install.packages("mapmixture")
+```
 
 Install the latest development version from GitHub:
 
