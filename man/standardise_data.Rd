@@ -12,10 +12,10 @@ standardise_data(df, type = "admixture")
 \item{type}{type of file to process (\code{"admixture"} or \code{"coordinates"}).}
 }
 \value{
-\code{data.frame}
+A data.frame object.
 }
 \description{
-Internal function used to standardise the output from \code{read_input_data()}.
+Internal function used to standardise the output from \code{mapmixture::read_input_data()}.
 }
 \examples{
 # Standardise admixture data

@@ -16,27 +16,27 @@ add_pie_charts(
 )
 }
 \arguments{
-\item{df}{a data frame (see examples).}
+\item{df}{data.frame (see examples).}
 
-\item{admix_columns}{the columns of the data frame containing admixture data.}
+\item{admix_columns}{the columns of the data.frame containing admixture data.}
 
-\item{lat_column}{a string or integer representing the latitude column.}
+\item{lat_column}{string or integer representing the latitude column.}
 
-\item{lon_column}{a string or integer representing the longitude column.}
+\item{lon_column}{string or integer representing the longitude column.}
 
-\item{pie_colours}{a vector of colours the same length as the number of clusters.}
+\item{pie_colours}{vector of colours the same length as the number of clusters.}
 
-\item{border}{a numeric value of zero or greater.}
+\item{border}{numeric value of zero or greater.}
 
-\item{opacity}{a numeric value of zero to one.}
+\item{opacity}{numeric value of zero to one.}
 
-\item{pie_size}{a numeric value of zero or greater.}
+\item{pie_size}{numeric value of zero or greater.}
 }
 \value{
-A list of annotation_custom objects.
+A list of \code{annotation_custom()} objects.
 }
 \description{
-Internal function used to add pie charts to a ggplot object
+Internal function used to add pie charts to a ggplot object.
 }
 \examples{
 df <- data.frame(

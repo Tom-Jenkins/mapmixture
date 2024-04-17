@@ -4,9 +4,9 @@
 #' Internal function used to read in data from admixture or coordinates input file.
 #' @keywords internal
 #'
-#' @param file Path to input file.
+#' @param file path to input file.
 #'
-#' @return `data.frame`
+#' @return A data.frame object.
 #' @export
 #'
 #' @examples
@@ -33,13 +33,13 @@ read_input_data <- function(file) {
 
 #' Standardise Input Data
 #' @description
-#' Internal function used to standardise the output from `read_input_data()`.
+#' Internal function used to standardise the output from `mapmixture::read_input_data()`.
 #' @keywords internal
 #'
 #' @param df a data.frame.
 #' @param type type of file to process (`"admixture"` or `"coordinates"`).
 #'
-#' @return `data.frame`
+#' @return A data.frame object.
 #' @export
 #'
 #' @examples

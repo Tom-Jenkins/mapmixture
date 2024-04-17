@@ -7,10 +7,10 @@
 read_input_data(file)
 }
 \arguments{
-\item{file}{Path to input file.}
+\item{file}{path to input file.}
 }
 \value{
-\code{data.frame}
+A data.frame object.
 }
 \description{
 Internal function used to read in data from admixture or coordinates input file.

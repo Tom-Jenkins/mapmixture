@@ -5,10 +5,10 @@
 #' to a target coordinate reference system.
 #' @keywords internal
 #'
-#' @param bbox a named numeric vector of length four, with `xmin`, `xmax`, `ymin` and `ymax` values.
-#' @param CRS a numeric value representing an ESPG.
+#' @param bbox named numeric vector of length four, with `xmin`, `xmax`, `ymin` and `ymax` values.
+#' @param CRS numeric value representing an ESPG.
 #'
-#' @return a named numeric vector
+#' @return A named numeric vector.
 #' @export
 #'
 #' @examples
@@ -33,9 +33,9 @@ transform_bbox <- function(bbox, CRS) {
 #' Internal function used to transform admixture data into the correct format for plotting.
 #' @keywords internal
 #'
-#' @param data a data.frame or tibble.
+#' @param data data.frame or tibble.
 #'
-#' @return a data.frame or tibble.
+#' @return A data.frame or tibble.
 #' @export
 #'
 #' @examples

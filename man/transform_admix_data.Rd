@@ -7,10 +7,10 @@
 transform_admix_data(data)
 }
 \arguments{
-\item{data}{a data.frame or tibble.}
+\item{data}{data.frame or tibble.}
 }
 \value{
-a data.frame or tibble.
+A data.frame or tibble.
 }
 \description{
 Internal function used to transform admixture data into the correct format for plotting.

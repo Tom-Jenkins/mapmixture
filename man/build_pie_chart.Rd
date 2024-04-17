@@ -7,15 +7,15 @@
 build_pie_chart(df, location, cols = NULL, border = 0.3, opacity = 1)
 }
 \arguments{
-\item{df}{a data frame (see examples).}
+\item{df}{data.frame (see examples).}
 
-\item{location}{a string containing the site to subset.}
+\item{location}{string containing the site to subset.}
 
-\item{cols}{a vector of colours the same length as the number of clusters.}
+\item{cols}{vector of colours the same length as the number of clusters.}
 
-\item{border}{a numeric value of zero or greater.}
+\item{border}{numeric value of zero or greater.}
 
-\item{opacity}{a numeric value of zero to one.}
+\item{opacity}{numeric value of zero to one.}
 }
 \value{
 A ggplot object.

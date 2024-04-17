@@ -49,7 +49,7 @@ See \code{?sf::st_crs} for details.}
 
 \item{basemap}{SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
 using the \code{terra::rast()} function. A sf object can be created from a file
-using the \code{sf::st_read()} function. If \code{NULL}, world coastline boundaries are used.}
+using the \code{sf::st_read()} function. If \code{NULL}, world country boundaries are used.}
 
 \item{pie_size}{numeric value of zero or greater.}
 
@@ -111,30 +111,32 @@ coordinates <- read.csv(file)
 # Plot using default parameters
 mapmixture(admixture1, coordinates)
 
-# Plot using the ETRS89-extended / LAEA Europe coordinate reference system
-# mapmixture(admixture1, coordinates, crs = 3035)
+\donttest{# Plot using the ETRS89-extended / LAEA Europe coordinate reference system
+mapmixture(admixture1, coordinates, crs = 3035)}
 
-# Plot using custom parameters
-# mapmixture(admixture1, coordinates,
-#   cluster_cols = c("blue","green"),
-#   cluster_names = c("Group 1","Group 2"),
-#   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
-#   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
-#   pie_size = 1.5,
-#   pie_border = 0.2,
-#   pie_opacity = 1,
-#   land_colour = "#d9d9d9",
-#   sea_colour = "#deebf7",
-#   expand = FALSE,
-#   arrow = TRUE,
-#   arrow_size = 1,
-#   arrow_position = "tl",
-#   scalebar = TRUE,
-#   scalebar_size = 1,
-#   scalebar_position = "tl",
-#   plot_title = "Mapmixture Figure",
-#   plot_title_size = 15,
-#   axis_title_size = 12,
-#   axis_text_size = 10
-# )
+\donttest{# Plot using custom parameters
+mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("blue","green"),
+  cluster_names = c("Group 1","Group 2"),
+  crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
+  boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
+  pie_size = 1.5,
+  pie_border = 0.2,
+  pie_opacity = 1,
+  land_colour = "#d9d9d9",
+  sea_colour = "#deebf7",
+  expand = FALSE,
+  arrow = TRUE,
+  arrow_size = 1,
+  arrow_position = "tl",
+  scalebar = TRUE,
+  scalebar_size = 1,
+  scalebar_position = "tl",
+  plot_title = "Mapmixture Figure",
+  plot_title_size = 15,
+  axis_title_size = 12,
+  axis_text_size = 10
+)}
 }

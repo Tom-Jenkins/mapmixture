@@ -1,7 +1,7 @@
 #' PCA or DAPC Scatter Plot
 #'
 #' @description
-#' Plot a scatter plot of PCA or DAPC results
+#' Plot a scatter plot of PCA or DAPC results.
 #'
 #' @param dataframe data.frame or tibble containing results from a PCA or DAPC (see examples).
 #' @param group_ids character vector of IDs representing the group each row belongs to.

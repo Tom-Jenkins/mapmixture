@@ -7,18 +7,18 @@
 calc_default_bbox(data, expand = NULL)
 }
 \arguments{
-\item{data}{a data.frame or tibble containing three columns.
+\item{data}{data.frame or tibble containing three columns.
 1st column is a character vector of site names.
 2nd column is a numeric vector of latitude values.
 3rd column is a numeric vector of longitude values.}
 
-\item{expand}{a numeric value indicating how much \% to increase the coordinates limits.}
+\item{expand}{numeric value indicating how much \% to increase the coordinates limits.}
 }
 \value{
-a bounding box object.
+A bbox object.
 }
 \description{
-Internal function to calculate a default bounding box for a set of longitude and latitude coordinates
+Internal function to calculate a default bounding box for a set of longitude and latitude coordinates.
 }
 \examples{
 coords <- data.frame(

@@ -84,7 +84,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       if (user_advanced() != "") {
         tryCatch({
           update_theme <- paste0("theme(", user_advanced(), ")")
-          print(update_theme)
+          # print(update_theme)
           plt <- plt+ rlang::eval_tidy(rlang::parse_expr(update_theme))
           return(plt)
         }, error = function(err) {

@@ -82,7 +82,7 @@ percentage of variance explained by each axis.}
 A ggplot object.
 }
 \description{
-Plot a scatter plot of PCA or DAPC results
+Plot a scatter plot of PCA or DAPC results.
 }
 \examples{
 # Results from a Principal Components Analysis

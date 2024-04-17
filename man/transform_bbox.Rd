@@ -7,12 +7,12 @@
 transform_bbox(bbox, CRS)
 }
 \arguments{
-\item{bbox}{a named numeric vector of length four, with \code{xmin}, \code{xmax}, \code{ymin} and \code{ymax} values.}
+\item{bbox}{named numeric vector of length four, with \code{xmin}, \code{xmax}, \code{ymin} and \code{ymax} values.}
 
-\item{CRS}{a numeric value representing an ESPG.}
+\item{CRS}{numeric value representing an ESPG.}
 }
 \value{
-a named numeric vector
+A named numeric vector.
 }
 \description{
 Internal function used to transform latitude and longitude coordinates

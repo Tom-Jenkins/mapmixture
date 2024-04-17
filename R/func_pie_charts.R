@@ -1,19 +1,19 @@
 #' Create Pie Charts
 #'
 #' @description
-#' Internal function used to add pie charts to a ggplot object
+#' Internal function used to add pie charts to a ggplot object.
 #' @keywords internal
 #'
-#' @param df a data frame (see examples).
-#' @param admix_columns the columns of the data frame containing admixture data.
-#' @param lat_column a string or integer representing the latitude column.
-#' @param lon_column a string or integer representing the longitude column.
-#' @param pie_colours a vector of colours the same length as the number of clusters.
-#' @param border a numeric value of zero or greater.
-#' @param opacity a numeric value of zero to one.
-#' @param pie_size a numeric value of zero or greater.
+#' @param df data.frame (see examples).
+#' @param admix_columns the columns of the data.frame containing admixture data.
+#' @param lat_column string or integer representing the latitude column.
+#' @param lon_column string or integer representing the longitude column.
+#' @param pie_colours vector of colours the same length as the number of clusters.
+#' @param border numeric value of zero or greater.
+#' @param opacity numeric value of zero to one.
+#' @param pie_size numeric value of zero or greater.
 #'
-#' @return A list of annotation_custom objects.
+#' @return A list of `annotation_custom()` objects.
 #' @export
 #'
 #' @examples
@@ -103,11 +103,11 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
 #' Internal function used to build a pie chart using ggplot
 #' @keywords internal
 #'
-#' @param df a data frame (see examples).
-#' @param location a string containing the site to subset.
-#' @param cols a vector of colours the same length as the number of clusters.
-#' @param border a numeric value of zero or greater.
-#' @param opacity a numeric value of zero to one.
+#' @param df data.frame (see examples).
+#' @param location string containing the site to subset.
+#' @param cols vector of colours the same length as the number of clusters.
+#' @param border numeric value of zero or greater.
+#' @param opacity numeric value of zero to one.
 #'
 #' @return A ggplot object.
 #' @export
