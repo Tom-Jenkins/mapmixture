@@ -112,6 +112,7 @@ scatter_plot(pca_results, site_names, other_group = region_names,
 # Scatter plot with individual labels
 scatter_plot(pca_results, site_names, type = "labels",
              labels = rownames(pca_results))
+
 # Scatter plot with individual text
 scatter_plot(pca_results, site_names, type = "text",
              labels = rownames(pca_results))
