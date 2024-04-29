@@ -32,7 +32,7 @@ app_ui <- function() {
       class = "custom-navbar",
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       span(
-        span(icon("chart-pie", style = "margin-right: 5px;"), strong("mapmixture"), span(class = "badge bg-light mx-1", "1.1.1")),
+        span(icon("chart-pie", style = "margin-right: 5px;"), strong("mapmixture"), span(class = "badge bg-light mx-1", "1.1.2")),
         a(
           style = "color: white;",
           href = "https://twitter.com/tom__jenkins",
