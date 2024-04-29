@@ -7,6 +7,8 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+URL: https://github.com/Tom-Jenkins/mapmixture
+BugReports: https://github.com/Tom-Jenkins/mapmixture/issues
 Imports: 
     bslib (>= 0.5.0),
     colourpicker,
@@ -17,6 +19,7 @@ Imports:
     htmltools,
     purrr,
     rlang,
+    rnaturalearthdata,
     sf,
     shiny,
     shinyFeedback,
