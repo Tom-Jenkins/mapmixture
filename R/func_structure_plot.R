@@ -17,6 +17,8 @@
 #' individual level ("site" or "individual").
 #' @param site_dividers add dotted lines that divide sites (TRUE or FALSE).
 #' @param divider_width width of site divider lines.
+#' @param divider_col colour of site divider lines.
+#' @param divider_type linetype of site divider line.
 #' @param ylabel string for y label.
 #' @param site_order character vector of site labels used to customise the order of sites.
 #' If `NULL`, sites are ordered alphabetically.
@@ -45,7 +47,7 @@ structure_plot <- function(admixture_df,
     legend = "none",
     labels = "site", flip_axis = FALSE,
     ylabel = "Proportion",
-    site_dividers = TRUE, divider_width = 1,
+    site_dividers = TRUE, divider_width = 1, divider_col = "white", divider_type = "dashed",
     site_order = NULL, site_labels_size = 2,
     site_labels_x = 0, site_labels_y = -0.025,
     site_ticks = TRUE, site_ticks_size = -0.01,
@@ -141,9 +143,11 @@ structure_plot <- function(admixture_df,
     # Add site divider lines if TRUE
     if (site_dividers) {
       structure_plt <- structure_plt+
-        ggplot2::geom_vline(
-          xintercept = site_divider_lines + 0.5,
-          color = "white", linetype = "dashed", linewidth = divider_width
+        ggplot2::annotate(
+          "segment",
+          x = site_divider_lines + 0.5, xend = site_divider_lines + 0.5,
+          y = 0, yend = Inf,
+          color = divider_col, linetype = divider_type, size = divider_width
         )
     }
 

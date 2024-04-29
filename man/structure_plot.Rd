@@ -15,6 +15,8 @@ structure_plot(
   ylabel = "Proportion",
   site_dividers = TRUE,
   divider_width = 1,
+  divider_col = "white",
+  divider_type = "dashed",
   site_order = NULL,
   site_labels_size = 2,
   site_labels_x = 0,
@@ -51,6 +53,10 @@ Default is FALSE (horizontal barplot).}
 \item{site_dividers}{add dotted lines that divide sites (TRUE or FALSE).}
 
 \item{divider_width}{width of site divider lines.}
+
+\item{divider_col}{colour of site divider lines.}
+
+\item{divider_type}{linetype of site divider line.}
 
 \item{site_order}{character vector of site labels used to customise the order of sites.
 If \code{NULL}, sites are ordered alphabetically.}
