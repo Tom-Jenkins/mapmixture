@@ -82,7 +82,7 @@ map1 <- mapmixture(admixture1, coordinates, crs = 3035)
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-#### Customised usage of mapmixture
+#### Customised usage of mapmixture with a high resolution map
 
 <details>
 <summary>
@@ -90,11 +90,15 @@ Code
 </summary>
 
 ``` r
-# Load package
+# Load packages
 library(mapmixture)
+library(rnaturalearthhires)
 
-# Read in admixture file format 3
-file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+# Install rnaturalearthhires package using:
+# install.packages("rnaturalearthhires", repos = "https://ropensci.r-universe.dev", type = "source")
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
 admixture3 <- read.csv(file)
 
 # Read in coordinates file
@@ -103,11 +107,12 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map2 <- mapmixture(
-  admixture_df = admixture3,
+  admixture_df = admixture1,
   coords_df = coordinates,
-  cluster_cols = c("green","blue"),
+  cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Group A","Group B"),
   crs = 3035,
+  basemap = rnaturalearthhires::countries10[, c("geometry")],
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
   pie_size = 1,
   pie_border = 0.3,
@@ -133,6 +138,34 @@ map2 <- mapmixture(
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
+#### Admixture map with single coloured circles
+
+<details>
+<summary>
+Code
+</summary>
+
+``` r
+# Load package
+library(mapmixture)
+
+# Read in admixture file format 3
+file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture
+map3 <- mapmixture(admixture1, coordinates, crs = 3035)
+# map3
+```
+
+</details>
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
 #### Add additional geoms or theme options to mapmixture ggplot object
 
 <details>
@@ -154,7 +187,7 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map3 <- mapmixture(
+map4 <- mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
@@ -184,12 +217,12 @@ map3 <- mapmixture(
   )+
   # Adjust the size of the legend keys
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
-# map3
+# map4
 ```
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 #### Combine admixture map and barplot ggplot objects into a single figure
 
@@ -213,7 +246,7 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map4 <- mapmixture(
+map5 <- mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
@@ -254,12 +287,12 @@ structure_barplot <- structure_plot(
   )
 
 # Arrange plots
-# grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
+# grid.arrange(map5, structure_barplot, nrow = 2, heights = c(4,1))
 ```
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 <details>
 <summary>
@@ -281,7 +314,7 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map4 <- mapmixture(
+map6 <- mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
@@ -312,12 +345,12 @@ facet_barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
-# grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
+# grid.arrange(map6, facet_barplot, ncol = 2, widths = c(3,2))
 ```
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 #### Use a raster as the basemap
 
@@ -350,13 +383,13 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map5 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
-# map5
+map7 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
+# map7
 ```
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 #### Add pie charts to an existing map
 
@@ -372,6 +405,7 @@ Code
 ``` r
 # Load packages
 library(mapmixture)
+library(rnaturalearthhires)
 library(ggplot2)
 library(dplyr)
 library(sf)
@@ -389,8 +423,8 @@ crs <- 3035
 boundary <- c(xmin=-11, xmax=13, ymin=50, ymax=60) |> transform_bbox(bbox = _, crs)
 
 # Read in world countries from Natural Earth and transform to CRS
-load(system.file("extdata", "countries10.rda", package = "mapmixture"))
-world <- st_transform(get("countries10"), crs = crs)
+world <- rnaturalearthhires::countries10[, c("geometry")]
+world <- st_transform(world, crs = crs)
 
 # Read in Marine Conservation Zones shapefile
 # Extract polygons for Western Channel, Offshore Brighton and Swallow Sand
@@ -405,7 +439,7 @@ coords_df <- standardise_data(coordinates, type = "coordinates")
 admix_coords <- merge_coords_data(coords_df, admixture_df) |> transform_df_coords(df = _, crs = crs)
 
 # Plot map and add pie charts
-map6 <- ggplot()+
+map8 <- ggplot()+
   geom_sf(data = world, colour = "black", fill = "#d9d9d9", size = 0.1)+
   geom_sf(data = mczs, aes(fill = "MCZs"), linewidth = 0.3)+
   scale_fill_manual(values = c("yellow"))+
@@ -425,12 +459,12 @@ map6 <- ggplot()+
   theme(
     legend.title = element_blank(),
   )
-# map6
+# map8
 ```
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 #### Scatter plot of PCA or DAPC results from genotypes
 
@@ -557,7 +591,7 @@ scatter4 <- scatter_plot(
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 ## Launch interactive Shiny app
 
@@ -569,7 +603,7 @@ library(mapmixture)
 launch_mapmixture()
 
 # Tested with the following package versions:
-# shiny v1.8.0
+# shiny v1.8.0 (important)
 # shinyFeedback v0.4.0
 # shinyjs v2.1.0
 # shinyWidgets 0.8.4

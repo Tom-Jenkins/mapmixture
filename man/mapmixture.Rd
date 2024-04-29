@@ -118,7 +118,7 @@ mapmixture(admixture1, coordinates, crs = 3035)}
 mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
-  cluster_cols = c("blue","green"),
+  cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Group 1","Group 2"),
   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),

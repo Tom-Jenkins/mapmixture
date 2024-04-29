@@ -65,7 +65,7 @@
 #' mapmixture(
 #'   admixture_df = admixture1,
 #'   coords_df = coordinates,
-#'   cluster_cols = c("blue","green"),
+#'   cluster_cols = c("#f1a340","#998ec3"),
 #'   cluster_names = c("Group 1","Group 2"),
 #'   crs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +units=m",
 #'   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
@@ -103,19 +103,19 @@ mapmixture <- function(
 
   # Download countries10.rda file to mapmixture extdata directory if not present
   # https://github.com/ropensci/rnaturalearthhires
-  tryCatch({
-    filepath <- system.file("extdata", "countries10.rda", package = "mapmixture")
-    if (filepath == "") {
-      message("Downloading countries10 data from Natural Earth...")
-      url <- "https://github.com/ropensci/rnaturalearthhires/raw/master/data/countries10.rda"
-      desfile <- paste0(system.file("extdata", package = "mapmixture"), "/countries10.rda")
-      utils::download.file(url, destfile = desfile, mode = "wb")
-      message("Data downloaded to 'mapmixture/inst/extdata' folder.")
-      }
-    }, error = function(err) {
-      # Print error message if an error occurs from downloading
-      stop("Error downloading data from Natural Earth. Please check internet connection.")
-  })
+  # tryCatch({
+  #   filepath <- system.file("extdata", "countries10.rda", package = "mapmixture")
+  #   if (filepath == "") {
+  #     message("Downloading countries10 data from Natural Earth...")
+  #     url <- "https://github.com/ropensci/rnaturalearthhires/raw/master/data/countries10.rda"
+  #     desfile <- paste0(system.file("extdata", package = "mapmixture"), "/countries10.rda")
+  #     utils::download.file(url, destfile = desfile, mode = "wb")
+  #     message("Data downloaded to 'mapmixture/inst/extdata' folder.")
+  #     }
+  #   }, error = function(err) {
+  #     # Print error message if an error occurs from downloading
+  #     stop("Error downloading data from Natural Earth. Please check internet connection.")
+  # })
 
 
   # Standardise input data ----
@@ -140,10 +140,12 @@ mapmixture <- function(
 
   # Read in world boundaries
   # world_boundaries <- sf::st_read(system.file("extdata", "world.gpkg", package = "mapmixture"), quiet = TRUE)
-  load(system.file("extdata", "countries10.rda", package = "mapmixture"))
+  # load(system.file("extdata", "countries10.rda", package = "mapmixture"))
+  world_boundaries <- rnaturalearthdata::countries50[, c("geometry")]
 
   # Transform world boundaries to CRS
-  world_boundaries <- sf::st_transform(get("countries10"), crs = crs)
+  # world_boundaries <- sf::st_transform(get("countries10"), crs = crs)
+  world_boundaries <- sf::st_transform(world_boundaries, crs = crs)
 
   # Transform coordinates in admix_coords object to CRS
   admix_coords <- transform_df_coords(admix_coords, crs = crs)

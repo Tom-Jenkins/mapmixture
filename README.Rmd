@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tom-Jenkins/mapmixture/actions/workflows/R-CMD-check.yaml)
 [![cran](https://www.r-pkg.org/badges/version/mapmixture)](https://CRAN.R-project.org/package=mapmixture)
+[![download](https://cranlogs.r-pkg.org/badges/grand-total/mapmixture)](https://CRAN.R-project.org/package=mapmixture)
 <!-- [![Codecov test coverage](https://codecov.io/gh/Tom-Jenkins/mapmixture/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Tom-Jenkins/mapmixture?branch=main) -->
 <!-- badges: end -->
 
@@ -80,16 +81,20 @@ map1
 ```
 
 
-#### Customised usage of mapmixture
+#### Customised usage of mapmixture with a high resolution map
 
 <details markdown="1">
 <summary>Code</summary>
 ```{r dpi=300}
-# Load package
+# Load packages
 library(mapmixture)
+library(rnaturalearthhires)
 
-# Read in admixture file format 3
-file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+# Install rnaturalearthhires package using:
+# install.packages("rnaturalearthhires", repos = "https://ropensci.r-universe.dev", type = "source")
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
 admixture3 <- read.csv(file)
 
 # Read in coordinates file
@@ -98,11 +103,12 @@ coordinates <- read.csv(file)
 
 # Run mapmixture
 map2 <- mapmixture(
-  admixture_df = admixture3,
+  admixture_df = admixture1,
   coords_df = coordinates,
-  cluster_cols = c("green","blue"),
+  cluster_cols = c("#f1a340","#998ec3"),
   cluster_names = c("Group A","Group B"),
   crs = 3035,
+  basemap = rnaturalearthhires::countries10[, c("geometry")],
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
   pie_size = 1,
   pie_border = 0.3,
@@ -128,6 +134,31 @@ map2 <- mapmixture(
 map2
 ```
 
+#### Admixture map with single coloured circles
+
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
+# Load package
+library(mapmixture)
+
+# Read in admixture file format 3
+file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture
+map3 <- mapmixture(admixture1, coordinates, crs = 3035)
+# map3
+```
+</details>
+```{r dpi=300, echo=FALSE}
+map3
+```
+
 
 #### Add additional geoms or theme options to mapmixture ggplot object
 
@@ -147,7 +178,7 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map3 <- mapmixture(
+map4 <- mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
@@ -177,11 +208,11 @@ map3 <- mapmixture(
   )+
   # Adjust the size of the legend keys
   guides(fill = guide_legend(override.aes = list(size = 5, alpha = 1)))
-# map3
+# map4
 ```
 </details>
 ```{r dpi=300, echo=FALSE}
-map3
+map4
 ```
 
 
@@ -204,7 +235,7 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map4 <- mapmixture(
+map5 <- mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
@@ -245,11 +276,11 @@ structure_barplot <- structure_plot(
   )
 
 # Arrange plots
-# grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
+# grid.arrange(map5, structure_barplot, nrow = 2, heights = c(4,1))
 ```
 </details>
 ```{r dpi=300, echo=FALSE, }
-grid.arrange(map4, structure_barplot, nrow = 2, heights = c(4,1))
+grid.arrange(map5, structure_barplot, nrow = 2, heights = c(4,1))
 ```
 
 <details markdown="1">
@@ -269,7 +300,7 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map4 <- mapmixture(
+map6 <- mapmixture(
   admixture_df = admixture1,
   coords_df = coordinates,
   cluster_cols = c("#f1a340","#998ec3"),
@@ -300,11 +331,11 @@ facet_barplot <- structure_plot(admixture1,
   )
 
 # Arrange plots
-# grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
+# grid.arrange(map6, facet_barplot, ncol = 2, widths = c(3,2))
 ```
 </details>
 ```{r dpi=300, echo=FALSE, }
-grid.arrange(map4, facet_barplot, ncol = 2, widths = c(3,2))
+grid.arrange(map6, facet_barplot, ncol = 2, widths = c(3,2))
 ```
 
 
@@ -331,12 +362,12 @@ file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map5 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
-# map5
+map7 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
+# map7
 ```
 </details>
 ```{r dpi=300, echo=FALSE}
-map5
+map7
 ```
 
 
@@ -349,6 +380,7 @@ The vector data (shapefile) used in the example below was downloaded from the Na
 ```{r dpi=300}
 # Load packages
 library(mapmixture)
+library(rnaturalearthhires)
 library(ggplot2)
 library(dplyr)
 library(sf)
@@ -366,8 +398,8 @@ crs <- 3035
 boundary <- c(xmin=-11, xmax=13, ymin=50, ymax=60) |> transform_bbox(bbox = _, crs)
 
 # Read in world countries from Natural Earth and transform to CRS
-load(system.file("extdata", "countries10.rda", package = "mapmixture"))
-world <- st_transform(get("countries10"), crs = crs)
+world <- rnaturalearthhires::countries10[, c("geometry")]
+world <- st_transform(world, crs = crs)
 
 # Read in Marine Conservation Zones shapefile
 # Extract polygons for Western Channel, Offshore Brighton and Swallow Sand
@@ -382,7 +414,7 @@ coords_df <- standardise_data(coordinates, type = "coordinates")
 admix_coords <- merge_coords_data(coords_df, admixture_df) |> transform_df_coords(df = _, crs = crs)
 
 # Plot map and add pie charts
-map6 <- ggplot()+
+map8 <- ggplot()+
   geom_sf(data = world, colour = "black", fill = "#d9d9d9", size = 0.1)+
   geom_sf(data = mczs, aes(fill = "MCZs"), linewidth = 0.3)+
   scale_fill_manual(values = c("yellow"))+
@@ -402,11 +434,11 @@ map6 <- ggplot()+
   theme(
     legend.title = element_blank(),
   )
-# map6
+# map8
 ```
 </details>
 ```{r dpi=300, echo=FALSE}
-map6
+map8
 ```
 
 
@@ -545,7 +577,7 @@ library(mapmixture)
 launch_mapmixture()
 
 # Tested with the following package versions:
-# shiny v1.8.0
+# shiny v1.8.0 (important)
 # shinyFeedback v0.4.0
 # shinyjs v2.1.0
 # shinyWidgets 0.8.4
