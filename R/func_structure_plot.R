@@ -147,7 +147,7 @@ structure_plot <- function(admixture_df,
           "segment",
           x = site_divider_lines + 0.5, xend = site_divider_lines + 0.5,
           y = 0, yend = Inf,
-          color = divider_col, linetype = divider_type, size = divider_width
+          color = divider_col, linetype = divider_type, linewidth = divider_width
         )
     }
 
