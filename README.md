@@ -99,7 +99,7 @@ library(rnaturalearthhires)
 
 # Read in admixture file format 1
 file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
-admixture3 <- read.csv(file)
+admixture1 <- read.csv(file)
 
 # Read in coordinates file
 file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
@@ -151,14 +151,14 @@ library(mapmixture)
 
 # Read in admixture file format 3
 file <- system.file("extdata", "admixture3.csv", package = "mapmixture")
-admixture1 <- read.csv(file)
+admixture3 <- read.csv(file)
 
 # Read in coordinates file
 file <- system.file("extdata", "coordinates.csv", package = "mapmixture")
 coordinates <- read.csv(file)
 
 # Run mapmixture
-map3 <- mapmixture(admixture1, coordinates, crs = 3035)
+map3 <- mapmixture(admixture3, coordinates, crs = 3035)
 # map3
 ```
 
