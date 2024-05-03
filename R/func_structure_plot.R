@@ -25,6 +25,7 @@
 #' @param site_labels_size numeric value for site label size.
 #' @param site_labels_x numeric value for site label horizontal position.
 #' @param site_labels_y numeric value for site label vertical position.
+#' @param site_labels_angle numeric value for rotating angle of site label.
 #' @param site_ticks show ticks when labels = "site".
 #' @param site_ticks_size numeric value for site tick size.
 #' @param flip_axis flip the axes so that the plot is vertical (TRUE or FALSE).
@@ -50,6 +51,7 @@ structure_plot <- function(admixture_df,
     site_dividers = TRUE, divider_width = 1, divider_col = "white", divider_type = "dashed",
     site_order = NULL, site_labels_size = 2,
     site_labels_x = 0, site_labels_y = -0.025,
+    site_labels_angle = 0,
     site_ticks = TRUE, site_ticks_size = -0.01,
     facet_col = NULL, facet_row = NULL
   ) {
@@ -161,7 +163,7 @@ structure_plot <- function(admixture_df,
             x = site_position+site_labels_x,
             y = rep(site_labels_y, length(site_position)),
             label = site_labels, label.size = NA, fill = NA,
-            vjust = 0, color = "black", size = site_labels_size, angle = 0
+            vjust = 0, color = "black", size = site_labels_size, angle = site_labels_angle
           )+
           ggplot2::theme(
             axis.text.x = ggplot2::element_blank(),
