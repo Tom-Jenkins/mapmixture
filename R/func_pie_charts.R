@@ -155,7 +155,7 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
     circle <- grid::circleGrob(
       x = ggplot2::unit(0.5, "npc"),
       y = ggplot2::unit(0.5, "npc"),
-      r = ggplot2::unit(0.41, "npc"), # Issue #16
+      r = ggplot2::unit(0.40, "npc"), # Issue #16
       gp = grid::gpar(col = "black", fill = cluster_col, alpha = opacity, lwd = border)
     )
 
