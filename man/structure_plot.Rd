@@ -21,6 +21,7 @@ structure_plot(
   site_labels_size = 2,
   site_labels_x = 0,
   site_labels_y = -0.025,
+  site_labels_angle = 0,
   site_ticks = TRUE,
   site_ticks_size = -0.01,
   facet_col = NULL,
@@ -66,6 +67,8 @@ If \code{NULL}, sites are ordered alphabetically.}
 \item{site_labels_x}{numeric value for site label horizontal position.}
 
 \item{site_labels_y}{numeric value for site label vertical position.}
+
+\item{site_labels_angle}{numeric value for rotating angle of site label.}
 
 \item{site_ticks}{show ticks when labels = "site".}
 
