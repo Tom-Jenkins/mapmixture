@@ -194,7 +194,7 @@ map4 <- mapmixture(
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
-  pie_size = 2,
+  pie_size = 1,
 )+
   # Add additional label to the map
   annotate("label",
@@ -253,7 +253,7 @@ map5 <- mapmixture(
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-20, xmax=20, ymin=40, ymax=62),
-  pie_size = 2.5,
+  pie_size = 1.3,
 )+
   # Adjust theme options
   theme(
@@ -321,7 +321,7 @@ map6 <- mapmixture(
   cluster_names = c("Ancestry 1","Ancestry 2"),
   crs = 4326,
   boundary = c(xmin=-20, xmax=20, ymin=40, ymax=62),
-  pie_size = 2.5,
+  pie_size = 1.3,
 )+
   # Adjust theme options
   theme(
