@@ -78,7 +78,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
   # Pie chart size formula
   radius <- dplyr::case_when(
     # If absolute number has less than or equal to 3 digits
-    floor(log10(abs(coords$lat[1]))) + 1 <= 3  ~ 0.5 * pie_size,
+    floor(log10(abs(coords$lat[1]))) + 1 <= 3  ~ 1 * pie_size,
     # If absolute number has greater than 3 digits
     floor(log10(abs(coords$lat[1]))) + 1 > 3 && floor(log10(abs(coords$lat[1]))) ~ 80000 * pie_size,
   )
