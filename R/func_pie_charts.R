@@ -10,6 +10,7 @@
 #' @param lon_column string or integer representing the longitude column.
 #' @param pie_colours vector of colours the same length as the number of clusters.
 #' @param border numeric value of zero or greater.
+#' @param border_col string denoting colour of pie border.
 #' @param opacity numeric value of zero to one.
 #' @param pie_size numeric value of zero or greater.
 #'
@@ -45,7 +46,7 @@
 #'   pie_size = 1
 #' )
 add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colours,
-                           border = 0.3, opacity = 1, pie_size = 1) {
+                           border = 0.3, border_col = "black", opacity = 1, pie_size = 1) {
 
   # Check the number of pie_colours is the same length as the number of clusters
   if ( ncol(df)-3 != length(pie_colours) ) {
@@ -72,7 +73,8 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
     location = .,
     cols = pie_colours,
     border = border,
-    opacity = opacity
+    opacity = opacity,
+    segment_col = border_col
   ))
 
   # Pie chart size formula
@@ -108,6 +110,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
 #' @param cols vector of colours the same length as the number of clusters.
 #' @param border numeric value of zero or greater.
 #' @param opacity numeric value of zero to one.
+#' @param segment_col string denoting colour of pie border.
 #'
 #' @return A ggplot object.
 #' @export
@@ -125,7 +128,9 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
 #' )
 #'
 #' build_pie_chart(df, location = "London")
-build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1){
+build_pie_chart <- function(df, location, cols = NULL,
+                            border = 0.3, opacity = 1,
+                            segment_col = "black"){
 
   # Subset data.frame by site
   df_site <- subset(df, df$site == location)
@@ -156,7 +161,7 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
       x = ggplot2::unit(0.5, "npc"),
       y = ggplot2::unit(0.5, "npc"),
       r = ggplot2::unit(0.40, "npc"), # Issue #16
-      gp = grid::gpar(col = "black", fill = cluster_col, alpha = opacity, lwd = border)
+      gp = grid::gpar(col = "black", fill = cluster_col, alpha = opacity, lwd = border+0.4)
     )
 
     # Plot
@@ -171,7 +176,7 @@ build_pie_chart <- function(df, location, cols = NULL, border = 0.3, opacity = 1
     plt <- ggplot2::ggplot(data = df_site)+
       ggplot2::geom_bar(
         ggplot2::aes(x = "", y = !!as.name("value"), fill = !!as.name("cluster")),
-        width = 1, stat = "identity", colour = "black",
+        width = 1, stat = "identity", colour = segment_col,
         show.legend = FALSE, linewidth = border, alpha = opacity
       )+
       ggplot2::coord_polar(theta = "y")+

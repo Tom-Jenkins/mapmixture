@@ -20,6 +20,7 @@
 #' using the `sf::st_read()` function. If `NULL`, world country boundaries are used.
 #' @param pie_size numeric value of zero or greater.
 #' @param pie_border numeric value of zero or greater.
+#' @param pie_border_col string denoting colour of pie border.
 #' @param pie_opacity numeric value of zero to one.
 #' @param land_colour string defining the colour of land.
 #' @param sea_colour string defining the colour of sea.
@@ -92,7 +93,7 @@ mapmixture <- function(
   # Parameter arguments
   cluster_cols = NULL, cluster_names = NULL,
   boundary = NULL, crs = 4326, basemap = NULL,
-  pie_size = 1, pie_border = 0.2, pie_opacity = 1,
+  pie_size = 1, pie_border = 0.2, pie_border_col = "black", pie_opacity = 1,
   land_colour = "#d9d9d9", sea_colour = "#deebf7",
   expand = FALSE,
   arrow = TRUE, arrow_size = 1, arrow_position = "tl",
@@ -239,6 +240,7 @@ mapmixture <- function(
       pie_size = pie_size,
       pie_colours = cluster_cols,
       border = pie_border,
+      border_col = pie_border_col,
       opacity = pie_opacity
     )+
     ggplot2::ggtitle(plot_title)+

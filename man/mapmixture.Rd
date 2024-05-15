@@ -14,6 +14,7 @@ mapmixture(
   basemap = NULL,
   pie_size = 1,
   pie_border = 0.2,
+  pie_border_col = "black",
   pie_opacity = 1,
   land_colour = "#d9d9d9",
   sea_colour = "#deebf7",
@@ -54,6 +55,8 @@ using the \code{sf::st_read()} function. If \code{NULL}, world country boundarie
 \item{pie_size}{numeric value of zero or greater.}
 
 \item{pie_border}{numeric value of zero or greater.}
+
+\item{pie_border_col}{string denoting colour of pie border.}
 
 \item{pie_opacity}{numeric value of zero to one.}
 

@@ -11,6 +11,7 @@ add_pie_charts(
   lon_column,
   pie_colours,
   border = 0.3,
+  border_col = "black",
   opacity = 1,
   pie_size = 1
 )
@@ -27,6 +28,8 @@ add_pie_charts(
 \item{pie_colours}{vector of colours the same length as the number of clusters.}
 
 \item{border}{numeric value of zero or greater.}
+
+\item{border_col}{string denoting colour of pie border.}
 
 \item{opacity}{numeric value of zero to one.}
 

@@ -4,7 +4,14 @@
 \alias{build_pie_chart}
 \title{Build Pie Chart}
 \usage{
-build_pie_chart(df, location, cols = NULL, border = 0.3, opacity = 1)
+build_pie_chart(
+  df,
+  location,
+  cols = NULL,
+  border = 0.3,
+  opacity = 1,
+  segment_col = "black"
+)
 }
 \arguments{
 \item{df}{data.frame (see examples).}
@@ -16,6 +23,8 @@ build_pie_chart(df, location, cols = NULL, border = 0.3, opacity = 1)
 \item{border}{numeric value of zero or greater.}
 
 \item{opacity}{numeric value of zero to one.}
+
+\item{segment_col}{string denoting colour of pie border.}
 }
 \value{
 A ggplot object.
