@@ -10,7 +10,7 @@ build_pie_chart(
   cols = NULL,
   border = 0.3,
   opacity = 1,
-  segment_col = "black"
+  border_col = "black"
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ build_pie_chart(
 
 \item{opacity}{numeric value of zero to one.}
 
-\item{segment_col}{string denoting colour of pie border.}
+\item{border_col}{string denoting colour of pie border.}
 }
 \value{
 A ggplot object.

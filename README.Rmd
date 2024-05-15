@@ -112,6 +112,7 @@ map2 <- mapmixture(
   boundary = c(xmin=-15, xmax=16, ymin=40, ymax=62),
   pie_size = 1,
   pie_border = 0.3,
+  pie_border_col = "white",
   pie_opacity = 1,
   land_colour = "#d9d9d9",
   sea_colour = "#deebf7",
