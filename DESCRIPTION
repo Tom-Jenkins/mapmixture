@@ -1,6 +1,6 @@
 Package: mapmixture
 Title: Spatial Visualisation of Admixture on a Projected Map
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: person("Tom", "Jenkins", , "tom.l.jenkins@outlook.com", role = c("aut", "cre","cph"))
 Description: Visualise admixture as pie charts on a projected map, admixture as traditional structure barplots or facet barplots, and scatter plots from genotype principal components analysis. A 'shiny' app allows users to create admixture maps interactively. Jenkins TL (2024) <doi:10.1111/1755-0998.13943>.
 License: GPL (>= 3)
