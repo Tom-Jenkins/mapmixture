@@ -28,7 +28,10 @@ mapmixture(
   plot_title = "",
   plot_title_size = 12,
   axis_title_size = 10,
-  axis_text_size = 8
+  axis_text_size = 8,
+  basemap_border = TRUE,
+  basemap_border_col = "black",
+  basemap_border_lwd = 0.1
 )
 }
 \arguments{
@@ -85,6 +88,12 @@ using the \code{sf::st_read()} function. If \code{NULL}, world country boundarie
 \item{axis_title_size}{numeric value of zero or greater.}
 
 \item{axis_text_size}{numeric value of zero or greater.}
+
+\item{basemap_border}{boolean denoting whether to show basemap polygon borders.}
+
+\item{basemap_border_col}{string defining colour of basemap polygon borders.}
+
+\item{basemap_border_lwd}{numeric value defining linewidth of basemap polygon borders.}
 }
 \value{
 A ggplot object.

@@ -35,6 +35,9 @@
 #' @param plot_title_size numeric value of zero or greater.
 #' @param axis_title_size numeric value of zero or greater.
 #' @param axis_text_size numeric value of zero or greater.
+#' @param basemap_border boolean denoting whether to show basemap polygon borders.
+#' @param basemap_border_col string defining colour of basemap polygon borders.
+#' @param basemap_border_lwd numeric value defining linewidth of basemap polygon borders.
 #'
 #' @return A ggplot object.
 #' @export
@@ -99,7 +102,9 @@ mapmixture <- function(
   arrow = TRUE, arrow_size = 1, arrow_position = "tl",
   scalebar = TRUE, scalebar_size = 1, scalebar_position = "tl",
   plot_title = "", plot_title_size = 12,
-  axis_title_size = 10, axis_text_size = 8) {
+  axis_title_size = 10, axis_text_size = 8,
+  basemap_border = TRUE, basemap_border_col = "black", basemap_border_lwd = 0.1
+  ) {
 
 
   # Download countries10.rda file to mapmixture extdata directory if not present
@@ -190,8 +195,10 @@ mapmixture <- function(
 
   # Add basemap using default world outlines if basemap parameter not set
   if (is.null(basemap)) {
+    borders <- ifelse(basemap_border == TRUE, 1, 0)
     plt <- plt+
-      ggplot2::geom_sf(data = sf::st_geometry(world_boundaries), colour = "black", fill = land_colour, linewidth = 0.1)
+      ggplot2::geom_sf(data = sf::st_geometry(world_boundaries), fill = land_colour,
+                       colour = basemap_border_col, linewidth = basemap_border_lwd, linetype = borders)
   }
 
   # Add basemap using basemap object supplied by user
@@ -219,8 +226,10 @@ mapmixture <- function(
 
       # 1. Reproject basemap to crs argument before plotting
       basemap <- sf::st_geometry(sf::st_transform(basemap, crs = crs))
+      borders <- ifelse(basemap_border == TRUE, 1, 0)
       plt <- plt+
-        ggplot2::geom_sf(data = basemap, colour = "black", fill = land_colour, linewidth = 0.1)
+        ggplot2::geom_sf(data = basemap, fill = land_colour,
+                         colour = basemap_border_col, linewidth = basemap_border_lwd, linetype = borders)
     }
   }
 
