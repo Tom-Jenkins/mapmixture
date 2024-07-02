@@ -22,6 +22,7 @@
 #' @param ylabel string for y label.
 #' @param site_order character vector of site labels used to customise the order of sites.
 #' If `NULL`, sites are ordered alphabetically.
+#' @param display_site_labels display site labels (TRUE or FALSE).
 #' @param site_labels_size numeric value for site label size.
 #' @param site_labels_x numeric value for site label horizontal position.
 #' @param site_labels_y numeric value for site label vertical position.
@@ -49,7 +50,7 @@ structure_plot <- function(admixture_df,
     labels = "site", flip_axis = FALSE,
     ylabel = "Proportion",
     site_dividers = TRUE, divider_width = 1, divider_col = "white", divider_type = "dashed",
-    site_order = NULL, site_labels_size = 2,
+    site_order = NULL, display_site_labels = TRUE, site_labels_size = 2,
     site_labels_x = 0, site_labels_y = -0.025,
     site_labels_angle = 0,
     site_ticks = TRUE, site_ticks_size = -0.01,
@@ -158,18 +159,21 @@ structure_plot <- function(admixture_df,
 
       # Add site labels
       if (labels == "site") {
+        if (display_site_labels) {
+          structure_plt <- structure_plt+
+            ggplot2::annotate("label",
+              x = site_position+site_labels_x,
+              y = rep(site_labels_y, length(site_position)),
+              label = site_labels, label.size = 0, fill = NA,
+              vjust = 0, color = "black", size = site_labels_size, angle = site_labels_angle
+            )
+        }
         structure_plt <- structure_plt+
-          ggplot2::annotate("label",
-            x = site_position+site_labels_x,
-            y = rep(site_labels_y, length(site_position)),
-            label = site_labels, label.size = NA, fill = NA,
-            vjust = 0, color = "black", size = site_labels_size, angle = site_labels_angle
-          )+
           ggplot2::theme(
             axis.text.x = ggplot2::element_blank(),
             axis.ticks.x = ggplot2::element_blank(),
             axis.title.x = ggplot2::element_blank(),
-            plot.margin = margin(t = 10, r = 10, b = 10, l = 10, unit = "pt"),
+            plot.margin = ggplot2::margin(t = 10, r = 10, b = 10, l = 10, unit = "pt"),
           )
       }
 
@@ -199,21 +203,24 @@ structure_plot <- function(admixture_df,
 
       # Add site labels
       if (labels == "site") {
+        if (display_site_labels) {
+          structure_plt <- structure_plt+
+            ggplot2::annotate("label",
+                              x = site_position+site_labels_y,
+                              y = rep(site_labels_x, length(site_position)),
+                              label = site_labels, label.size = 0, fill = NA,
+                              vjust = 0.25, color = "black", size = site_labels_size
+            )
+        }
         structure_plt <- structure_plt+
           ggplot2::coord_flip()+
-          ggplot2::annotate("label",
-            x = site_position+site_labels_y,
-            y = rep(site_labels_x, length(site_position)),
-            label = site_labels, label.size = NA, fill = NA,
-            vjust = 0.25, color = "black", size = site_labels_size
-          )+
           ggplot2::theme(
             axis.text.y = ggplot2::element_blank(),
             axis.ticks.y = ggplot2::element_blank(),
             axis.title.y = ggplot2::element_blank(),
             axis.text.x = ggplot2::element_text(size = 10),
             # Bug: labels are still hidden even when left margin is expanded
-            plot.margin = margin(t = 10, r = 10, b = 0, l = 50, unit = "pt"),
+            plot.margin = ggplot2::margin(t = 10, r = 10, b = 0, l = 50, unit = "pt"),
           )
       }
 
