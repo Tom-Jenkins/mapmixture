@@ -123,6 +123,8 @@ mapmixture <- function(
   #     stop("Error downloading data from Natural Earth. Please check internet connection.")
   # })
 
+  # Cluster column order
+  cluster_col_order <- colnames(admixture_df)[3:ncol(admixture_df)]
 
   # Standardise input data ----
   tryCatch({
@@ -173,7 +175,7 @@ mapmixture <- function(
 
   # Create a vector of default cluster names if parameter not set
   if (is.null(cluster_names)) {
-    cluster_names <- colnames(admix_coords)[4:ncol(admix_coords)]
+    cluster_names <- cluster_col_order
   }
 
   # Do these validation checks if basemap object is not NULL

@@ -62,8 +62,14 @@ structure_plot <- function(admixture_df,
     stop("Invalid input: admixture_df should be a data.frame or tibble in the correct format. Run ?structure_plot to check valid input format.")
   }
 
+  # Cluster column order
+  cluster_col_order <- colnames(admixture_df)[3:ncol(admixture_df)]
+
+  # Standardise input data ----
+  admixture_df <- standardise_data(admixture_df, type = "admixture")
+
   # Number of clusters
-  num_clusters <- length(colnames(admixture_df[3:length(admixture_df)]))
+  num_clusters <- ncol(admixture_df)-2
 
   # Edit the names of the first two column headings
   colnames(admixture_df)[1] <- "site"
@@ -108,7 +114,7 @@ structure_plot <- function(admixture_df,
 
   # Create a vector of default cluster names if parameter not set
   if (is.null(cluster_names)) {
-    cluster_names <- colnames(admixture_df)[3:ncol(admixture_df)]
+    cluster_names <- cluster_col_order
   }
 
   # Execute this code if type = "structure" ----
