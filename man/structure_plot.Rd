@@ -18,6 +18,7 @@ structure_plot(
   divider_col = "white",
   divider_type = "dashed",
   site_order = NULL,
+  site_labels = TRUE,
   site_labels_size = 2,
   site_labels_x = 0,
   site_labels_y = -0.025,
@@ -77,6 +78,8 @@ If \code{NULL}, sites are ordered alphabetically.}
 \item{facet_col}{number of columns to display for facet barplot.}
 
 \item{facet_row}{number of rows to display for facet barplot.}
+
+\item{display_site_labels}{display site labels (TRUE or FALSE).}
 }
 \value{
 A ggplot object.
