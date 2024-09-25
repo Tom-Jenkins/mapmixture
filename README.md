@@ -18,7 +18,7 @@ barplots.
 
 ## Installation
 
-`mapmixture` requires [R](https://www.r-project.org/) (\>= 4.1.0) to be
+`mapmixture` requires [R](https://www.r-project.org/) (\>= 4.2) to be
 installed on your system. Click
 [here](https://cran.r-project.org/bin/windows/base/) to download the
 latest version of R for Windows.

@@ -34,5 +34,5 @@ Suggests:
     testthat (>= 3.2.0)
 Config/testthat/edition: 3
 Depends: 
-    R (>= 4.1.0)
+    R (>= 4.2)
 LazyData: true
