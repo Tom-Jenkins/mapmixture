@@ -1,3 +1,11 @@
+## mapmixture 1.1.4
+
+* Added arguments to change the border colour and size of polygons. E.g. `basemap_border = TRUE`, `basemap_border_col = "black"`, `basemap_border_lwd = 0.1`. (#18)
+
+* Added argument to not display site labels in structure plot (`display_site_labels = FALSE`).
+
+* Changed R dependency to address issue #23.
+
 ## mapmixture 1.1.3
 
 * Add argument `site_labels_angle` to optionally change the angle of the site labels in admixture structure plots (#15).
