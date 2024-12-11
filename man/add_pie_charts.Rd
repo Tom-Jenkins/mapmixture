@@ -33,7 +33,7 @@ add_pie_charts(
 
 \item{opacity}{numeric value of zero to one.}
 
-\item{pie_size}{numeric value of zero or greater.}
+\item{pie_size}{vector of numeric values of zero or greater. Can be a single value or a vector the same length as the number of sites.}
 }
 \value{
 A list of \code{annotation_custom()} objects.

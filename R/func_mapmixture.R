@@ -18,7 +18,7 @@
 #' @param basemap SpatRaster or sf object to use as the basemap. A SpatRaster object can be created from a file
 #' using the `terra::rast()` function. A sf object can be created from a file
 #' using the `sf::st_read()` function. If `NULL`, world country boundaries are used.
-#' @param pie_size numeric value of zero or greater.
+#' @param pie_size vector of numeric values of zero or greater. Can be a single value or a vector the same length as the number of sites.
 #' @param pie_border numeric value of zero or greater.
 #' @param pie_border_col string denoting colour of pie border.
 #' @param pie_opacity numeric value of zero to one.
@@ -137,7 +137,12 @@ mapmixture <- function(
 
   # Check coordinate site IDs exactly match admixture site IDs
   if ( all(coords_df[[1]] == unique(admixture_df[[1]])) == FALSE ) {
-    stop("Site names in coordinates data frame do not match site names in admixture data frame. Check site names are not empty or NA and that they match.")
+    stop("Invalid input: site names in coordinates data frame do not match site names in admixture data frame. Check site names are not empty or NA and that they match.")
+  }
+
+  # Check if pie_size vector is not 1 and if pie_size is not the same length as the number of sites
+  if ( length(pie_size) != 1 & length(pie_size) != dplyr::n_distinct(admixture_df[[1]])  ) {
+    stop("Invalid input: pie_size vector must be of length 1 or the same length as the number of sites")
   }
 
   # Transform admixture data into a plotting format ----
@@ -282,7 +287,7 @@ mapmixture <- function(
     ggplot2::geom_point(
       data = legend_data,
       ggplot2::aes(x = !!as.name("x"), y = !!as.name("y"), fill = !!as.name("cluster")),
-      shape = 22, colour = "black", stroke = 0.3, size = 5 * pie_size , alpha = 0
+      shape = 22, colour = "black", stroke = 0.3, size = 5 * min(pie_size) , alpha = 0
     )+
     ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
     ggplot2::theme(

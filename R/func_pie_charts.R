@@ -12,7 +12,7 @@
 #' @param border numeric value of zero or greater.
 #' @param border_col string denoting colour of pie border.
 #' @param opacity numeric value of zero to one.
-#' @param pie_size numeric value of zero or greater.
+#' @param pie_size vector of numeric values of zero or greater. Can be a single value or a vector the same length as the number of sites.
 #'
 #' @return A list of `annotation_custom()` objects.
 #' @export
@@ -77,7 +77,7 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
     border_col = border_col
   ))
 
-  # Pie chart size formula
+  # Pie chart size formula (returns a single value or a vector of values depending on pie_size)
   radius <- dplyr::case_when(
     # If absolute number has less than or equal to 3 digits
     floor(log10(abs(coords$lat[1]))) + 1 <= 3  ~ 1 * pie_size,
@@ -85,13 +85,21 @@ add_pie_charts <- function(df, admix_columns, lat_column, lon_column, pie_colour
     floor(log10(abs(coords$lat[1]))) + 1 > 3 && floor(log10(abs(coords$lat[1]))) ~ 80000 * pie_size,
   )
 
+  # Prepare radius vector for input map() function (GitHub #25)
+  radius_list <- vector("numeric", length = length(radius))
+  if (length(radius) == 1) {
+    radius_list <- rep(radius, length(pie_list))
+  } else {
+    radius_list <- radius
+  }
+
   # Convert pie chart ggplot objects to annotation custom geom objects
   pie_annotation <- purrr::map(1:length(pie_list), ~ ggplot2::annotation_custom(
     grob = ggplot2::ggplotGrob(pie_list[[.]]),
-    ymin = coord_list[[.]][1] - radius,
-    ymax = coord_list[[.]][1] + radius,
-    xmin = coord_list[[.]][2] - radius,
-    xmax = coord_list[[.]][2] + radius
+    ymin = coord_list[[.]][1] - radius_list[[.]],
+    ymax = coord_list[[.]][1] + radius_list[[.]],
+    xmin = coord_list[[.]][2] - radius_list[[.]],
+    xmax = coord_list[[.]][2] + radius_list[[.]]
   ))
 
   # Return list of annotation_custom objects
