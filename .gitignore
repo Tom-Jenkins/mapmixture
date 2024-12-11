@@ -7,3 +7,5 @@
 .Rprofile
 rsconnect/
 *_.new.png
+cran-comments.md
+CRAN-SUBMISSION
