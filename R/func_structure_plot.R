@@ -84,7 +84,9 @@ structure_plot <- function(admixture_df,
   )
 
   # Sort data.frame by site and then by individual
-  df_long <- dplyr::arrange(df_long, df_long[["site"]], df_long[["ind"]])
+  # df_long <- dplyr::arrange(df_long, df_long[["site"]], df_long[["ind"]])
+  # df_long <- dplyr::arrange(df_long, df_long[["site"]])
+  # print(df_long)
 
   # Convert site and individual column to factor
   df_long$site <- factor(df_long$site, levels = unique(df_long$site))

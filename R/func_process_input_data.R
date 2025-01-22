@@ -76,7 +76,8 @@ standardise_data <- function(df, type = "admixture") {
     df[[2]] <- as.character(df[[2]])
 
     # Order alphabetically by site
-    df <- df[order(df$site, df$ind), ]
+    # df <- df[order(df$site, df$ind), ]
+    df <- df[order(df$site), ]
 
     # Convert all column names to lower case
     colnames(df) <- stringr::str_to_lower(colnames(df))
