@@ -144,7 +144,7 @@ mapmixture <- function(
 
   # Check if pie_size vector is not 1 and if pie_size is not the same length as the number of sites
   if ( length(pie_size) != 1 & length(pie_size) != dplyr::n_distinct(admixture_df[[1]])  ) {
-    stop("Invalid input: pie_size vector must be of length 1 or the same length as the number of sites")
+    stop("Invalid input: pie_size vector must be of length 1 or the same length as the number of sites.")
   }
 
   # Transform admixture data into a plotting format ----
