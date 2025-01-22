@@ -2,7 +2,6 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList uiOutput plotOutput
-#' @importFrom shinyjs runjs
 mod_barplot_plot_ui <- function(id) {
   ns <- NS(id)
   tagList(
@@ -26,7 +25,6 @@ mod_barplot_plot_ui <- function(id) {
 #'
 #' @noRd
 #' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton downloadHandler observe
-#' @importFrom shinyjs runjs
 #' @importFrom ggplot2 theme element_blank element_rect element_line element_text margin rel unit
 mod_barplot_plot_server <- function(id, bttn, admixture_df,
                                     user_bar_type, bar_labels, user_legend,
@@ -42,7 +40,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
     # Clear any plots from plotOutput container ----
     # Must be outside the renderPlot observer
     # observeEvent(c(bttn()), priority = 2, {
-    #   runjs("clearPlotOutput('bar')")
+    #   shinyjs::runjs("clearPlotOutput('bar')")
     # })
 
     # Create barplot as reactive ----
@@ -78,9 +76,9 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
     observeEvent(bttn(), priority = 1, {
       req(admixture_df(), output_barplot())
 
-      runjs("clearPlotOutput('bar')")
+      shinyjs::runjs("clearPlotOutput('bar')")
 
-      runjs("
+      shinyjs::runjs("
         // Select the element you want to click
         const pillsBar = document.querySelector('#options-pills-container > li:nth-child(2) > a');
 
@@ -96,7 +94,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
       }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
 
       # Delay by one second to allow rendering before switching tabs
-      runjs("
+      shinyjs::runjs("
         setTimeout( () => {
 
           // Select the element you want to click
@@ -114,7 +112,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
 
 
       # Render download button and internal components ----
-      runjs("document.getElementById('bar_plot-dropdown_download_bttn').classList.remove('hidden');")
+      shinyjs::runjs("document.getElementById('bar_plot-dropdown_download_bttn').classList.remove('hidden');")
       output$dropdown_download_bttn <- renderUI({
         div(id = "bar_download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
             shinyWidgets::dropdown(
@@ -178,10 +176,10 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
             input$plot_height == "" || input$plot_height == "0" || is.na(as.numeric(input$plot_height)) ||
             input$plot_dpi == "" || input$plot_dpi == "0" || is.na(as.numeric(input$plot_dpi))) {
           # Activate disabled state
-          runjs("document.getElementById('bar_plot-download_bttn').classList.add('disabled')")
+          shinyjs::runjs("document.getElementById('bar_plot-download_bttn').classList.add('disabled')")
         } else {
           # Deactivate disabled state
-          runjs("document.getElementById('bar_plot-download_bttn').classList.remove('disabled')")
+          shinyjs::runjs("document.getElementById('bar_plot-download_bttn').classList.remove('disabled')")
         }
       }
     })
@@ -194,10 +192,10 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
         if (input$plot_width == "" || input$plot_width == "0" || is.na(as.numeric(input$plot_width)) ||
             input$plot_height == "" || input$plot_height == "0" || is.na(as.numeric(input$plot_height))) {
           # Activate disabled state
-          runjs("document.getElementById('bar_plot-download_bttn').classList.add('disabled')")
+          shinyjs::runjs("document.getElementById('bar_plot-download_bttn').classList.add('disabled')")
         } else {
           # Deactivate disabled state
-          runjs("document.getElementById('bar_plot-download_bttn').classList.remove('disabled')")
+          shinyjs::runjs("document.getElementById('bar_plot-download_bttn').classList.remove('disabled')")
         }
       }
     })
@@ -209,13 +207,13 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
       # Do this when PDF button is clicked
       if (input$filetype_radio_bttn == "PDF") {
         # Hide DPI element
-        runjs("document.getElementById('plot_dpi_id').style.display = 'none';")
+        shinyjs::runjs("document.getElementById('plot_dpi_id').style.display = 'none';")
       }
 
       # Do this when PNP or JPEG button is clicked
       if (input$filetype_radio_bttn == "PNG" || input$filetype_radio_bttn == "JPEG") {
         # Display DPI element
-        runjs("document.getElementById('plot_dpi_id').style.display = 'inline-block';")
+        shinyjs::runjs("document.getElementById('plot_dpi_id').style.display = 'inline-block';")
       }
     })
 
@@ -232,7 +230,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
         # Export as PNG file ----
         if(input$filetype_radio_bttn == "PNG") {
           # Activate spinner while download in progress
-          runjs("document.getElementById('bar-spinner-download').classList.remove('hidden');")
+          shinyjs::runjs("document.getElementById('bar-spinner-download').classList.remove('hidden');")
           ggplot2::ggsave(
             plot = output_barplot(),
             filename = file,
@@ -243,13 +241,13 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
             units = "in"
           )
           # Deactivate spinner when download finished
-          runjs("document.getElementById('bar-spinner-download').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('bar-spinner-download').classList.add('hidden');")
         }
 
         # Export as JPEG file ----
         if(input$filetype_radio_bttn == "JPEG") {
           # Activate spinner while download in progress
-          runjs("document.getElementById('bar-spinner-download').classList.remove('hidden');")
+          shinyjs::runjs("document.getElementById('bar-spinner-download').classList.remove('hidden');")
           ggplot2::ggsave(
             plot = output_barplot(),
             filename = file,
@@ -260,13 +258,13 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
             units = "in"
           )
           # Deactivate spinner when download finished
-          runjs("document.getElementById('bar-spinner-download').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('bar-spinner-download').classList.add('hidden');")
         }
 
         # Export as PDF file ----
         if(input$filetype_radio_bttn == "PDF") {
           # Activate spinner while download in progress
-          runjs("document.getElementById('bar-spinner-download').classList.remove('hidden');")
+          shinyjs::runjs("document.getElementById('bar-spinner-download').classList.remove('hidden');")
           ggplot2::ggsave(
             plot = output_barplot(),
             filename = file,
@@ -276,7 +274,7 @@ mod_barplot_plot_server <- function(id, bttn, admixture_df,
             units = "in"
           )
           # Deactivate spinner when download finished
-          runjs("document.getElementById('bar-spinner-download').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('bar-spinner-download').classList.add('hidden');")
         }
       }
     )

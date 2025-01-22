@@ -44,7 +44,6 @@ mod_file_upload_ui <- function(id){
 #'
 #' @noRd
 #' @importFrom shiny moduleServer reactive req observe
-#' @importFrom shinyjs runjs
 mod_file_upload_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -54,15 +53,15 @@ mod_file_upload_server <- function(id){
       req(input$admixture_file)
 
       # Activate hidden class for all admixture icons
-      runjs("document.getElementById('admixture-success').classList.add('hidden')")
-      runjs("document.getElementById('admixture-warning').classList.add('hidden')")
+      shinyjs::runjs("document.getElementById('admixture-success').classList.add('hidden')")
+      shinyjs::runjs("document.getElementById('admixture-warning').classList.add('hidden')")
 
       # Disable button if not already disabled
-      runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.add('disabled')")
-      runjs("document.getElementById('options-pills-container').style.pointerEvents = 'none';")
+      shinyjs::runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.add('disabled')")
+      shinyjs::runjs("document.getElementById('options-pills-container').style.pointerEvents = 'none';")
 
       # Remove all previous error messages from UI
-      runjs("if(document.getElementById('admixture-error-message')) document.getElementById('admixture-error-message').remove()")
+      shinyjs::runjs("if(document.getElementById('admixture-error-message')) document.getElementById('admixture-error-message').remove()")
 
       # Read in user data
       admix_df <- read_input_data(input$admixture_file$datapath)
@@ -72,7 +71,7 @@ mod_file_upload_server <- function(id){
 
       # Check data has been read properly as a data.frame with three or more columns
       if (!ncol(admix_df) >= 3) {
-        runjs("renderFeedbackWarning('admixture', 'Invalid file. Please upload a valid comma-separated values or tab-separated values file.')")
+        shinyjs::runjs("renderFeedbackWarning('admixture', 'Invalid file. Please upload a valid comma-separated values or tab-separated values file.')")
       } else{
 
         # Extract data to test
@@ -84,13 +83,13 @@ mod_file_upload_server <- function(id){
         if (length(na_admix != 0)) {
           # NA in column 1
           if (1 %in% na_admix) {
-            runjs("renderFeedbackWarning('admixture', 'Empty cell or NA in column 1. Ensure all cells have a site label.')")
+            shinyjs::runjs("renderFeedbackWarning('admixture', 'Empty cell or NA in column 1. Ensure all cells have a site label.')")
             # NA in column 2
           } else if (2 %in% na_admix) {
-            runjs("renderFeedbackWarning('admixture', 'Empty cell or NA in column 2. Ensure all cells have an individual label.')")
+            shinyjs::runjs("renderFeedbackWarning('admixture', 'Empty cell or NA in column 2. Ensure all cells have an individual label.')")
             # NA in columns 3:n
           } else {
-            runjs(
+            shinyjs::runjs(
               paste0(
                 "renderFeedbackWarning('admixture', 'Empty cell or NA in column ", toString(na_admix), ". Ensure all cells in cluster column have an integer or decimal from 0-1.')"
               )
@@ -99,7 +98,7 @@ mod_file_upload_server <- function(id){
 
           # 2. Check cluster columns 3:n are all of type numeric ----
         } else if (FALSE %in% colN_type) {
-          runjs(
+          shinyjs::runjs(
             paste0(
               "renderFeedbackWarning('admixture', 'Incorrect data type in column ", toString(which(!colN_type)+2), ". Ensure all cells in cluster column have an integer or decimal from 0-1.')"
             )
@@ -115,13 +114,13 @@ mod_file_upload_server <- function(id){
 
           # If data valid then print success message to UI, convert colnames to lower case and return data
         } else {
-          runjs("renderFeedbackSuccess('admixture')")
+          shinyjs::runjs("renderFeedbackSuccess('admixture')")
 
           # Remove disabled class from Plot Bar button when valid status is TRUE
-          runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.remove('disabled');")
+          shinyjs::runjs("document.getElementById('plot_bttn-plot_bar_bttn').classList.remove('disabled');")
 
           # Enable pointer event on parameter pills
-          runjs("document.getElementById('options-pills-container').style.pointerEvents = 'auto';")
+          shinyjs::runjs("document.getElementById('options-pills-container').style.pointerEvents = 'auto';")
 
           return(admix_df)
         }
@@ -134,11 +133,11 @@ mod_file_upload_server <- function(id){
       req(input$coords_file)
 
       # Activate hidden class for all coords icons
-      runjs("document.getElementById('coords-success').classList.add('hidden')")
-      runjs("document.getElementById('coords-warning').classList.add('hidden')")
+      shinyjs::runjs("document.getElementById('coords-success').classList.add('hidden')")
+      shinyjs::runjs("document.getElementById('coords-warning').classList.add('hidden')")
 
       # Remove all previous error messages from UI
-      runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
+      shinyjs::runjs("if(document.getElementById('coords-error-message')) document.getElementById('coords-error-message').remove()")
 
       # Process user data
       coords_df <- read_input_data(input$coords_file$datapath)
@@ -148,7 +147,7 @@ mod_file_upload_server <- function(id){
 
       # Check data has been read properly as a data.frame with three columns
       if (ncol(coords_df) != 3) {
-        runjs("renderFeedbackWarning('coords', 'Invalid file. Please upload a valid comma-separated values or tab-separated values file.')")
+        shinyjs::runjs("renderFeedbackWarning('coords', 'Invalid file. Please upload a valid comma-separated values or tab-separated values file.')")
       } else {
 
         # Extract data to test
@@ -160,28 +159,28 @@ mod_file_upload_server <- function(id){
         if (length(na_coords != 0)) {
           # NA in column 1
           if (1 %in% na_coords) {
-            runjs("renderFeedbackWarning('coords', 'Empty cell or NA in column 1. Ensure all cells have a site label.')")
+            shinyjs::runjs("renderFeedbackWarning('coords', 'Empty cell or NA in column 1. Ensure all cells have a site label.')")
             # NA in column 2
           } else if (2 %in% na_coords) {
-            runjs("renderFeedbackWarning('coords', 'Empty cell or NA in column 2. Ensure all cells have a latitude decimal.')")
+            shinyjs::runjs("renderFeedbackWarning('coords', 'Empty cell or NA in column 2. Ensure all cells have a latitude decimal.')")
             # NA in column 3
           } else if (3 %in% na_coords) {
-            runjs("renderFeedbackWarning('coords', 'Empty cell or NA in column 3. Ensure all cells have a longitude decimal.')")
+            shinyjs::runjs("renderFeedbackWarning('coords', 'Empty cell or NA in column 3. Ensure all cells have a longitude decimal.')")
           }
 
           # 2. Check for Lat and Lon types ----
         } else if (is.double(coords_df[[2]]) == FALSE) {
-          runjs("renderFeedbackWarning('coords', 'Incorrect data type in column 2. Ensure all cells have a latitude decimal.')")
+          shinyjs::runjs("renderFeedbackWarning('coords', 'Incorrect data type in column 2. Ensure all cells have a latitude decimal.')")
         } else if (is.double(coords_df[[3]]) == FALSE) {
-          runjs("renderFeedbackWarning('coords', 'Incorrect data type in column 3. Ensure all cells have a longitude decimal.')")
+          shinyjs::runjs("renderFeedbackWarning('coords', 'Incorrect data type in column 3. Ensure all cells have a longitude decimal.')")
 
           # 3. Check coordinate site IDs exactly match admixture site IDs
         } else if (all(coords_siteIDs == admix_siteIDs) == FALSE) {
-          runjs("renderFeedbackWarning('coords', 'Site IDs do not match. Ensure site IDs are present and match in both admixture and coordinates files.')")
+          shinyjs::runjs("renderFeedbackWarning('coords', 'Site IDs do not match. Ensure site IDs are present and match in both admixture and coordinates files.')")
 
           # If data valid then print success message to UI, convert colnames to lower case and return data
         } else {
-          runjs("renderFeedbackSuccess('coords')")
+          shinyjs::runjs("renderFeedbackSuccess('coords')")
           return(coords_df)
         }
       }
@@ -202,11 +201,11 @@ mod_file_upload_server <- function(id){
     observe({
       # If TRUE
       if (input_valid()) {
-        runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.remove('disabled')")
+        shinyjs::runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.remove('disabled')")
       }
       # If FALSE
       if (!input_valid()) {
-        runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.add('disabled')")
+        shinyjs::runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.add('disabled')")
       }
     })
 

@@ -2,7 +2,6 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList uiOutput plotOutput
-#' @importFrom shinyjs runjs
 mod_main_plot_ui <- function(id) {
   ns <- NS(id)
   tagList(
@@ -26,7 +25,6 @@ mod_main_plot_ui <- function(id) {
 #'
 #' @noRd
 #' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton downloadHandler observe
-#' @importFrom shinyjs runjs
 #' @importFrom ggplot2 theme element_blank element_rect element_line element_text margin rel unit
 mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
                                  user_CRS, user_bbox, user_expand,
@@ -44,7 +42,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # Must be outside the renderPlot observer AND
     #   have coords_df() inside observer to fix coords_file feedback bug
     # observeEvent(c(bttn(), coords_df()), priority = 2, {
-    #   runjs("clearPlotOutput('map')")
+    #   shinyjs::runjs("clearPlotOutput('map')")
     # })
 
     # Create map as reactive ----
@@ -93,7 +91,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
             duration = 10,
             type = "err"
           )
-          runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.add('hidden');")
         })
       }
     })
@@ -103,9 +101,9 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     observeEvent(bttn(), priority = 1, {
       req(admixture_df(), coords_df(), output_map())
 
-      runjs("clearPlotOutput('map')")
+      shinyjs::runjs("clearPlotOutput('map')")
 
-      runjs("
+      shinyjs::runjs("
         // Select the element you want to click
         const pillsMap = document.querySelector('#options-pills-container > li:nth-child(1) > a');
 
@@ -122,7 +120,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
 
       # Delay by one second to allow rendering before switching tabs
-      runjs("
+      shinyjs::runjs("
         setTimeout( () => {
 
           // Select the element you want to click
@@ -137,7 +135,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       ")
 
       # Render download button and internal components ----
-      runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")
+      shinyjs::runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")
       output$dropdown_download_bttn <- renderUI({
         div(id = "map_download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
             shinyWidgets::dropdown(
@@ -201,10 +199,10 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
             input$plot_height == "" || input$plot_height == "0" || is.na(as.numeric(input$plot_height)) ||
             input$plot_dpi == "" || input$plot_dpi == "0" || is.na(as.numeric(input$plot_dpi))) {
           # Activate disabled state
-          runjs("document.getElementById('main_plot-download_bttn').classList.add('disabled')")
+          shinyjs::runjs("document.getElementById('main_plot-download_bttn').classList.add('disabled')")
         } else {
           # Deactivate disabled state
-          runjs("document.getElementById('main_plot-download_bttn').classList.remove('disabled')")
+          shinyjs::runjs("document.getElementById('main_plot-download_bttn').classList.remove('disabled')")
         }
       }
     })
@@ -217,10 +215,10 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
         if (input$plot_width == "" || input$plot_width == "0" || is.na(as.numeric(input$plot_width)) ||
             input$plot_height == "" || input$plot_height == "0" || is.na(as.numeric(input$plot_height))) {
           # Activate disabled state
-          runjs("document.getElementById('main_plot-download_bttn').classList.add('disabled')")
+          shinyjs::runjs("document.getElementById('main_plot-download_bttn').classList.add('disabled')")
         } else {
           # Deactivate disabled state
-          runjs("document.getElementById('main_plot-download_bttn').classList.remove('disabled')")
+          shinyjs::runjs("document.getElementById('main_plot-download_bttn').classList.remove('disabled')")
         }
       }
     })
@@ -232,13 +230,13 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       # Do this when PDF button is clicked
       if (input$filetype_radio_bttn == "PDF") {
         # Hide DPI element
-        runjs("document.getElementById('plot_dpi_id').style.display = 'none';")
+        shinyjs::runjs("document.getElementById('plot_dpi_id').style.display = 'none';")
       }
 
       # Do this when PNP or JPEG button is clicked
       if (input$filetype_radio_bttn == "PNG" || input$filetype_radio_bttn == "JPEG") {
         # Display DPI element
-        runjs("document.getElementById('plot_dpi_id').style.display = 'inline-block';")
+        shinyjs::runjs("document.getElementById('plot_dpi_id').style.display = 'inline-block';")
       }
     })
 
@@ -255,7 +253,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
         # Export as PNG file ----
         if(input$filetype_radio_bttn == "PNG") {
           # Activate spinner while download in progress
-          runjs("document.getElementById('spinner-download').classList.remove('hidden');")
+          shinyjs::runjs("document.getElementById('spinner-download').classList.remove('hidden');")
           ggplot2::ggsave(
             plot = output_map(),
             filename = file,
@@ -266,13 +264,13 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
             units = "in"
           )
           # Deactivate spinner when download finished
-          runjs("document.getElementById('spinner-download').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('spinner-download').classList.add('hidden');")
         }
 
         # Export as JPEG file ----
         if(input$filetype_radio_bttn == "JPEG") {
           # Activate spinner while download in progress
-          runjs("document.getElementById('spinner-download').classList.remove('hidden');")
+          shinyjs::runjs("document.getElementById('spinner-download').classList.remove('hidden');")
           ggplot2::ggsave(
             plot = output_map(),
             filename = file,
@@ -283,13 +281,13 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
             units = "in"
           )
           # Deactivate spinner when download finished
-          runjs("document.getElementById('spinner-download').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('spinner-download').classList.add('hidden');")
         }
 
         # Export as PDF file ----
         if(input$filetype_radio_bttn == "PDF") {
           # Activate spinner while download in progress
-          runjs("document.getElementById('spinner-download').classList.remove('hidden');")
+          shinyjs::runjs("document.getElementById('spinner-download').classList.remove('hidden');")
           ggplot2::ggsave(
             plot = output_map(),
             filename = file,
@@ -299,7 +297,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
             units = "in"
           )
           # Deactivate spinner when download finished
-          runjs("document.getElementById('spinner-download').classList.add('hidden');")
+          shinyjs::runjs("document.getElementById('spinner-download').classList.add('hidden');")
         }
       }
     )
