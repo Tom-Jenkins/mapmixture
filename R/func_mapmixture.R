@@ -295,11 +295,11 @@ mapmixture <- function(
     if (!is.null(cluster_names)) {
       # check legend_order is the same length as cluster_names
       if (length(legend_order) != length(cluster_names)) {
-        stop("Invalid input: legend_order must be the same length as cluster_names")
+        stop("Invalid input: legend_order must be the same length as cluster_names.")
       }
       # check legend_order contains unique items and that they are present in cluster_names
       if (any(duplicated(legend_order)) | any(!legend_order %in% cluster_names)) {
-        stop("Invalid input: legend_order must contain the exact same names as cluster_names")
+        stop("Invalid input: legend_order must contain the exact same names as cluster_names.")
       }
       # add custom legend order if all checks pass
       legend_data$cluster <- factor(legend_data$cluster, levels = legend_order)
