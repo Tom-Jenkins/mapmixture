@@ -4,10 +4,10 @@
 app_ui <- function() {
 
   # Add www/ directory to resource path (deployment)
-  # shiny::addResourcePath(prefix = "www", directoryPath = system.file("www", package = "mapmixture"))
+  shiny::addResourcePath(prefix = "www", directoryPath = system.file("www", package = "mapmixture"))
 
   # Add www/ directory to resource path (developer mode)
-  shiny::addResourcePath(prefix = "www", directoryPath = "./inst/www/")
+  # shiny::addResourcePath(prefix = "www", directoryPath = "./inst/www/")
 
   # App UI
   shiny::fluidPage(
