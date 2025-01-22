@@ -62,7 +62,7 @@ transform_admix_data <- function(data) {
   # Calculate mean admixture proportions for each site
   df <- stats::aggregate(x = df["admixture"], by = list(site = df$site, cluster = df$cluster), FUN = mean)
 
-  # Convert to the format required for scatterpie
+  # Convert to the format required for plotting
   df <- tidyr::pivot_wider(df, names_from = 2, values_from = 3)
 
   # Order rows by site
