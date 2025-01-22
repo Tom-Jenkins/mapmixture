@@ -10,28 +10,28 @@ RoxygenNote: 7.3.1
 URL: https://github.com/Tom-Jenkins/mapmixture
 BugReports: https://github.com/Tom-Jenkins/mapmixture/issues
 Imports: 
-    bslib (>= 0.5.0),
-    colourpicker,
     dplyr,
     ggplot2,
     ggspatial,
     grid,
-    htmltools,
     purrr,
     rlang,
     rnaturalearthdata,
     sf,
+    stringr,
+    tidyr
+Suggests: 
+    bslib,
+    colourpicker,
+    htmltools,
     shiny,
     shinyFeedback,
     shinyjs,
-    shinyWidgets,
-    stringr,
-    tidyr,
-    waiter
-Suggests: 
     shinytest2,
+    shinyWidgets,
     terra,
-    testthat (>= 3.2.0)
+    testthat (>= 3.2.0),
+    waiter
 Config/testthat/edition: 3
 Depends: 
     R (>= 4.2)

@@ -25,6 +25,25 @@
 #' }
 launch_mapmixture <- function(...) {
 
+  # List of required packages
+  required_packages <- c(
+    "shiny", "shinyFeedback", "shinyjs", "shinyWidgets",
+    "bslib", "colourpicker", "htmltools", "waiter"
+  )
+
+  # Check for missing packages
+  missing_packages <- setdiff(required_packages, utils::installed.packages()[, "Package"])
+
+  # If there are missing packages, stop and inform the user
+  if (length(missing_packages) > 0) {
+    stop(
+      "The following packages are required but not installed: ",
+      paste(missing_packages, collapse = ", "),
+      ". Please install them before running `launch_mapmixture()`."
+    )
+  }
+
+  # Launch app
   shiny::shinyApp(
     ui = app_ui,
     server = app_server,
