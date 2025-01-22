@@ -9,6 +9,7 @@ mapmixture(
   coords_df,
   cluster_cols = NULL,
   cluster_names = NULL,
+  legend_order = NULL,
   boundary = NULL,
   crs = 4326,
   basemap = NULL,
@@ -44,6 +45,9 @@ If \code{NULL}, a blue-green palette is used.}
 
 \item{cluster_names}{character vector of names the same length as the number of clusters.
 If \code{NULL}, the cluster column names are used.}
+
+\item{legend_order}{character vector of names the same length as the number of clusters and the exact same strings as the cluster names.
+if \code{NULL}, the default order follows the cluster column order in the admixture data.}
 
 \item{boundary}{named numeric vector defining the map bounding. e.g. \code{c(xmin=-15, xmax=15, ymin=30, ymax=50)}.
 If \code{NULL}, a default bounding box is calculated.}

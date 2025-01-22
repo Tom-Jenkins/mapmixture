@@ -11,6 +11,8 @@
 #' If `NULL`, a blue-green palette is used.
 #' @param cluster_names character vector of names the same length as the number of clusters.
 #' If `NULL`, the cluster column names are used.
+#' @param legend_order character vector of names the same length as the number of clusters and the exact same strings as the cluster names.
+#' if `NULL`, the default order follows the cluster column order in the admixture data.
 #' @param boundary named numeric vector defining the map bounding. e.g. `c(xmin=-15, xmax=15, ymin=30, ymax=50)`.
 #' If `NULL`, a default bounding box is calculated.
 #' @param crs coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:`4326`).
@@ -93,8 +95,8 @@
 mapmixture <- function(
   # Data input
   admixture_df, coords_df,
-  # Parameter arguments
-  cluster_cols = NULL, cluster_names = NULL,
+  # Arguments
+  cluster_cols = NULL, cluster_names = NULL, legend_order = NULL,
   boundary = NULL, crs = 4326, basemap = NULL,
   pie_size = 1, pie_border = 0.2, pie_border_col = "black", pie_opacity = 1,
   land_colour = "#d9d9d9", sea_colour = "#deebf7",
@@ -123,8 +125,8 @@ mapmixture <- function(
   #     stop("Error downloading data from Natural Earth. Please check internet connection.")
   # })
 
-  # Cluster column order
-  cluster_col_order <- colnames(admixture_df)[3:ncol(admixture_df)]
+  # Vector of cluster column names
+  cluster_col_names <- colnames(admixture_df)[3:ncol(admixture_df)]
 
   # Standardise input data ----
   tryCatch({
@@ -180,7 +182,7 @@ mapmixture <- function(
 
   # Create a vector of default cluster names if parameter not set
   if (is.null(cluster_names)) {
-    cluster_names <- cluster_col_order
+    cluster_names <- cluster_col_names
   }
 
   # Do these validation checks if basemap object is not NULL
@@ -188,13 +190,8 @@ mapmixture <- function(
 
     # stop if basemap if not a SpatRaster or sf object
     if (!(("SpatRaster" %in% class(basemap)) | ("sf" %in% class(basemap)))) {
-      stop("basemap is not a SpatRaster or sf object. Please use terra::rast() to create a SpatRaster object or sf::st_read() to create a sf object.")
+      stop("Invalid input: basemap is not a SpatRaster or sf object. Please use terra::rast() to create a SpatRaster object or sf::st_read() to create a sf object.")
     }
-
-    # stop if basemap is not a sf object
-    # if (sf::st_crs(basemap) != sf::st_crs(crs)) {
-    #   stop("CRS of basemap object does not match crs argument. Please use terra::project() to transform basemap to the correct CRS.")
-    # }
   }
 
   # Initiate ggplot
@@ -273,14 +270,43 @@ mapmixture <- function(
     )
 
 
-  # Add legend by creating a dummy point data set
+  # Add legend by creating a dummy point data.frame
   legend_data <- data.frame(
     cluster = colnames(admix_coords[4:ncol(admix_coords)]),
     x = rep(NA, length(admix_coords[4:ncol(admix_coords)])),
     y = rep(NA, length(admix_coords[4:ncol(admix_coords)]))
   )
 
-  # Add legend to plot using a dummy point data set (not ideal but works)
+  # NOTE: needs a warning statement if user enters incorrect vector length
+  # GitHub Issue #28
+  # Change cluster column names to custom cluster names if argument supplied
+  if (!is.null(cluster_names)) {
+    if (length(cluster_names) != length(cluster_col_names)) {
+      stop("Invalid input: cluster_names vector must be the same length as the number of clusters.")
+    } else {
+      legend_data$cluster <- cluster_names
+    }
+  }
+
+  # GitHub Issue #28
+  # Change order of legend items (cluster names) if argument supplied
+  if (!is.null(legend_order)) {
+    # check cluster_names argument has been supplied
+    if (!is.null(cluster_names)) {
+      # check legend_order is the same length as cluster_names
+      if (length(legend_order) != length(cluster_names)) {
+        stop("Invalid input: legend_order must be the same length as cluster_names")
+      }
+      # check legend_order contains unique items and that they are present in cluster_names
+      if (any(duplicated(legend_order)) | any(!legend_order %in% cluster_names)) {
+        stop("Invalid input: legend_order must contain the exact same names as cluster_names")
+      }
+      # add custom legend order if all checks pass
+      legend_data$cluster <- factor(legend_data$cluster, levels = legend_order)
+    }
+  }
+
+  # Add legend to plot using a dummy point data (not ideal but works)
   # NOTE: 02/11/2023: The legend key does not resize
   # The only way to resize is to add a guides(fill = guide_legend(override.aes = list(size = 3)))
   plt <- plt+
@@ -289,7 +315,7 @@ mapmixture <- function(
       ggplot2::aes(x = !!as.name("x"), y = !!as.name("y"), fill = !!as.name("cluster")),
       shape = 22, colour = "black", stroke = 0.3, size = 5 * min(pie_size) , alpha = 0
     )+
-    ggplot2::scale_fill_manual(values = cluster_cols, labels = stringr::str_to_title(cluster_names))+
+    ggplot2::scale_fill_manual(values = cluster_cols)+
     ggplot2::theme(
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_rect(fill = NA),
