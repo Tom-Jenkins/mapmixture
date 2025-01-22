@@ -1,40 +1,39 @@
 #' File Upload Module: UI
 #'
 #' @noRd
-#' @importFrom shiny NS tagList tags span strong icon splitLayout div fileInput
 mod_file_upload_ui <- function(id){
-  ns <- NS(id)
-  tagList(
+  ns <- shiny::NS(id)
+  shiny::tagList(
 
     # Admixture file upload ----
-    span(
-      strong("Upload Admixture File"),
-      tags$button(id = ns("admixture_info_bttn"), class = "btn action-button info-modal-bttn", icon("circle-info")),
+    shiny::span(
+      shiny::strong("Upload Admixture File"),
+      shiny::tags$button(id = ns("admixture_info_bttn"), class = "btn action-button info-modal-bttn", shiny::icon("circle-info")),
     ),
-    splitLayout(
+    shiny::splitLayout(
       style = "padding-top: 10px;",
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
-      fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv", ".txt"), placeholder = ".csv | .tsv | .txt"),
-      div(
-        icon("circle-check", class = "fa-solid fa-xl hidden", id = "admixture-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;"),
-        icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "admixture-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;")
+      shiny::fileInput(ns("admixture_file"), label = NULL, accept = c(".csv", ".tsv", ".txt"), placeholder = ".csv | .tsv | .txt"),
+      shiny::div(
+        shiny::icon("circle-check", class = "fa-solid fa-xl hidden", id = "admixture-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;"),
+        shiny::icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "admixture-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;")
       ),
     ),
 
     # Coordinates file upload ----
-    span(
-      strong("Upload Coordinates File"),
-      tags$button(id = ns("coords_info_bttn"), class = "btn action-button info-modal-bttn", icon("circle-info")),
+    shiny::span(
+      shiny::strong("Upload Coordinates File"),
+      shiny::tags$button(id = ns("coords_info_bttn"), class = "btn action-button info-modal-bttn", shiny::icon("circle-info")),
     ),
-    splitLayout(
+    shiny::splitLayout(
       style = "padding-top: 10px;",
       cellWidths = c("70%", "30%"),
       cellArgs = list(style = "overflow: hidden;"),
-      fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv", ".txt"), placeholder = ".csv | .tsv | .txt"),
-      div(
-        icon("circle-check", class = "fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;"),
-        icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "coords-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;")
+      shiny::fileInput(ns("coords_file"), label = NULL, accept = c(".csv", ".tsv", ".txt"), placeholder = ".csv | .tsv | .txt"),
+      shiny::div(
+        shiny::icon("circle-check", class = "fa-solid fa-xl hidden", id = "coords-success", style="color: #18bc9c; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;"),
+        shiny::icon("circle-exclamation", class = "fa-solid fa-xl hidden", id = "coords-warning", style="color: #f39c12; padding-top: 18px; padding-left: 10px; padding-bottom: 20px;")
       ),
     ),
   )
@@ -43,14 +42,13 @@ mod_file_upload_ui <- function(id){
 #' File Upload Module: Server
 #'
 #' @noRd
-#' @importFrom shiny moduleServer reactive req observe
 mod_file_upload_server <- function(id){
-  moduleServer(id, function(input, output, session){
+  shiny::moduleServer(id, function(input, output, session){
     ns <- session$ns
 
     # Import user admixture data ----
-    admixture_data <- reactive({
-      req(input$admixture_file)
+    admixture_data <- shiny::reactive({
+      shiny::req(input$admixture_file)
 
       # Activate hidden class for all admixture icons
       shinyjs::runjs("document.getElementById('admixture-success').classList.add('hidden')")
@@ -129,8 +127,8 @@ mod_file_upload_server <- function(id){
 
 
     # Import user coordinates data ----
-    coords_data <- reactive({
-      req(input$coords_file)
+    coords_data <- shiny::reactive({
+      shiny::req(input$coords_file)
 
       # Activate hidden class for all coords icons
       shinyjs::runjs("document.getElementById('coords-success').classList.add('hidden')")
@@ -188,7 +186,7 @@ mod_file_upload_server <- function(id){
 
 
     # Check validation status of admixture and coordinates user input ----
-    input_valid <- reactive({
+    input_valid <- shiny::reactive({
       # Check if both admixture_data() and coords_data() are not NULL (indicating successful validation)
       if (!is.null(admixture_data()) && !is.null(coords_data())) {
         return(TRUE)  # Validation successful
@@ -198,7 +196,7 @@ mod_file_upload_server <- function(id){
     })
 
     # Remove disabled class from Plot Map button when valid status is TRUE
-    observe({
+    shiny::observe({
       # If TRUE
       if (input_valid()) {
         shinyjs::runjs("document.getElementById('plot_bttn-plot_map_bttn').classList.remove('disabled')")
@@ -211,10 +209,10 @@ mod_file_upload_server <- function(id){
 
 
     # Capture admixture info button click event ----
-    admixture_info_bttn <- reactive(input$admixture_info_bttn)
+    admixture_info_bttn <- shiny::reactive(input$admixture_info_bttn)
 
     # Capture coordinates info button click event ----
-    coords_info_bttn <- reactive(input$coords_info_bttn)
+    coords_info_bttn <- shiny::reactive(input$coords_info_bttn)
 
 
     # Return data as a named list ----

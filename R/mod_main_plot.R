@@ -1,10 +1,9 @@
 #' Main Map Plotting Module: UI
 #'
 #' @noRd
-#' @importFrom shiny NS tagList uiOutput plotOutput
 mod_main_plot_ui <- function(id) {
-  ns <- NS(id)
-  tagList(
+  ns <- shiny::NS(id)
+  shiny::tagList(
 
     # Set waiter spinner theme (https://shiny.john-coene.com/waiter/)
     waiter::waiter_set_theme(html = waiter::spin_loaders(15, color = "grey", style = "font-size: 50px;"), color = "#f5f5f5"),
@@ -13,10 +12,10 @@ mod_main_plot_ui <- function(id) {
     waiter::autoWaiter(id = ns("admixture_map")),
 
     # Render a download button ----
-    uiOutput(ns("dropdown_download_bttn")),
+    shiny::uiOutput(ns("dropdown_download_bttn")),
 
     # Render admixture map ----
-    plotOutput(ns("admixture_map"), width = "100%")
+    shiny::plotOutput(ns("admixture_map"), width = "100%")
   )
 }
 
@@ -24,7 +23,6 @@ mod_main_plot_ui <- function(id) {
 #' Main Map Plotting Module: Server
 #'
 #' @noRd
-#' @importFrom shiny moduleServer reactive observeEvent bindEvent showNotification renderPlot renderUI div icon strong textInput downloadButton downloadHandler observe
 #' @importFrom ggplot2 theme element_blank element_rect element_line element_text margin rel unit
 mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
                                  user_CRS, user_bbox, user_expand,
@@ -35,7 +33,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
                                  user_title, user_land_col,
                                  sea_input, text_size, title_size, plot_title_size,
                                  user_advanced) {
-  moduleServer(id, function(input, output, session) {
+  shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Clear any plots from plotOutput container ----
@@ -46,8 +44,8 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # })
 
     # Create map as reactive ----
-    output_map <- reactive({
-      req(admixture_df(), coords_df())
+    output_map <- shiny::reactive({
+      shiny::req(admixture_df(), coords_df())
 
       # Map
       plt <- mapmixture(
@@ -86,7 +84,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
           plt <- plt+ rlang::eval_tidy(rlang::parse_expr(update_theme))
           return(plt)
         }, error = function(err) {
-          showNotification(
+          shiny::showNotification(
             ui = htmltools::HTML("<p>Invalid Advanced Theme Customisation. See <a href='https://ggplot2.tidyverse.org/reference/theme.html' target='_blank' class='text-danger'>theme</a> for valid options.</p>"),
             duration = 10,
             type = "err"
@@ -98,8 +96,8 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
 
 
     # Render map on click of button ----
-    observeEvent(bttn(), priority = 1, {
-      req(admixture_df(), coords_df(), output_map())
+    shiny::observeEvent(bttn(), priority = 1, {
+      shiny::req(admixture_df(), coords_df(), output_map())
 
       shinyjs::runjs("clearPlotOutput('map')")
 
@@ -115,9 +113,9 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
       ")
 
       # Render plot ----
-      output$admixture_map <- renderPlot({
+      output$admixture_map <- shiny::renderPlot({
         output_map()
-      }) |> bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
+      }) |> shiny::bindEvent(x = _, bttn(), ignoreNULL = TRUE, ignoreInit = FALSE)
 
       # Delay by one second to allow rendering before switching tabs
       shinyjs::runjs("
@@ -136,21 +134,21 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
 
       # Render download button and internal components ----
       shinyjs::runjs("document.getElementById('main_plot-dropdown_download_bttn').classList.remove('hidden');")
-      output$dropdown_download_bttn <- renderUI({
-        div(id = "map_download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
+      output$dropdown_download_bttn <- shiny::renderUI({
+        shiny::div(id = "map_download_bttn_display", style = "position: relative; margin-bottom: -20px; float: right; margin-top: 1px;",
             shinyWidgets::dropdown(
-              style = "simple", icon = icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
-              strong("Download Map", class = "fs-4 text-success"),
+              style = "simple", icon = shiny::icon("download"), status = "success", size = "sm", right = TRUE, width = "300px",
+              shiny::strong("Download Map", class = "fs-4 text-success"),
               shinyWidgets::radioGroupButtons(
                 inputId = ns("filetype_radio_bttn"),
-                label = strong("Choose File Type:"),
+                label = shiny::strong("Choose File Type:"),
                 choices = c("PNG","JPEG", "PDF"),
                 status = "secondary"
               ),
-              div(style = "display: inline-block;", id = "plot_width_id", textInput(ns("plot_width"), label = strong("Width"), width = "75px", value = "10", placeholder = "inches")),
-              div(style = "display: inline-block;", id = "plot_height_id", textInput(ns("plot_height"), label = strong("Height"), width = "75px", value = "10", placeholder = "inches")),
-              div(style = "display: inline-block;", id = "plot_dpi_id", textInput(ns("plot_dpi"), label = strong("DPI"), width = "75px", value = "600", placeholder = "res")),
-              downloadButton(ns("download_bttn"), label = " Download",  class = "btn-success"),
+              shiny::div(style = "display: inline-block;", id = "plot_width_id", shiny::textInput(ns("plot_width"), label = shiny::strong("Width"), width = "75px", value = "10", placeholder = "inches")),
+              shiny::div(style = "display: inline-block;", id = "plot_height_id", shiny::textInput(ns("plot_height"), label = shiny::strong("Height"), width = "75px", value = "10", placeholder = "inches")),
+              shiny::div(style = "display: inline-block;", id = "plot_dpi_id", shiny::textInput(ns("plot_dpi"), label = shiny::strong("DPI"), width = "75px", value = "600", placeholder = "res")),
+              shiny::downloadButton(ns("download_bttn"), label = " Download",  class = "btn-success"),
 
               # HTML code to render a bootstrap spinner next to download button (hidden by default)
               htmltools::HTML("
@@ -169,21 +167,21 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     # Toggle parameter feedback and disabled state on textInput and button elements ----
 
     # Width parameter feedback feedback warning
-    observeEvent(input$plot_width, {
+    shiny::observeEvent(input$plot_width, {
       if (input$plot_width == "" || input$plot_width == "0" || is.na(as.numeric(input$plot_width))) {
         shinyFeedback::showFeedbackWarning("plot_width", text = NULL, icon = NULL)
       } else { shinyFeedback::hideFeedback("plot_width") }
     })
 
     # Height parameter feedback warning
-    observeEvent(input$plot_height, {
+    shiny::observeEvent(input$plot_height, {
       if (input$plot_height == "" || input$plot_height == "0" || is.na(as.numeric(input$plot_height))) {
         shinyFeedback::showFeedbackWarning("plot_height", text = NULL, icon = NULL)
       } else { shinyFeedback::hideFeedback("plot_height") }
     })
 
     # DPI parameter feedback warning
-    observeEvent(input$plot_dpi, {
+    shiny::observeEvent(input$plot_dpi, {
       if (input$plot_dpi == "" || input$plot_dpi == "0" || is.na(as.numeric(input$plot_dpi))) {
         shinyFeedback::showFeedbackWarning("plot_dpi", text = NULL, icon = NULL)
       } else { shinyFeedback::hideFeedback("plot_dpi") }
@@ -191,7 +189,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
 
 
     # Parameter validation for PNG and JPEG
-    observeEvent(c(input$filetype_radio_bttn, input$plot_width, input$plot_height, input$plot_dpi), {
+    shiny::observeEvent(c(input$filetype_radio_bttn, input$plot_width, input$plot_height, input$plot_dpi), {
 
       # Do this for PNG and JPEG validation
       if (input$filetype_radio_bttn == "PNG" || input$filetype_radio_bttn == "JPEG") {
@@ -208,7 +206,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
     })
 
     # Parameter validation for PDF
-    observeEvent(c(input$filetype_radio_bttn, input$plot_width, input$plot_height), {
+    shiny::observeEvent(c(input$filetype_radio_bttn, input$plot_width, input$plot_height), {
 
       # Do this for PDF validation
       if (input$filetype_radio_bttn == "PDF") {
@@ -225,7 +223,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
 
 
     # Toggle DPI element display when file type buttons are clicked ----
-    observeEvent(input$filetype_radio_bttn, {
+    shiny::observeEvent(input$filetype_radio_bttn, {
 
       # Do this when PDF button is clicked
       if (input$filetype_radio_bttn == "PDF") {
@@ -242,7 +240,7 @@ mod_main_plot_server <- function(id, bttn, admixture_df, coords_df,
 
 
     # Download map when button is clicked ----
-    output$download_bttn <- downloadHandler(
+    output$download_bttn <- shiny::downloadHandler(
       filename = function() {
         ifelse(input$filetype_radio_bttn == "PNG", paste0("Mapmixture_figure", ".png"),
                ifelse(input$filetype_radio_bttn == "JPEG", paste0("Mapmixture_figure", ".jpeg"), paste0("Mapmixture_figure", ".pdf"))

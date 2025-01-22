@@ -1,10 +1,9 @@
 #' Information Modals Module: UI
 #'
 #' @noRd
-#' @importFrom shiny NS tagList
 mod_info_modals_ui <- function(id){
-  ns <- NS(id)
-  tagList(
+  ns <- shiny::NS(id)
+  shiny::tagList(
 
   )
 }
@@ -12,9 +11,8 @@ mod_info_modals_ui <- function(id){
 #' Information Modals Module: Server
 #'
 #' @noRd
-#' @importFrom shiny NS tagList modalDialog strong br div observeEvent showModal
 mod_info_modals_server <- function(id, admixture_info_bttn, coords_info_bttn){
-  moduleServer( id, function(input, output, session){
+  shiny::moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     # Admixture table example (mod_info_modals_utils_sample_table_html.R)
@@ -25,11 +23,11 @@ mod_info_modals_server <- function(id, admixture_info_bttn, coords_info_bttn){
 
     # Function to build modal
     build_modal <- function(custom_title, html_content) {
-      modalDialog(
-        title = strong(custom_title, style = "font-size: larger;"),
+      shiny::modalDialog(
+        title = shiny::strong(custom_title, style = "font-size: larger;"),
         html_content,
-        br(),
-        div(
+        shiny::br(),
+        shiny::div(
           class = "text-center",
           htmltools::HTML('<button type="button" class="btn btn-success modal-close-bttn" data-dismiss="modal" data-bs-dismiss="modal">Close</button>')
         ),
@@ -40,13 +38,13 @@ mod_info_modals_server <- function(id, admixture_info_bttn, coords_info_bttn){
     }
 
     # Show modal on click of admixture info button
-    observeEvent(admixture_info_bttn(), {
-      showModal(build_modal("Admixture File Format", table_admixture))
+    shiny::observeEvent(admixture_info_bttn(), {
+      shiny::showModal(build_modal("Admixture File Format", table_admixture))
     })
 
     # Show modal on click of coordinates info button
-    observeEvent(coords_info_bttn(), {
-      showModal(build_modal("Coordinates File Format", table_coords))
+    shiny::observeEvent(coords_info_bttn(), {
+      shiny::showModal(build_modal("Coordinates File Format", table_coords))
     })
 
   })
