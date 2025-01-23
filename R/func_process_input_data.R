@@ -82,9 +82,10 @@ standardise_data <- function(df, type = "admixture") {
     # Convert all column names to lower case
     colnames(df) <- stringr::str_to_lower(colnames(df))
 
-    # Rename cluster columns to cluster1-clusterN
+    # GitHub Issue #28 (changed cluster1 to cluster01, cluster2 to cluster02, etc.)
+    # Rename cluster columns to cluster01-clusterN
     num_clusters <- ncol(df)-2
-    colnames(df)[3:ncol(df)] <- rep(paste0("cluster", 1:num_clusters))
+    colnames(df)[3:ncol(df)] <- sprintf("cluster%02d", 1:num_clusters)
   }
 
   # Process coordinates tibble
