@@ -43,7 +43,7 @@ mapmixture(
 If \code{NULL}, a blue-green palette is used.}
 
 \item{cluster_names}{character vector of names the same length as the number of clusters.
-If \code{NULL}, the cluster column names are used.}
+If \code{NULL}, the clusters are named cluster01, cluster02, ..., clusterN.}
 
 \item{boundary}{named numeric vector defining the map bounding. e.g. \code{c(xmin=-15, xmax=15, ymin=30, ymax=50)}.
 If \code{NULL}, a default bounding box is calculated.}
