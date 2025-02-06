@@ -1,5 +1,5 @@
 # Script to deploy Shiny app to shinyapps.io
-# Run rsconnect::deploy() to deploy
+# Run rsconnect::deployApp() to deploy
 
 # Load packages
 library(bslib)

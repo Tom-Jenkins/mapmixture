@@ -10,7 +10,7 @@
 #' @param cluster_cols character vector of colours the same length as the number of clusters.
 #' If `NULL`, a blue-green palette is used.
 #' @param cluster_names character vector of names the same length as the number of clusters.
-#' If `NULL`, the cluster column names are used.
+#' If `NULL`, the clusters are named cluster01, cluster02, ..., clusterN.
 #' @param boundary named numeric vector defining the map bounding. e.g. `c(xmin=-15, xmax=15, ymin=30, ymax=50)`.
 #' If `NULL`, a default bounding box is calculated.
 #' @param crs coordinate reference system. Default is the WGS 84 - World Geodetic System 1984 (EPSG:`4326`).

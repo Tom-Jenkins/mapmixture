@@ -30,7 +30,7 @@ app_ui <- function() {
       class = "custom-navbar",
       style = "background: #18bc9c; color: white; padding: 10px; margin-bottom: 5px;",
       shiny::span(
-        shiny::span(shiny::icon("chart-pie", style = "margin-right: 5px;"), shiny::strong("mapmixture"), shiny::span(class = "badge bg-light mx-1", "1.1.2")),
+        shiny::span(shiny::icon("chart-pie", style = "margin-right: 5px;"), shiny::strong("mapmixture"), shiny::span(class = "badge bg-light mx-1", "1.2.0")),
         shiny::a(
           style = "color: white;",
           href = "https://twitter.com/tom__jenkins",
