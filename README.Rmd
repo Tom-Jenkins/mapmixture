@@ -81,6 +81,75 @@ map1 <- mapmixture(admixture1, coordinates, crs = 3035)
 map1
 ```
 
+#### Experimental: Repelling pies
+
+This feature is in test phase (`repel = TRUE`). It is not perfect but may help repel pies close together by experimenting with the arguments `repel_force`, `repel_spring` and `repel_padding`.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repel_force` | numeric | How aggressively overlapping pies push apart |
+| `repel_spring` | numeric | How strongly pies are pulled back toward their true location |
+| `repel_padding` | numeric | Extra buffer space between pies (proportion of radius) |
+
+Install the latest development version from GitHub to try out this feature:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Tom-Jenkins/mapmixture")
+```
+
+<details markdown="1">
+<summary>Code</summary>
+```{r dpi=300}
+# Load packages
+library(mapmixture)
+library(ggplot2)
+library(gridExtra)
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates_repel.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture with repel
+map_repel <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("#f1a340","#998ec3"),
+  cluster_names = c("Ancestry 1","Ancestry 2"),
+  crs = 4326,
+  boundary = c(xmin=-10, xmax=5, ymin=49.0, ymax=60),
+  pie_size = 1,
+  plot_title = "Repelled",
+  repel = TRUE,
+  repel_force = 1.5,
+  repel_spring = 0.1,
+  repel_padding = 0.15
+) + theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
+
+# Run mapmixture with repel
+map_orig <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("#f1a340","#998ec3"),
+  cluster_names = c("Ancestry 1","Ancestry 2"),
+  crs = 4326,
+  boundary = c(xmin=-10, xmax=5, ymin=49.0, ymax=60),
+  pie_size = 1,
+  plot_title = "Original",
+  repel = FALSE
+) + theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
+
+# Arrange plots
+# grid.arrange(map_orig, map_repel, ncol = 2)
+```
+</details>
+```{r dpi=300, echo=FALSE}
+grid.arrange(map_orig, map_repel, ncol = 2)
+```
 
 #### Customised usage of mapmixture with a high resolution map
 
@@ -217,7 +286,6 @@ map4 <- mapmixture(
 map4
 ```
 
-
 #### Combine admixture map and barplot ggplot objects into a single figure
 
 <details markdown="1">
@@ -353,7 +421,7 @@ library(mapmixture)
 library(terra)
 
 # Create SpatRaster object
-earth <- terra::rast("../NE1_50M_SR_W/NE1_50M_SR_W.tif")
+earth <- terra::rast("../NE1_50M_SR_W.tif")
 
 # Read in admixture file format 1
 file <- system.file("extdata", "admixture1.csv", package = "mapmixture")

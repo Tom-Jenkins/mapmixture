@@ -58,7 +58,9 @@ population structure. *Molecular Ecology Resources*, 24: e13943. DOI:
 #### Basic usage of mapmixture
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -83,10 +85,90 @@ map1 <- mapmixture(admixture1, coordinates, crs = 3035)
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
+#### Experimental: Repelling pies
+
+This feature is in test phase (`repel = TRUE`). It is not perfect but
+may help repel pies close together by experimenting with the arguments
+`repel_force`, `repel_spring` and `repel_padding`.
+
+| Parameter | Type | Description |
+|----|----|----|
+| `repel_force` | numeric | How aggressively overlapping pies push apart |
+| `repel_spring` | numeric | How strongly pies are pulled back toward their true location |
+| `repel_padding` | numeric | Extra buffer space between pies (proportion of radius) |
+
+Install the latest development version from GitHub to try out this
+feature:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Tom-Jenkins/mapmixture")
+```
+
+<details>
+
+<summary>
+
+Code
+</summary>
+
+``` r
+# Load packages
+library(mapmixture)
+library(ggplot2)
+library(gridExtra)
+
+# Read in admixture file format 1
+file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
+admixture1 <- read.csv(file)
+
+# Read in coordinates file
+file <- system.file("extdata", "coordinates_repel.csv", package = "mapmixture")
+coordinates <- read.csv(file)
+
+# Run mapmixture with repel
+map_repel <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("#f1a340","#998ec3"),
+  cluster_names = c("Ancestry 1","Ancestry 2"),
+  crs = 4326,
+  boundary = c(xmin=-10, xmax=5, ymin=49.0, ymax=60),
+  pie_size = 1,
+  plot_title = "Repelled",
+  repel = TRUE,
+  repel_force = 1.5,
+  repel_spring = 0.1,
+  repel_padding = 0.15
+) + theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
+
+# Run mapmixture with repel
+map_orig <- mapmixture(
+  admixture_df = admixture1,
+  coords_df = coordinates,
+  cluster_cols = c("#f1a340","#998ec3"),
+  cluster_names = c("Ancestry 1","Ancestry 2"),
+  crs = 4326,
+  boundary = c(xmin=-10, xmax=5, ymin=49.0, ymax=60),
+  pie_size = 1,
+  plot_title = "Original",
+  repel = FALSE
+) + theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
+
+# Arrange plots
+# grid.arrange(map_orig, map_repel, ncol = 2)
+```
+
+</details>
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
 #### Customised usage of mapmixture with a high resolution map
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -138,12 +220,14 @@ map2 <- mapmixture(
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 #### Admixture map with single coloured circles
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -166,12 +250,14 @@ map3 <- mapmixture(admixture3, coordinates, crs = 3035)
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 #### Add additional geoms or theme options to mapmixture ggplot object
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -224,12 +310,14 @@ map4 <- mapmixture(
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 #### Combine admixture map and barplot ggplot objects into a single figure
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -294,10 +382,12 @@ structure_barplot <- structure_plot(
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -352,7 +442,7 @@ facet_barplot <- structure_plot(admixture1,
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 #### Use a raster as the basemap
 
@@ -364,7 +454,9 @@ package to use this feature. Currently, the `basemap` argument accepts a
 `SpatRaster` or a `sf` object.
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -374,7 +466,7 @@ library(mapmixture)
 library(terra)
 
 # Create SpatRaster object
-earth <- terra::rast("../NE1_50M_SR_W/NE1_50M_SR_W.tif")
+earth <- terra::rast("../NE1_50M_SR_W.tif")
 
 # Read in admixture file format 1
 file <- system.file("extdata", "admixture1.csv", package = "mapmixture")
@@ -391,7 +483,7 @@ map7 <- mapmixture(admixture1, coordinates, crs = 3035, basemap = earth)
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 #### Add pie charts to an existing map
 
@@ -400,7 +492,9 @@ from the Natural England Open Data Geoportal
 [here](https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::marine-conservation-zones-england/explore?location=53.749917%2C-5.534585%2C6.27).
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -466,12 +560,14 @@ map8 <- ggplot()+
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 #### Scatter plot of PCA or DAPC results from genotypes
 
 <details>
+
 <summary>
+
 Code
 </summary>
 
@@ -593,7 +689,7 @@ scatter4 <- scatter_plot(
 
 </details>
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
 
 ## Launch interactive Shiny app
 

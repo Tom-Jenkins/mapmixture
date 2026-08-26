@@ -38,6 +38,10 @@
 #' @param basemap_border boolean denoting whether to show basemap polygon borders.
 #' @param basemap_border_col string defining colour of basemap polygon borders.
 #' @param basemap_border_lwd numeric value defining linewidth of basemap polygon borders.
+#' @param repel boolean denoting whether to repel pies.
+#' @param repel_force numeric value defining how aggressively overlapping pies push apart.
+#' @param repel_spring numeric value defining how strongly pies are pulled back toward their true location.
+#' @param repel_padding numeric value defining extra buffer space between pies (proportion of radius).
 #'
 #' @return A ggplot object.
 #' @export
@@ -88,11 +92,7 @@
 #'   plot_title = "Mapmixture Figure",
 #'   plot_title_size = 15,
 #'   axis_title_size = 12,
-#'   axis_text_size = 10,
-#'   repel = FALSE,
-#'   repel_force = 1,
-#'   repel_spring = 0.05,
-#'   repel_padding = 0.1
+#'   axis_text_size = 10
 #' )}
 mapmixture <- function(
   # Data input

@@ -98,6 +98,14 @@ using the \code{sf::st_read()} function. If \code{NULL}, world country boundarie
 \item{basemap_border_col}{string defining colour of basemap polygon borders.}
 
 \item{basemap_border_lwd}{numeric value defining linewidth of basemap polygon borders.}
+
+\item{repel}{boolean denoting whether to repel pies.}
+
+\item{repel_force}{numeric value defining how aggressively overlapping pies push apart.}
+
+\item{repel_spring}{numeric value defining how strongly pies are pulled back toward their true location.}
+
+\item{repel_padding}{numeric value defining extra buffer space between pies (proportion of radius).}
 }
 \value{
 A ggplot object.
@@ -153,10 +161,6 @@ mapmixture(
   plot_title = "Mapmixture Figure",
   plot_title_size = 15,
   axis_title_size = 12,
-  axis_text_size = 10,
-  repel = FALSE,
-  repel_force = 1,
-  repel_spring = 0.05,
-  repel_padding = 0.1
+  axis_text_size = 10
 )}
 }
