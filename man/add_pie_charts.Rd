@@ -13,7 +13,12 @@ add_pie_charts(
   border = 0.3,
   border_col = "black",
   opacity = 1,
-  pie_size = 1
+  pie_size = 1,
+  repel = FALSE,
+  repel_force = 1,
+  repel_spring = 0.05,
+  repel_padding = 0.1,
+  min_segment_len = 0
 )
 }
 \arguments{

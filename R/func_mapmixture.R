@@ -88,25 +88,47 @@
 #'   plot_title = "Mapmixture Figure",
 #'   plot_title_size = 15,
 #'   axis_title_size = 12,
-#'   axis_text_size = 10
+#'   axis_text_size = 10,
+#'   repel = FALSE,
+#'   repel_force = 1,
+#'   repel_spring = 0.05,
+#'   repel_padding = 0.1
 #' )}
 mapmixture <- function(
   # Data input
-  admixture_df, coords_df,
+  admixture_df,
+  coords_df,
   # Arguments
-  cluster_cols = NULL, cluster_names = NULL,
-  boundary = NULL, crs = 4326, basemap = NULL,
-  pie_size = 1, pie_border = 0.2, pie_border_col = "black", pie_opacity = 1,
-  land_colour = "#d9d9d9", sea_colour = "#deebf7",
+  cluster_cols = NULL,
+  cluster_names = NULL,
+  boundary = NULL,
+  crs = 4326,
+  basemap = NULL,
+  pie_size = 1,
+  pie_border = 0.2,
+  pie_border_col = "black",
+  pie_opacity = 1,
+  land_colour = "#d9d9d9",
+  sea_colour = "#deebf7",
   expand = FALSE,
-  arrow = TRUE, arrow_size = 1, arrow_position = "tl",
-  scalebar = TRUE, scalebar_size = 1, scalebar_position = "tl",
-  plot_title = "", plot_title_size = 12,
-  axis_title_size = 10, axis_text_size = 8,
-  basemap_border = TRUE, basemap_border_col = "black", basemap_border_lwd = 0.1
-  ) {
-
-
+  arrow = TRUE,
+  arrow_size = 1,
+  arrow_position = "tl",
+  scalebar = TRUE,
+  scalebar_size = 1,
+  scalebar_position = "tl",
+  plot_title = "",
+  plot_title_size = 12,
+  axis_title_size = 10,
+  axis_text_size = 8,
+  basemap_border = TRUE,
+  basemap_border_col = "black",
+  basemap_border_lwd = 0.1,
+  repel = FALSE,
+  repel_force = 1,
+  repel_spring = 0.05,
+  repel_padding = 0.1
+) {
   # Download countries10.rda file to mapmixture extdata directory if not present
   # https://github.com/ropensci/rnaturalearthhires
   # tryCatch({
@@ -127,22 +149,34 @@ mapmixture <- function(
   cluster_col_names <- colnames(admixture_df)[3:ncol(admixture_df)]
 
   # Standardise input data ----
-  tryCatch({
-    admixture_df <- standardise_data(admixture_df, type = "admixture")
-    coords_df <- standardise_data(coords_df, type = "coordinates")
-  }, error = function(err) {
-    # Print error message if an error occurs from invalid inputs
-    stop("Invalid input: admixture_df and coord_df should be a data.frame or tibble in the correct format. Run ?mapmixture to check valid input formats.")
-  })
+  tryCatch(
+    {
+      admixture_df <- standardise_data(admixture_df, type = "admixture")
+      coords_df <- standardise_data(coords_df, type = "coordinates")
+    },
+    error = function(err) {
+      # Print error message if an error occurs from invalid inputs
+      stop(
+        "Invalid input: admixture_df and coord_df should be a data.frame or tibble in the correct format. Run ?mapmixture to check valid input formats."
+      )
+    }
+  )
 
   # Check coordinate site IDs exactly match admixture site IDs
-  if ( all(coords_df[[1]] == unique(admixture_df[[1]])) == FALSE ) {
-    stop("Invalid input: site names in coordinates data frame do not match site names in admixture data frame. Check site names are not empty or NA and that they match.")
+  if (all(coords_df[[1]] == unique(admixture_df[[1]])) == FALSE) {
+    stop(
+      "Invalid input: site names in coordinates data frame do not match site names in admixture data frame. Check site names are not empty or NA and that they match."
+    )
   }
 
   # Check if pie_size vector is not 1 and if pie_size is not the same length as the number of sites
-  if ( length(pie_size) != 1 & length(pie_size) != dplyr::n_distinct(admixture_df[[1]])  ) {
-    stop("Invalid input: pie_size vector must be of length 1 or the same length as the number of sites.")
+  if (
+    length(pie_size) != 1 &
+      length(pie_size) != dplyr::n_distinct(admixture_df[[1]])
+  ) {
+    stop(
+      "Invalid input: pie_size vector must be of length 1 or the same length as the number of sites."
+    )
   }
 
   # Transform admixture data into a plotting format ----
@@ -174,8 +208,8 @@ mapmixture <- function(
 
   # Create a vector of default colours if cluster_cols parameter not set
   if (is.null(cluster_cols)) {
-    pal <- grDevices::colorRampPalette(c("green","blue")) # green-blue colour palette
-    cluster_cols <- pal(ncol(admix_coords)-3) # number of cluster colours for palette
+    pal <- grDevices::colorRampPalette(c("green", "blue")) # green-blue colour palette
+    cluster_cols <- pal(ncol(admix_coords) - 3) # number of cluster colours for palette
   }
 
   # Create a vector of default cluster names if parameter not set
@@ -185,10 +219,11 @@ mapmixture <- function(
 
   # Do these validation checks if basemap object is not NULL
   if (!is.null(basemap)) {
-
     # stop if basemap if not a SpatRaster or sf object
     if (!(("SpatRaster" %in% class(basemap)) | ("sf" %in% class(basemap)))) {
-      stop("Invalid input: basemap is not a SpatRaster or sf object. Please use terra::rast() to create a SpatRaster object or sf::st_read() to create a sf object.")
+      stop(
+        "Invalid input: basemap is not a SpatRaster or sf object. Please use terra::rast() to create a SpatRaster object or sf::st_read() to create a sf object."
+      )
     }
   }
 
@@ -198,51 +233,64 @@ mapmixture <- function(
   # Add basemap using default world outlines if basemap parameter not set
   if (is.null(basemap)) {
     borders <- ifelse(basemap_border == TRUE, 1, 0)
-    plt <- plt+
-      ggplot2::geom_sf(data = sf::st_geometry(world_boundaries), fill = land_colour,
-                       colour = basemap_border_col, linewidth = basemap_border_lwd, linetype = borders)
+    plt <- plt +
+      ggplot2::geom_sf(
+        data = sf::st_geometry(world_boundaries),
+        fill = land_colour,
+        colour = basemap_border_col,
+        linewidth = basemap_border_lwd,
+        linetype = borders
+      )
   }
 
   # Add basemap using basemap object supplied by user
   if (!is.null(basemap)) {
-
     # If basemap is a SpatRaster object ----
     if ("SpatRaster" %in% class(basemap)) {
       if (rlang::is_installed("terra")) {
-
         # 1. Get an extent of boundary object in WGS 84 (EPSG:4326)
         # 2. Crop basemap raster using this extent
         # 3. Reproject basemap to crs argument before plotting
-        extent <- terra::project(terra::ext(boundary), paste0("epsg:",crs), paste0("epsg:",4326))
+        extent <- terra::project(
+          terra::ext(boundary),
+          paste0("epsg:", crs),
+          paste0("epsg:", 4326)
+        )
         basemap <- terra::crop(basemap, extent)
         basemap <- terra::project(basemap, paste0("epsg:", crs))
-        plt <- plt+
+        plt <- plt +
           ggspatial::layer_spatial(basemap)
       } else {
-        stop('Adding a raster basemap requires the terra package to be installed.\ninstall.packages("terra")')
+        stop(
+          'Adding a raster basemap requires the terra package to be installed.\ninstall.packages("terra")'
+        )
       }
     }
 
     # If basemap is a sf object ----
     if ("sf" %in% class(basemap)) {
-
       # 1. Reproject basemap to crs argument before plotting
       basemap <- sf::st_geometry(sf::st_transform(basemap, crs = crs))
       borders <- ifelse(basemap_border == TRUE, 1, 0)
-      plt <- plt+
-        ggplot2::geom_sf(data = basemap, fill = land_colour,
-                         colour = basemap_border_col, linewidth = basemap_border_lwd, linetype = borders)
+      plt <- plt +
+        ggplot2::geom_sf(
+          data = basemap,
+          fill = land_colour,
+          colour = basemap_border_col,
+          linewidth = basemap_border_lwd,
+          linetype = borders
+        )
     }
   }
 
   # Add pie charts to map
-  plt <- plt+
+  plt <- plt +
     ggplot2::coord_sf(
       xlim = c(boundary[["xmin"]], boundary[["xmax"]]),
       ylim = c(boundary[["ymin"]], boundary[["ymax"]]),
       expand = expand,
       crs = crs
-    )+
+    ) +
     add_pie_charts(
       df = admix_coords,
       admix_columns = 4:ncol(admix_coords),
@@ -252,21 +300,37 @@ mapmixture <- function(
       pie_colours = cluster_cols,
       border = pie_border,
       border_col = pie_border_col,
-      opacity = pie_opacity
-    )+
-    ggplot2::ggtitle(plot_title)+
-    ggplot2::xlab("Longitude")+
-    ggplot2::ylab("Latitude")+
+      opacity = pie_opacity,
+      repel = repel,
+      repel_force = repel_force,
+      repel_spring = repel_spring,
+      repel_padding = repel_padding
+    ) +
+    ggplot2::ggtitle(plot_title) +
+    ggplot2::xlab("Longitude") +
+    ggplot2::ylab("Latitude") +
     ggplot2::theme(
-      axis.text = ggplot2::element_text(colour = "black", size = axis_text_size),
-      axis.title = ggplot2::element_text(colour = "black", size = axis_title_size),
+      axis.text = ggplot2::element_text(
+        colour = "black",
+        size = axis_text_size
+      ),
+      axis.title = ggplot2::element_text(
+        colour = "black",
+        size = axis_title_size
+      ),
       panel.grid = ggplot2::element_line(colour = "white", linewidth = 0.1),
       panel.background = ggplot2::element_rect(fill = sea_colour),
-      panel.border = ggplot2::element_rect(fill = NA, colour = "black", linewidth = 0.3),
-      plot.title = ggplot2::element_text(size = plot_title_size, face = "bold",
-                                         margin = ggplot2::margin(0,0,10,0))
+      panel.border = ggplot2::element_rect(
+        fill = NA,
+        colour = "black",
+        linewidth = 0.3
+      ),
+      plot.title = ggplot2::element_text(
+        size = plot_title_size,
+        face = "bold",
+        margin = ggplot2::margin(0, 0, 10, 0)
+      )
     )
-
 
   # Add legend by creating a dummy point data.frame
   legend_data <- data.frame(
@@ -279,7 +343,9 @@ mapmixture <- function(
   # Change cluster column names to custom cluster names if argument supplied
   if (!is.null(cluster_names)) {
     if (length(cluster_names) != length(cluster_col_names)) {
-      stop("Invalid input: cluster_names vector must be the same length as the number of clusters.")
+      stop(
+        "Invalid input: cluster_names vector must be the same length as the number of clusters."
+      )
     } else {
       legend_data$cluster <- cluster_names
     }
@@ -288,20 +354,30 @@ mapmixture <- function(
   # Add legend to plot using a dummy point data (not ideal but works)
   # NOTE: 02/11/2023: The legend key does not resize
   # The only way to resize is to add a guides(fill = guide_legend(override.aes = list(size = 3)))
-  plt <- plt+
+  plt <- plt +
     ggplot2::geom_point(
       data = legend_data,
-      ggplot2::aes(x = !!as.name("x"), y = !!as.name("y"), fill = !!as.name("cluster")),
-      shape = 22, colour = "black", stroke = 0.3, size = 5 * min(pie_size) , alpha = 0
-    )+
-    ggplot2::scale_fill_manual(values = cluster_cols, breaks = cluster_names)+
+      ggplot2::aes(
+        x = !!as.name("x"),
+        y = !!as.name("y"),
+        fill = !!as.name("cluster")
+      ),
+      shape = 22,
+      colour = "black",
+      stroke = 0.3,
+      size = 5 * min(pie_size),
+      alpha = 0
+    ) +
+    ggplot2::scale_fill_manual(values = cluster_cols, breaks = cluster_names) +
     ggplot2::theme(
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_rect(fill = NA),
       legend.text = ggplot2::element_text(vjust = 0.5),
-    )+
-    ggplot2::guides(fill = ggplot2::guide_legend(
-      override.aes = list(alpha = 1))
+    ) +
+    ggplot2::guides(
+      fill = ggplot2::guide_legend(
+        override.aes = list(alpha = 1)
+      )
     )
 
   # Add scale bar if true
@@ -309,12 +385,12 @@ mapmixture <- function(
     height_size <- scalebar_size * 0.15
     width_size <- scalebar_size * 0.10
     text_size <- scalebar_size * 0.5
-    plt <- plt+
+    plt <- plt +
       ggspatial::annotation_scale(
         data = world_boundaries,
         location = scalebar_position,
         width_hint = width_size,
-        bar_cols = c("black","white"),
+        bar_cols = c("black", "white"),
         line_width = 0.5,
         height = grid::unit(height_size, "cm"),
         text_cex = text_size
@@ -326,8 +402,12 @@ mapmixture <- function(
     height_size <- arrow_size * 0.3
     width_size <- arrow_size * 0.3
     text_size <- arrow_size * 2
-    pad_size <- ifelse(scalebar == TRUE & scalebar_position == arrow_position, arrow_size * 0.5, 0.25)
-    plt <- plt+
+    pad_size <- ifelse(
+      scalebar == TRUE & scalebar_position == arrow_position,
+      arrow_size * 0.5,
+      0.25
+    )
+    plt <- plt +
       ggspatial::annotation_north_arrow(
         data = world_boundaries,
         which_north = "true",
@@ -370,7 +450,7 @@ mapmixture <- function(
 #' )
 #' calc_default_bbox(coords, expand = NULL)
 #' calc_default_bbox(coords, expand = 0.10)
-calc_default_bbox <- function(data, expand = NULL){
+calc_default_bbox <- function(data, expand = NULL) {
   colnames(data) <- stringr::str_to_lower(colnames(data))
 
   # Expects longitude in column 3 and latitude in column 2

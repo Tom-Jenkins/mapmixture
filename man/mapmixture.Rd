@@ -31,7 +31,11 @@ mapmixture(
   axis_text_size = 8,
   basemap_border = TRUE,
   basemap_border_col = "black",
-  basemap_border_lwd = 0.1
+  basemap_border_lwd = 0.1,
+  repel = FALSE,
+  repel_force = 1,
+  repel_spring = 0.05,
+  repel_padding = 0.1
 )
 }
 \arguments{
@@ -149,6 +153,10 @@ mapmixture(
   plot_title = "Mapmixture Figure",
   plot_title_size = 15,
   axis_title_size = 12,
-  axis_text_size = 10
+  axis_text_size = 10,
+  repel = FALSE,
+  repel_force = 1,
+  repel_spring = 0.05,
+  repel_padding = 0.1
 )}
 }
